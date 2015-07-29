@@ -1,0 +1,38 @@
+{
+  "name": "toxify",
+  "version": "0.1.0",
+  "description": "Hackable HTTP proxy to simulate system failure conditions",
+  "repository": "h2non/rocky",
+  "author": "Tomas Aparicio",
+  "license": "MIT",
+  "keywords": [
+    "http",
+    "proxy",
+    "toxic",
+    "fault",
+    "tolerant",
+    "testing",
+    "resilency",
+    "fuzz",
+    "evil",
+    "testing"
+  ],
+  "engines": {
+    "node": ">= 0.12"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*"
+  },
+  "dependencies": {
+    "rocky": "^0.3.2",
+    "throttle": "^1.0.3",
+    "yargs": "^3.15.0"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "request": "^2.58.0",
+    "sinon": "^1.15.3",
+    "supertest": "^1.0.1"
+  }
+}
