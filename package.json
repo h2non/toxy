@@ -1,5 +1,5 @@
 {
-  "name": "toxify",
+  "name": "toxy",
   "version": "0.1.0",
   "description": "Hackable HTTP proxy to simulate system failure conditions",
   "repository": "h2non/rocky",
@@ -21,9 +21,11 @@
     "node": ">= 0.12"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*"
+    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*",
+    "nar": "nar create -e --os linux --arch x64 && nar create -e --os darwin --arch x64"
   },
   "dependencies": {
+    "midware": "^0.1.3",
     "rocky": "^0.3.2",
     "throttle": "^1.0.3",
     "yargs": "^3.15.0"

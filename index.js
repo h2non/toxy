@@ -1,10 +1,10 @@
-const Toxify = require('./lib/toxify')
+const Toxy = require('./lib/toxy')
 
-module.exports = toxify
+module.exports = toxy
 
-function toxify(opts) {
-  return new Toxify(opts)
+function toxy(opts) {
+  return new Toxy(opts)
 }
 
-toxify.poisons = require('./lib/poisons')
-toxify.VERSION = require('./package.json').version
+toxy.poisons = require('./lib/poisons')
+toxy.VERSION = require('./package.json').version
