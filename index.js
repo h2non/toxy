@@ -6,5 +6,8 @@ function toxy(opts) {
   return new Toxy(opts)
 }
 
-toxy.poisons = require('./lib/poisons')
+toxy.poisons = Toxy.poisons
+toxy.rules = Toxy.rules
+toxy.Poison = require('./lib/poison')
+toxy.Directive = require('./lib/directive')
 toxy.VERSION = require('./package.json').version
