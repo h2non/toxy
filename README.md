@@ -1,35 +1,44 @@
 # toxy
 
-Pluggable HTTP proxy to simulate system failure conditions.
-Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org). Powered by [rocky](https://github.com/h2non/rocky)
+<img align="right" height="200" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**Don't use it, this is a work in progress**
+Pluggable and hackable HTTP proxy to simulate multiple server failures and unexpected conditions.
+Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
+
+Powered by [rocky](https://github.com/h2non/rocky)
+
+**Don't use it. This is a work in progress**
 
 ## Built-in poisons
 
 - [x] Delay
-- [ ] Server error
-- [ ] Close socket
-- [ ] Bandwidth (throttle)
+- [x] Server error
+- [x] Abort connection
+- [x] Bandwidth (throttle)
 - [ ] Congestion (slow, flaky)
 - [ ] Corrupt data
 - [ ] Rate limit (debounce)
-- [ ] Slow close
-- [ ] Slicer
+- [x] Slow close
+- [x] Slicer
 
-## Built-in filters
+## Built-in rules
 
-- [ ] Probability
+- [x] Probability
 - [ ] Headers
 
-## Design tasks
+## How does it work?
 
-- [ ] Poison interface
-- [ ] Hierachical poison filtering
-- [ ] Filter rules (percentage, verb, body)
-- [ ] Hierarchical filter rules
+```
 
-## Poison interface
+```
+
+## Installation
+
+```
+npm install toxy
+```
+
+## Examples
 
 ```js
 var proxy = toxy()
@@ -41,6 +50,19 @@ proxy
   .rule(rules.probability(50))
   .rule(rules.method('GET'))
 ```
+
+## Poisons
+
+### Delay
+
+### Inject error
+
+### Abort connection
+
+### Bandwidth
+
+## Rules
+
 
 ## License
 
