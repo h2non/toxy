@@ -15,25 +15,25 @@ Requires node.js +0.12 or io.js +1.6
 
 ## Built-in poisons
 
-- [x] Delay
-- [x] Timeout
-- [x] Inject error
-- [x] Bandwidth
-- [x] Rate limit
-- [x] Slow read
-- [x] Slow open
-- [x] Slow close
-- [x] Throttle
-- [x] Abort connection
+- [x] [Delay](#delay)
+- [x] [Timeout](#timeout)
+- [x] [Inject response](#inject-response)
+- [x] [Bandwidth](#bandwidth)
+- [x] [Rate limit](#rate-limit)
+- [x] [Slow read](#slow-read)
+- [x] [Slow open](#slow-open)
+- [x] [Slow close](#slow-close)
+- [x] [Throttle](#throttle)
+- [x] [Abort connection](#abort-connection)
 
 ## Built-in rules
 
-- [x] Probability
-- [x] Match method
-- [x] Match headers
-- [x] Content Type
-- [ ] Query params
-- [ ] Body
+- [x] [Random](#random)
+- [x] [Method](#method)
+- [x] [Headers](#headers)
+- [x] [Content Type](#content-type)
+- [ ] [Query params](#query-params)
+- [ ] [Body](#body)
 
 <!--
 ## How it works
@@ -66,27 +66,39 @@ proxy
 
 ## Poisons
 
-### Delay
+#### Delay
 
-### Inject error
+#### Timeout
 
-### Abort connection
+#### Inject response
 
-### Bandwidth
+#### Bandwidth
+
+#### Rate limit
+
+#### Slow read
+
+#### Slow open
+
+#### Slow close
+
+#### Throttle
+
+#### Abort connection
 
 ## Rules
 
-### `probability`
+#### Random
 
-### `method`
+#### Method
 
-### `headers`
+#### Headers
 
-### `contentType`
+#### Content Type
 
-### `query`
+#### Query params
 
-### `body`
+#### Body
 
 ## License
 
