@@ -6,7 +6,7 @@ const rules = proxy.rules
 
 proxy
   .forward('http://httpbin.org')
-  .poison(poisons.bandwidth({ bps: 500 }))
+  .poison(poisons.bandwidth({ bps: 2048 }))
 
 proxy
   .get('/headers')
@@ -25,19 +25,16 @@ route
   .poison(poisons.inject({ code: 502, headers: { 'X-Toxy-Poison': 'error' } }))
   .poisonRule(rules.probability(50))
 
+route
+  .poison(poisons.slowClose({ delay: 5000 }))
+
 route.flushAll()
 
 route
   .poison(poisons.throttle({ chunk: 10, window: 500 }))
 
-setTimeout(function () {
-  route.flushAll()
-
-  route
-    .poison(poisons.slowClose({ delay: 5000 }))
-
-  //route.disable('abort')
-}, 1000000)
+route
+  .poison(poisons.rateLimit({ limit: 2, window: 10000 }))
 
 proxy
   .all('/*')
