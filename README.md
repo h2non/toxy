@@ -7,7 +7,10 @@
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
 Pluggable and hackable HTTP proxy to simulate multiple server failures and unexpected conditions.
-Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org). Powered by [rocky](https://github.com/h2non/rocky)
+Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
+
+toxy provides a simple and fluent [programmatic API](#programmatic-api),
+extending the featured [API](https://github.com/h2non/rocky#programmatic-api) of [rocky](https://github.com/h2non/rocky).
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -99,6 +102,15 @@ proxy
 #### Query params
 
 #### Body
+
+
+## Programmatic API
+
+### rocky([ options ])
+
+#### Options
+
+See
 
 ## License
 
