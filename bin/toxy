@@ -2,4 +2,4 @@
 
 const toxy = require('..')
 
-toxy({})
+toxy({ xfwd: true })

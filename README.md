@@ -1,41 +1,47 @@
-# toxy
+# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy)
 
-<img align="right" height="200" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
+<!--
+![Downloads](https://img.shields.io/npm/dm/toxy.svg)
+-->
+
+<img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
 Pluggable and hackable HTTP proxy to simulate multiple server failures and unexpected conditions.
 Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org). Powered by [rocky](https://github.com/h2non/rocky)
 
 Requires node.js +0.12 or io.js +1.6
 
-**Don't use it. This is a work in progress**
+**This is a work in progress**
 
 ## Built-in poisons
 
 - [x] Delay
 - [x] Timeout
-- [x] Server error
-- [x] Abort connection
+- [x] Inject error
 - [x] Bandwidth
-- [ ] Corrupt data
-- [ ] Rate limit (debounce)
-- [ ] Slow read
+- [x] Rate limit
+- [x] Slow read
+- [x] Slow open
 - [x] Slow close
 - [x] Throttle
+- [x] Abort connection
 
 ## Built-in rules
 
 - [x] Probability
-- [ ] Method
-- [ ] Headers
-- [ ] Content Type
+- [x] Match method
+- [x] Match headers
+- [x] Content Type
 - [ ] Query params
 - [ ] Body
 
-## How does it work?
+<!--
+## How it works
 
 ```
 
 ```
+-->
 
 ## Installation
 
@@ -46,13 +52,15 @@ npm install toxy
 ## Examples
 
 ```js
+var toxy = require('toxy')
+
 var proxy = toxy()
 var poisons = proxy.poisons
 var rules = proxy.rules
 
 proxy
   .poison(poisons.delay({ jitter: 500 }))
-  .rule(rules.probability(50))
+  .rule(rules.random(50))
   .rule(rules.method('GET'))
 ```
 
