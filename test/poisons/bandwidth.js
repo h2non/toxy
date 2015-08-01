@@ -13,7 +13,7 @@ suite('poison#bandwidth', function () {
 
     res.__proto__.write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(opts.bps)
-      expect(Date.now() - lastWrite).to.be.least(opts.threshold)
+      expect(Date.now() - lastWrite).to.be.least(opts.threshold - 1)
       lastWrite = Date.now()
       buf.push(buffer)
       next()
