@@ -65,13 +65,13 @@ suite('directive', function () {
     var req = {}
 
     d.rule(rule)
-    d.disable()
+    d.disableRule('rule')
 
-    expect(d.isEnabled()).to.be.false
+    expect(d.isEnabled()).to.be.true
     d.handler()(req, null, done)
 
     function directive(req, res, next) {
-      throw new Error('Directive called')
+      done()
     }
 
     function rule(req, res, next) {
