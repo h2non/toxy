@@ -12,7 +12,7 @@ suite('poison#delay', function () {
 
     function next(err) {
       expect(err).to.be.undefined
-      expect(Date.now() - init).to.be.at.least(opts.jitter)
+      expect(Date.now() - init).to.be.at.least(opts.jitter - 2)
       done()
     }
   })
