@@ -4,7 +4,7 @@
 
 **toxy** is a hackable HTTP proxy to simulate server failure scenarios and unexpected conditions. It was designed to be used for fuzz/evil testing, mainly in fault tolerant and resilient systems, such in a service-oriented distributed architecture, where `toxy` acts as intermediate proxy between services.
 
-Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). `toxy` is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured and middleware-oriented HTTP/S proxy.
+Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com). Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
 
 Requires node.js +0.12 or io.js +1.6
 
