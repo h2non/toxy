@@ -2,7 +2,7 @@
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**toxy** is a hackable HTTP proxy to simulate server failure scenarios and unexpected conditions.
+**toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected conditions**.
 
 It was designed to be used for fuzz/evil testing, mainly in fault tolerant and resilient systems, such in a service-oriented distributed architecture, where `toxy` acts as intermediate proxy between services.
 
