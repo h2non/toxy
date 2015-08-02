@@ -1,4 +1,5 @@
 const sinon = require('sinon')
+const clone = require('clone')
 const expect = require('chai').expect
 const slowClose = require('../..').poisons.slowClose
 
@@ -9,10 +10,12 @@ suite('poison#slowClose', function () {
     var spy = sinon.spy()
     var init = Date.now()
 
-    var res = {}
-    res.writeHead = spy
-    res.end = function (body) {
+    var res = clone.clonePrototype({})
+
+    res.__proto__.writeHead = spy
+    res.__proto__.end = function (body) {
       spy(body)
+      res.__proto__
       end()
     }
 

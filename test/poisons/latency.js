@@ -1,18 +1,32 @@
 const http = require('http')
 const expect = require('chai').expect
-const delay = require('../..').poisons.delay
+const latency = require('../..').poisons.latency
 
-suite('poison#delay', function () {
+suite('poison#latency', function () {
   test('jitter', function (done) {
     var req = new http.IncomingMessage
     var init = Date.now()
     var opts = { jitter: 50 }
 
-    delay(opts)(req, null, next)
+    latency(opts)(req, null, next)
 
     function next(err) {
       expect(err).to.be.undefined
       expect(Date.now() - init).to.be.at.least(opts.jitter - 2)
+      done()
+    }
+  })
+
+  test('jitter as number', function (done) {
+    var req = new http.IncomingMessage
+    var init = Date.now()
+    var jitter = 50
+
+    latency(jitter)(req, null, next)
+
+    function next(err) {
+      expect(err).to.be.undefined
+      expect(Date.now() - init).to.be.at.least(jitter - 2)
       done()
     }
   })
@@ -22,7 +36,7 @@ suite('poison#delay', function () {
     var init = Date.now()
     var opts = { min: 50, max: 100 }
 
-    delay(opts)(req, null, next)
+    latency(opts)(req, null, next)
 
     function next(err) {
       expect(err).to.be.undefined
@@ -36,7 +50,7 @@ suite('poison#delay', function () {
     var init = Date.now()
     var opts = { jitter: 1000 }
 
-    delay(opts)(req, null, next)
+    latency(opts)(req, null, next)
 
     process.nextTick(function () {
       req.emit('close')

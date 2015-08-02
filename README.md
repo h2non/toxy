@@ -1,58 +1,71 @@
-# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy)
-
-<!--
-![Downloads](https://img.shields.io/npm/dm/toxy.svg)
--->
+# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) ![Stability](http://img.shields.io/badge/stability-beta-orange.svg?style=flat)
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-Pluggable and hackable HTTP proxy to simulate multiple server failures and unexpected conditions.
-Built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
+**toxy** is a hackable HTTP proxy to simulate server failure scenarios and unexpected conditions. It was mainly designed to be useful for fuzz/evil testing purposes in fault tolerant and resilient systems.
+A common use case scenario will be in a service-oriented distributed architecture, acting as intermediate proxy between services.
 
-toxy provides a simple and fluent [programmatic API](#programmatic-api),
-extending the featured [API](https://github.com/h2non/rocky#programmatic-api) of [rocky](https://github.com/h2non/rocky).
+Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). `toxy` is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured and middleware-oriented HTTP/S proxy.
 
 Requires node.js +0.12 or io.js +1.6
 
 **This is a work in progress**
 
-## Built-in poisons
+## Contents
 
-- [x] [Delay](#delay)
-- [x] [Timeout](#timeout)
-- [x] [Inject response](#inject-response)
-- [x] [Bandwidth](#bandwidth)
-- [x] [Rate limit](#rate-limit)
-- [x] [Slow read](#slow-read)
-- [x] [Slow open](#slow-open)
-- [x] [Slow close](#slow-close)
-- [x] [Throttle](#throttle)
-- [x] [Abort connection](#abort-connection)
+- [Features](#features)
+- Introduction
+  - How it works
+  - Concepts
+  - Middleware layer
+- Usage
+  - Installation
+  - Configuration
+  - Examples
+- Poisons
+  - Built-in poisons
+  - How to write poisons
+- Rules
+  - Built-in rules
+  - How to write rules
+- Programmatic API
+- [License](#license)
 
-## Built-in rules
+## Features
 
-- [x] [Random](#random)
-- [x] [Method](#method)
-- [x] [Headers](#headers)
-- [x] [Content Type](#content-type)
-- [ ] [Query params](#query-params)
-- [ ] [Body](#body)
+- Full-featured HTTP/S proxy (backed by [http-proxy](https://github.com/nodejistu/node-http-proxy))
+- Hackable and featured programmatic API
+- Easily augmentable via middleware (based on connect/express middleware)
+- Compatible with connect/express
+- Built-in
+- Pluggable poisons
+-
+- Runs as standalone HTTP proxy
 
-<!--
-## How it works
+## Introduction
 
-```
+### Motivation
 
-```
--->
+### Concepts
 
-## Installation
+### How it works
+
+### Middleware layer
+
+
+## Usage
+
+### Installation
 
 ```
 npm install toxy
 ```
 
-## Examples
+### Configuration
+
+### Examples
+
+See [examples/](https://github.com/h2non/toxy/blob/examples) directory for more featured examples
 
 ```js
 var toxy = require('toxy')
@@ -69,9 +82,32 @@ proxy
 
 ## Poisons
 
-#### Delay
+### Built-in poisons
 
-#### Timeout
+- [x] [Latency](#latency)
+- [x] [Inject response](#inject-response)
+- [x] [Bandwidth](#bandwidth)
+- [x] [Rate limit](#rate-limit)
+- [x] [Slow read](#slow-read)
+- [x] [Slow open](#slow-open)
+- [x] [Slow close](#slow-close)
+- [x] [Throttle](#throttle)
+- [x] [Abort connection](#abort-connection)
+- [x] [Timeout](#timeout)
+
+## Rules
+
+### Built-in rules
+
+- [x] [Random](#random)
+- [x] [Method](#method)
+- [x] [Headers](#headers)
+- [x] [Content Type](#content-type)
+- [ ] [Body](#body)
+
+## Poisons
+
+#### Latency
 
 #### Inject response
 
@@ -89,6 +125,8 @@ proxy
 
 #### Abort connection
 
+#### Timeout
+
 ## Rules
 
 #### Random
@@ -103,14 +141,11 @@ proxy
 
 #### Body
 
-
 ## Programmatic API
 
 ### rocky([ options ])
 
 #### Options
-
-See
 
 ## License
 

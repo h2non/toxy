@@ -1,7 +1,7 @@
 {
   "name": "toxy",
   "version": "0.1.0-alpha.0",
-  "description": "Hackable HTTP proxy to simulate multiple server failures and unexpected conditions",
+  "description": "Hackable HTTP proxy to simulate server failure scenarios and unexpected conditions",
   "repository": "h2non/toxy",
   "author": "Tomas Aparicio",
   "license": "MIT",
@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
+    "clone": "^1.0.2",
+    "express": "^4.13.2",
     "mocha": "^2.2.5",
     "sinon": "^1.15.3",
     "supertest": "^1.0.1"

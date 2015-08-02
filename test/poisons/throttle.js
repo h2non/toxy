@@ -1,5 +1,6 @@
 const http = require('http')
 const sinon = require('sinon')
+const clone = require('clone')
 const expect = require('chai').expect
 const throttle = require('../..').poisons.throttle
 
@@ -11,6 +12,7 @@ suite('poison#throttle', function () {
 
     var buf = []
     var lastWrite = Date.now()
+    res = clone.clonePrototype(res)
 
     res.__proto__.write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(opts.chunk)
@@ -43,6 +45,7 @@ suite('poison#throttle', function () {
     var buf = []
     var body = new Buffer('Hello World')
     var lastWrite = Date.now()
+    res = clone.clonePrototype(res)
 
     res.__proto__.write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(body.length)
@@ -64,5 +67,4 @@ suite('poison#throttle', function () {
     res.write(body)
     res.end()
   })
-
 })

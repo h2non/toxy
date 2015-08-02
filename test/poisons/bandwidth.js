@@ -1,4 +1,5 @@
 const http = require('http')
+const clone = require('clone')
 const expect = require('chai').expect
 const bandwidth = require('../..').poisons.bandwidth
 
@@ -10,6 +11,8 @@ suite('poison#bandwidth', function () {
 
     var buf = []
     var lastWrite = Date.now()
+    var origProto = res.__proto__
+    res = clone.clonePrototype(res)
 
     res.__proto__.write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(opts.bps)
@@ -22,6 +25,7 @@ suite('poison#bandwidth', function () {
     res.__proto__.end = function () {
       expect(buf).to.have.length(11)
       expect(buf.join('')).to.be.equal('Hello World')
+      console.log('')
       done()
     }
 
