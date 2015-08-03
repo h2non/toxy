@@ -1,12 +1,12 @@
 const expect = require('chai').expect
-const matchHeaders = require('../..').rules.matchHeaders
+const headers = require('../..').rules.headers
 
-suite('rules#matchHeaders', function () {
+suite('rules#headers', function () {
   test('header present', function (done) {
-    var headers = { 'content-type': true }
+    var matchHeaders = { 'content-type': true }
     var req = { headers: { 'content-type': 'application/json' } }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -15,10 +15,10 @@ suite('rules#matchHeaders', function () {
   })
 
   test('match by string', function (done) {
-    var headers = { 'content-type': 'application/json' }
+    var matchHeaders = { 'content-type': 'application/json' }
     var req = { headers: { 'content-type': 'application/json' } }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -27,10 +27,10 @@ suite('rules#matchHeaders', function () {
   })
 
   test('match by regexp', function (done) {
-    var headers = { 'content-type': /^application/i }
+    var matchHeaders = { 'content-type': /^application/i }
     var req = { headers: { 'content-type': 'application/json' } }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -39,7 +39,7 @@ suite('rules#matchHeaders', function () {
   })
 
   test('match by function', function (done) {
-    var headers = { 'content-type': match }
+    var matchHeaders = { 'content-type': match }
     var req = { headers: { 'content-type': 'application/json' } }
 
     function match(value, key) {
@@ -47,7 +47,7 @@ suite('rules#matchHeaders', function () {
         && value === 'application/json'
     }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -56,10 +56,10 @@ suite('rules#matchHeaders', function () {
   })
 
   test('multiple headers', function (done) {
-    var headers = { 'content-type': /^application/i, 'server': true }
+    var matchHeaders = { 'content-type': /^application/i, 'server': true }
     var req = { headers: { 'content-type': 'application/json', 'server': 'rocky' } }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -68,10 +68,10 @@ suite('rules#matchHeaders', function () {
   })
 
   test('not present', function (done) {
-    var headers = { 'content-type': false }
+    var matchHeaders = { 'content-type': false }
     var req = { headers: {} }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
@@ -80,10 +80,10 @@ suite('rules#matchHeaders', function () {
   })
 
   test('cannot match', function (done) {
-    var headers = { 'empty': true }
+    var matchHeaders = { 'empty': true }
     var req = { headers: {} }
 
-    matchHeaders(headers)(req, null, next)
+    headers(matchHeaders)(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.true

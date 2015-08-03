@@ -14,6 +14,18 @@ suite('rules#contentType', function () {
     }
   })
 
+  test('partial string', function (done) {
+    var type = 'json'
+    var req = { headers: { 'content-type': 'application/json' } }
+
+    contentType(type)(req, null, next)
+
+    function next(ignore) {
+      expect(ignore).to.be.false
+      done()
+    }
+  })
+
   test('regexp', function (done) {
     var type = /application\/json/i
     var req = { headers: { 'content-type': 'application/json' } }

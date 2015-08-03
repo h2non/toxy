@@ -35,4 +35,33 @@ suite('poison#slowRead', function () {
       done()
     }
   })
+
+  test('close', function (done) {
+    var req = new http.IncomingMessage
+    var res = new http.OutgoingMessage
+    var threshold = 5
+    var spy = sinon.spy()
+    var init = Date.now()
+
+    req.method = 'POST'
+    req = clone.clonePrototype(req)
+
+    req.__proto__.push = function (data) {
+      spy(data)
+      if (data === null) assert()
+    }
+
+    slowRead({ chunk: 1, threshold: threshold })(req, res, spy)
+
+    req.emit('close')
+
+    req.push(new Buffer('Hello World'))
+    req.push(null)
+
+    function assert() {
+      expect(Date.now() - init).to.be.within(0, 2)
+      expect(spy.args).to.have.length(3)
+      done()
+    }
+  })
 })

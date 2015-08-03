@@ -20,11 +20,11 @@ suite('toxy', function () {
       setTimeout(next, 5)
     })
 
-    expect(proxy.isPoisonEnabled('delay')).to.be.true
+    expect(proxy.isEnabled('delay')).to.be.true
     proxy.disable('delay')
-    expect(proxy.isPoisonEnabled('delay')).to.be.false
+    expect(proxy.isEnabled('delay')).to.be.false
     proxy.enable('delay')
-    expect(proxy.isPoisonEnabled('delay')).to.be.true
+    expect(proxy.isEnabled('delay')).to.be.true
 
     proxy._poisons.run(null, null, function () {
       expect(called).to.be.true

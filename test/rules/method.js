@@ -18,7 +18,7 @@ suite('rules#method', function () {
     var match = 'GET'
     var req = { method: 'GET' }
 
-    method({ methods: ['POST', 'GET'] })(req, null, next)
+    method(['POST', 'GET'])(req, null, next)
 
     function next(ignore) {
       expect(ignore).to.be.false
