@@ -5,9 +5,9 @@
 **toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected conditions**.
 
 It was mainly created for fuzz/evil testing purposes.
-It becomes particulary useful in fault tolerant and resilient systems,tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy between services.
+It becomes particulary useful in fault tolerant and resilient systems, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
 
-**toxy** allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want performing multiple actions in the middle of that process, for instance, limiting the bandwidth, injecting a TCP jitter or replying with a custom error or status code.
+**toxy** allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want performing multiple actions in the middle of that process, like for instance limiting the bandwidth, injecting a TCP jitter or replying with a custom error or status code.
 
 Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
 Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
@@ -52,17 +52,17 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other solutions similar to `toxy` in the market, but most of them doesn't provide a proper programmatic control and are not easy to hack, configure and/or extend.
+There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend.
 
-`toxy` provides a powerful hacking-driven solution with a low-level interface and programmatic control with an elegant API and the power, simplicity and fun of node.js.
+`toxy` provides a powerful hacking-driven solution with a proper low-level interface and programmatic control with an elegant API and the power, simplicity and fun of node.js.
 
 ### Concepts
 
-`toxy` introduces two main core directives you worth to know before use it:
+`toxy` introduces two main core directives worth knowing before using it:
 
-**Poisons** are a specific logic encapsulated as a simple middleware to empoison an incoming or outgoing HTTP flow (e.g: injecting a latency in the server response). HTTP flow can be empoison by one or multiple poisons.
+**Poisons** are a specific logic encapsulated as middleware to poison an incoming or outgoing HTTP flow (e.g: injecting a latency in the server response). HTTP flow can be poisoned by one or multiple poisons.
 
-**Rules** are a kind of validation filters which can be applied into the whole HTTP flow or into a concrete poison, in order to determine if one or multiple poisons should be enabled or not to empoison the HTTP traffic (e.g: a probabilistic calculus).
+**Rules** are a kind of validation filters that can be applied to the whole HTTP flow or to a concrete poison, in order to determine if one or multiple poisons should be enabled or not to poison the HTTP traffic (e.g: a probabilistic calculus).
 
 ### How it works
 
@@ -78,7 +78,7 @@ There're some other solutions similar to `toxy` in the market, but most of them 
 ↓     ----------------    ↓
 ↓          |||            ↓
 ↓     ----------------    ↓
-↓     | Exec Poisons |    ↓ --> If all rules passed, empoison the HTTP transaction
+↓     | Exec Poisons |    ↓ --> If all rules passed, poisoning the HTTP flow
 ↓     ----------------    ↓
 ↓        /       \        ↓
 ↓        \       /        ↓
@@ -123,11 +123,11 @@ proxy.listen(3000)
 
 ## Poisons
 
-Poisons are any specific (evil) logic which acts intercepts and usually mutate, wraps, modify and/or cancel an HTTP transaction in the proxy server.
+Poisons host specific logic which intercepts and mutates, wraps, modify and/or cancel an HTTP transaction in the proxy server.
 Poisons can be applied to incoming or outgoing, or even both traffic flows.
 
 Poisons can be composed and reused for different HTTP scenarios.
-Poisions are executed in FIFO order.
+Poisons are executed in FIFO order.
 
 ### Built-in poisons
 
@@ -145,52 +145,52 @@ Poisions are executed in FIFO order.
 #### Latency
 Name: `latency`
 
-Inject response latency
+Injects response latency
 
 #### Inject response
 Name: `inject`
 
-Inject a custom response, intercepting the request before sending it to the target server. Useful to test server originated errors.
+Injects a custom response, intercepting the request before sending it to the target server. Useful to test server originated errors.
 
 #### Bandwidth
 Name: `bandwidth`
 
-Limit the amount of bytes sent over the network in a specific threshold time frame.
+Limits the amount of bytes sent over the network in a specific threshold time frame.
 
 #### Rate limit
 Name: `rateLimit`
 
-Rate the amount the requests recieved by the proxy in a specific threshold time frame. Designed to test API limits.
+Rates the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits.
 
 #### Slow read
 Name: `slowRead`
 
-Read incoming packets slowly.
+Reads incoming packets slowly.
 
 #### Slow open
 Name: `slowOpen`
 
-Delay the HTTP connection opened status.
+Delays the HTTP connection opened status.
 
 #### Slow close
 Name: `slowClose`
 
-Delay the EOF signal.
+Delays the EOF signal.
 
 #### Throttle
 Name: `throttle`
 
-Restrict the amount of packets sent over the network in a specific threshold time frame.
+Restricts the amount of packets sent over the network in a specific threshold time frame.
 
 #### Abort connection
 Name: `abort`
 
-Abort the TCP connection, optionally with a custom error. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
+Aborts the TCP connection, optionally with a custom error. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
 
 #### Timeout
 Name: `timeout`
 
-Define a response timeout. Useful when forwarding to potentially slow servers.
+Defines a response timeout. Useful when forwarding to potentially slow servers.
 
 ### How to write poisons
 
@@ -224,15 +224,15 @@ toxy
   .poison(latency(2000))
 ```
 
-For real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
+For a real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
 
 ## Rules
 
-Rules are simple validation filters which inspects an HTTP request and determines, given a certain rules (e.g: method, headers, query params), if it the HTTP transaction should be poisoned or not, then applying the configured poisons in the current HTTP flow.
+Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
 
-Rules are useful as a short of composition to decouple and reuse logic between different scenarios of poisoning. You can also define globally applied rules or nested poison-scope rules only.
+Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. You can also define globally applied rules or nested poison-scope rules only.
 
-Rules are executed in FIFO order. Their evaluation logic is analog to `Array#every()` in JavaScript: all the rules must match in order to proceed with the poisoning.
+Rules are executed in FIFO order. Their evaluation logic is comparable to `Array#every()` in JavaScript: all the rules must match in order to proceed with the poisoning.
 
 ### Built-in rules
 
@@ -244,7 +244,7 @@ Rules are executed in FIFO order. Their evaluation logic is analog to `Array#eve
 
 #### Probability
 
-Enable the rule by a random probabilistic. Useful for random poisioning.
+Enables the rule by a random probabilistic. Useful for random poisioning.
 
 **Arguments**:
 
@@ -257,7 +257,7 @@ toxy.rule(rule)
 
 #### Method
 
-Filter by HTTP method.
+Filters by HTTP method.
 
 **Arguments**:
 
@@ -291,7 +291,7 @@ toxy.rule(rule)
 
 #### Content Type
 
-Filter by content type header. It should be present
+Filters by content type header. It should be present
 
 **Arguments**:
 
@@ -308,9 +308,9 @@ toxy.rule(rule)
 
 ### How to write rules
 
-Rules are simple middleware functions that resolves asyncronously with a `boolean` value to determine if a given HTTP transaction should be ignored when poisoning.
+Rules are simple middleware functions that resolve asyncronously with a `boolean` value to determine if a given HTTP transaction should be ignored when poisoning.
 
-Here's a example a simple rule matching the HTTP method to determine if:
+Here's an example of a simple rule matching the HTTP method to determine if:
 ```js
 function method(matchMethod) {
   /**
@@ -439,9 +439,9 @@ Return: `array<Directive>` Alias: `getRules`
 
 ### ToxyRoute
 
-Toxy route has, indeed, the same interface as `Toxy` global interface, but further actions you perform againts the API will be only applicable at route-level. In other words: good news, you already know the API.
+Toxy route has, indeed, the same interface as `Toxy` global interface, but further actions you perform againts the API will only be applicable at route-level. In other words: good news, you already know the API.
 
-This example probably will clarify possible doubts:
+This example will probably clarify possible doubts:
 ```js
 var toxy = require('toxy')
 var proxy = toxy()
