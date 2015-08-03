@@ -37,4 +37,17 @@ suite('common', function () {
       encoding: 'utf8'
     })
   })
+
+  test('sliceBuffer in lower chunk', function () {
+    var buf = []
+    var buffer = new Buffer('Hello World')
+
+    common.sliceBuffer(1024, buffer, 'utf8', buf)
+
+    expect(buf).to.have.length(1)
+    expect(buf.shift()).to.be.deep.equal({
+      buffer: new Buffer('Hello World'),
+      encoding: 'utf8'
+    })
+  })
 })

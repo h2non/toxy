@@ -131,18 +131,6 @@ proxy.listen(3000)
 - [x] [Abort connection](#abort-connection)
 - [x] [Timeout](#timeout)
 
-## Rules
-
-### Built-in rules
-
-- [x] [Random](#random)
-- [x] [Method](#method)
-- [x] [Headers](#headers)
-- [x] [Content Type](#content-type)
-- [ ] [Body](#body)
-
-## Poisons
-
 #### Latency
 
 #### Inject response
@@ -164,6 +152,14 @@ proxy.listen(3000)
 #### Timeout
 
 ## Rules
+
+### Built-in rules
+
+- [x] [Random](#random)
+- [x] [Method](#method)
+- [x] [Headers](#headers)
+- [x] [Content Type](#content-type)
+- [ ] [Body](#body)
 
 #### Random
 
