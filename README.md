@@ -2,12 +2,11 @@
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected conditions**.
+**toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**.
 
-It was mainly created for fuzz/evil testing purposes.
-It becomes particulary useful in fault tolerant and resilient systems, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
+It was mainly designed for fuzz/evil testing purposes, becoming particulary useful in fault tolerant and resilient systems, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
 
-**toxy** allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
 Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
 Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
@@ -67,7 +66,7 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend.
+There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack only instead of providing more features to the scope of HTTP applicacion level protocol, like toxy does.
 
 `toxy` provides a powerful hacking-driven and extensible solution with a convenient low-level interface and extensible programmatic control, serveds with a simple and fluent API and the power, simplicity and fun of node.js.
 
@@ -75,9 +74,9 @@ There're some other similar solutions to `toxy` in the market, but most of them 
 
 `toxy` introduces two main core directives worth knowing before using it:
 
-**Poisons** are a specific logic encapsulated as middleware to poison an incoming or outgoing HTTP flow (e.g: injecting a latency in the server response). HTTP flow can be poisoned by one or multiple poisons.
+**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and you can plug in poisons at global or route level.
 
-**Rules** are a kind of validation filters that can be applied to the whole HTTP flow or to a concrete poison, in order to determine if one or multiple poisons should be enabled or not to poison the HTTP traffic (e.g: a probabilistic calculus).
+**Rules** are a kind of validation filters that are applied to the whole global HTTP flow or to a concrete poison, in order to determine if one or multiple poisons should be enabled or not to infect the HTTP traffic (e.g: match headers, query params, method...).
 
 ### How it works
 
@@ -142,7 +141,7 @@ Poisons host specific logic which intercepts and mutates, wraps, modify and/or c
 Poisons can be applied to incoming or outgoing, or even both traffic flows.
 
 Poisons can be composed and reused for different HTTP scenarios.
-Poisons are executed in FIFO order. Poisons are executed asynchronously.
+They are executed in FIFO order and asynchronously.
 
 ### Built-in poisons
 
@@ -333,7 +332,7 @@ toxy
   .poison(latency(2000))
 ```
 
-For a real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
+For featured real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
 
 ## Rules
 
@@ -431,6 +430,8 @@ toxy
   .rule(method('GET'))
   .poison(/* ... */)
 ```
+
+For featured real examples, take a look to the built-in rules [implementation](https://github.com/h2non/toxy/tree/master/lib/rules)
 
 ## Programmatic API
 
