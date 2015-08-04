@@ -11,6 +11,7 @@ proxy
 
 proxy
   .get('/ip')
+  .forward('http://myip.com')
   .poison(poisons.rateLimit({ limit: 1, threshold: 5000 }))
 
 proxy
@@ -23,6 +24,7 @@ proxy
 
 proxy
   .post('/post')
+  .forward('http://upload.server')
   .poison(poisons.slowRead({ bps: 1024 }))
 
 proxy

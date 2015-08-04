@@ -25,10 +25,25 @@ Requires node.js +0.12 or io.js +1.6
   - [Installation](#installation)
   - [Examples](#examples)
 - [Poisons](#poisons)
-  - [Built-in poisons](#build-in-poisons)
+  - [Built-in poisons](#built-in-poisons)
+    - [Latency](#latency)
+    - [Inject response](#inject-response)
+    - [Bandwidth](#bandwidth)
+    - [Rate limit](#rate-limit)
+    - [Slow read](#slow-read)
+    - [Slow open](#slow-open)
+    - [Slow close](#slow-close)
+    - [Throttle](#throttle)
+    - [Abort connection](#abort-connection)
+    - [Timeout](#timeout)
   - [How to write poisons](#how-to-write-poisons)
 - [Rules](#rules)
   - [Built-in rules](#built-in-rules)
+    - [Probability](#Probability)
+    - [Method](#method)
+    - [Headers](#headers)
+    - [Content Type](#content-type)
+    - [Body](#body)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
 - [License](#license)
@@ -54,7 +69,7 @@ Requires node.js +0.12 or io.js +1.6
 
 There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend.
 
-`toxy` provides a powerful hacking-driven solution with a proper low-level interface and programmatic control with an elegant API and the power, simplicity and fun of node.js.
+`toxy` provides a powerful hacking-driven and extensible solution with a convenient low-level interface and extensible programmatic control, serveds with a simple and fluent API and the power, simplicity and fun of node.js.
 
 ### Concepts
 
@@ -127,70 +142,164 @@ Poisons host specific logic which intercepts and mutates, wraps, modify and/or c
 Poisons can be applied to incoming or outgoing, or even both traffic flows.
 
 Poisons can be composed and reused for different HTTP scenarios.
-Poisons are executed in FIFO order.
+Poisons are executed in FIFO order. Poisons are executed asynchronously.
 
 ### Built-in poisons
-
-- [x] [Latency](#latency)
-- [x] [Inject response](#inject-response)
-- [x] [Bandwidth](#bandwidth)
-- [x] [Rate limit](#rate-limit)
-- [x] [Slow read](#slow-read)
-- [x] [Slow open](#slow-open)
-- [x] [Slow close](#slow-close)
-- [x] [Throttle](#throttle)
-- [x] [Abort connection](#abort-connection)
-- [x] [Timeout](#timeout)
 
 #### Latency
 Name: `latency`
 
-Injects response latency
+Infects the HTTP flow injecting a latency jitter in the response
+
+**Arguments**:
+
+- **options** `object`
+  - **jitter*+ `number` - Jitter value in miliseconds
+  - **max** `number` - Random jitter maximum value
+  - **min** `number` - Random jitter minimum value
+
+```js
+toxy.poison(toxy.poisons.latency({ jitter: 1000 }))
+// Or alternatively using a random value
+toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
+```
 
 #### Inject response
 Name: `inject`
 
-Injects a custom response, intercepting the request before sending it to the target server. Useful to test server originated errors.
+Injects a custom response, intercepting the request before sending it to the target server. Useful to inject errors originated in the server.
+
+**Arguments**:
+
+- **options** `object`
+  - **code*+ `number` - Response HTTP status code
+  - **headers** `object` - Optional headers to send
+  - **body** `mixed` - Optional body data to send
+  - **encoding** `string` - Body encoding. Default to `utf8`
+
+```js
+toxy.poison(toxy.poisons.inject({
+  code: 503,
+  body: '{"error": "toxy injected error"}',
+  headers: {'Content-Type': 'application/json'}
+}))
+```
 
 #### Bandwidth
 Name: `bandwidth`
 
-Limits the amount of bytes sent over the network in a specific threshold time frame.
+Limits the amount of bytes sent over the network in outgoing HTTP traffic for a specific threshold time frame.
+
+**Arguments**:
+
+- **options** `object`
+  - **bps*+ `number` - Bytes per seconds
+  - **threshold** `number` - Threshold time frame in miliseconds
+
+```js
+toxy.poison(toxy.poisons.bandwidth({ bps: 1024 }))
+```
 
 #### Rate limit
 Name: `rateLimit`
 
-Rates the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits.
+Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes the `X-RateLimit-*` headers.
+
+Limits are stored in-memory, meaning they are volalite and therfore flushed on every server stop.
+
+**Arguments**:
+
+- **options** `object`
+  - **limit*+ `number` - Total amount of request
+  - **threshold** `number` - Limit threshold time frame in miliseconds.
+  - **message** `string` - Optional error message when limit reached.
+  - **code** `number` - HTTP status code when limit reached. Default to 429.
+
+```js
+toxy.poison(toxy.poisons.rateLimit({ limit: 10, threshold: 1000 }))
+```
 
 #### Slow read
 Name: `slowRead`
 
-Reads incoming packets slowly.
+Reads incoming payload data packets slowly. Only valid for non-GET request.
+
+**Arguments**:
+
+- **options** `object`
+  - **chunk*+ `number` - Packet chunk size in bytes. Default to `1024`
+  - **threshold** `number` - Limit threshold time frame in miliseconds. Default to `1000`
+
+```js
+toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
+```
 
 #### Slow open
 Name: `slowOpen`
 
-Delays the HTTP connection opened status.
+Delays the HTTP connection ready state.
+
+**Arguments**:
+
+- **options** `object`
+  - **delay** `number` - Delay connection in miliseconds. Default to `1000`
+
+```js
+toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
+```
 
 #### Slow close
 Name: `slowClose`
 
-Delays the EOF signal.
+Delays the HTTP connection close signal.
+
+**Arguments**:
+
+- **options** `object`
+  - **delay** `number` - Delay time in miliseconds. Default to `1000`
+
+```js
+toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
+```
 
 #### Throttle
 Name: `throttle`
 
-Restricts the amount of packets sent over the network in a specific threshold time frame.
+Restricts the amount of packets sent over the network in a specific threshold time frame.**Arguments**:
+
+- **options** `object`
+  - **chunk*+ `number` - Packet chunk size in bytes. Default to `1024`
+  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
+
+```js
+toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
+```
 
 #### Abort connection
 Name: `abort`
 
 Aborts the TCP connection, optionally with a custom error. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
 
+**Arguments**:
+
+- **miliseconds** `number` - Optional socket destroy delay in miliseconds
+
+```js
+toxy.poison(toxy.poisons.abort())
+```
+
 #### Timeout
 Name: `timeout`
 
-Defines a response timeout. Useful when forwarding to potentially slow servers.
+Defines a response timeout. Useful when forward to potentially slow servers.
+
+**Arguments**:
+
+- **miliseconds** `number` - Timeout limit in miliseconds
+
+```js
+toxy.poison(toxy.poisons.timeout(5000))
+```
 
 ### How to write poisons
 
@@ -235,12 +344,6 @@ Rules are useful to compose, decouple and reuse logic among different scenarios 
 Rules are executed in FIFO order. Their evaluation logic is comparable to `Array#every()` in JavaScript: all the rules must match in order to proceed with the poisoning.
 
 ### Built-in rules
-
-- [x] [Probability](#Probability)
-- [x] [Method](#method)
-- [x] [Headers](#headers)
-- [x] [Content Type](#content-type)
-- [ ] [Body](#body)
 
 #### Probability
 
