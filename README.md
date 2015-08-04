@@ -4,10 +4,9 @@
 
 **toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**.
 
-It was mainly designed for fuzz/evil testing purposes.
-It becomes particulary useful in fault tolerant and resilient systems, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
+It was mainly designed for fuzz/evil testing purposes, becoming particulary useful in fault tolerant and resilient systems, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
 
-**toxy** allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
 Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
 Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
@@ -224,7 +223,7 @@ toxy
   .poison(latency(2000))
 ```
 
-For a real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
+For featured real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
 
 ## Rules
 
@@ -328,6 +327,8 @@ toxy
   .rule(method('GET'))
   .poison(/* ... */)
 ```
+
+For featured real examples, take a look to the built-in rules [implementation](https://github.com/h2non/toxy/tree/master/lib/rules)
 
 ## Programmatic API
 
