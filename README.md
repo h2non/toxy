@@ -406,7 +406,25 @@ toxy.rule(rule)
 
 #### Body
 
-`To do`
+Match incoming body payload data by string, regexp or custom filter function
+
+**Arguments**:
+
+- **match** `string|regexp|function` - Body content to match
+- **limit** `string` - Optional. Body limit in human size. E.g: `5mb`
+- **encoding** `string` - Body encoding. Default to `utf8`
+- **length** `number` - Body length. Default taken from `Content-Length` header
+
+```js
+var rule = toxy.rules.body('"hello":"world"')
+toxy.rule(rule)
+
+// Or using a filter function
+var rule = toxy.rules.body(function (body) {
+  return body.indexOf('hello') !== -1
+})
+toxy.rule(rule)
+```
 
 ### How to write rules
 
