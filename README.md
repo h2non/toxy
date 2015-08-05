@@ -431,6 +431,9 @@ toxy.rule(rule)
 
 Rules are simple middleware functions that resolve asyncronously with a `boolean` value to determine if a given HTTP transaction should be ignored when poisoning.
 
+Your rule must resolve with a `boolean` param calling the `next(err,
+shouldIgnore)` function in the middleware, passing a `true` value if the rule has not matches and should not apply the poisioning, and therefore continuing with the next middleware stack.
+
 Here's an example of a simple rule matching the HTTP method to determine if:
 ```js
 function method(matchMethod) {
@@ -439,7 +442,7 @@ function method(matchMethod) {
    */
   return function method(req, res, next) {
     var shouldIgnore = req.method !== matchMethod
-    next(shouldIgnore)
+    next(null, shouldIgnore)
   }
 }
 
