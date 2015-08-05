@@ -16,7 +16,7 @@ route
 
 route
   .poison(poisons.inject({ code: 502, body: 'Error!', headers: { 'X-Toxy-Poison': 'error' } }))
-  .withRule(rules.probability(25))
+  .withRule(rules.probability(20))
 
 route
   .poison(poisons.slowClose({ delay: 1000 }))

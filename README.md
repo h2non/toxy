@@ -341,7 +341,7 @@ Rules are simple validation filters which inspect an HTTP request and determine,
 
 Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. You can also define globally applied rules or nested poison-scope rules only.
 
-Rules are executed in FIFO order. Their evaluation logic is comparable to `Array#every()` in JavaScript: all the rules must match in order to proceed with the poisoning.
+Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.
 
 ### Built-in rules
 
