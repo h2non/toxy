@@ -38,7 +38,7 @@ Requires node.js +0.12 or io.js +1.6
   - [How to write poisons](#how-to-write-poisons)
 - [Rules](#rules)
   - [Built-in rules](#built-in-rules)
-    - [Probability](#Probability)
+    - [Probability](#probability)
     - [Method](#method)
     - [Headers](#headers)
     - [Content Type](#content-type)
