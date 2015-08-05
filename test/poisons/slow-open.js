@@ -13,7 +13,7 @@ suite('poison#slowOpen', function () {
 
     function next(err) {
       expect(err).to.be.undefined
-      expect(Date.now() - init).to.be.at.least(delay)
+      expect(Date.now() - init).to.be.at.least(delay - 1)
       done()
     }
   })
