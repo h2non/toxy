@@ -12,7 +12,6 @@ proxy
     headers: {'Content-Type': 'application/json'}
   }))
   .withRule(rules.body({ match: /hello/i }))
-  .withRule(rules.probability(50))
 
 proxy.all('/*')
 

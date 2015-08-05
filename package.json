@@ -29,8 +29,7 @@
     "node": ">= 0.12"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*",
-    "nar": "nar create -e --os linux --arch x64 && nar create -e --os darwin --arch x64"
+    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*"
   },
   "dependencies": {
     "i": "^0.3.3",

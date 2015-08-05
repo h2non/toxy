@@ -7,12 +7,12 @@ const poisons = proxy.poisons
 proxy
   .forward('http://httpbin.org')
 
-var route = proxy.get('/*')
+var route = proxy.all('/*')
 
-// Register global rules for the current route
+// Register globally applied rules for the current route
 route
-  .poisonRule(rules.method(['GET', 'POST']))
-  .poisonRule(rules.headers({ 'content-type': /^application\/json/i }))
+  .rule(rules.method(['GET', 'POST']))
+  .rule(rules.headers({ 'content-type': /^application\/json/i }))
 
 // Register poisons
 route

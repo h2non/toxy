@@ -8,7 +8,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -20,7 +21,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -32,7 +34,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -49,7 +52,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -61,7 +65,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -73,7 +78,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -85,7 +91,8 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.true
       done()
     }

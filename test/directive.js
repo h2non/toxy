@@ -37,7 +37,7 @@ suite('directive', function () {
     }
 
     function rule(req, res, next) {
-      next(true)
+      next(null, true)
     }
   })
 

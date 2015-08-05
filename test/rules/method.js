@@ -8,7 +8,8 @@ suite('rules#method', function () {
 
     method(match)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -20,7 +21,8 @@ suite('rules#method', function () {
 
     method(['POST', 'GET'])(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
       done()
     }
@@ -32,7 +34,8 @@ suite('rules#method', function () {
 
     method(match)(req, null, next)
 
-    function next(ignore) {
+    function next(err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.true
       done()
     }

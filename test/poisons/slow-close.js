@@ -25,7 +25,7 @@ suite('poison#slowClose', function () {
     res.end(expected.body)
 
     function end(err) {
-      expect(Date.now() - init).to.be.at.least(delay)
+      expect(Date.now() - init).to.be.at.least(delay - 1)
       expect(spy.calledThrice).to.be.true
       expect(spy.args[1][0]).to.be.equal(expected.code)
       expect(spy.args[1][1]).to.be.deep.equal(expected.headers)

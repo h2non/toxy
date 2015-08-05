@@ -52,6 +52,7 @@ Requires node.js +0.12 or io.js +1.6
 - Full-featured HTTP/S proxy (backed by [http-proxy](https://github.com/nodejistu/node-http-proxy))
 - Hackable and elegant programmatic API (inspired on connect/express)
 - Featured built-in router with nested configuration
+- Hierarchical poisioning and rules based filtering
 - Hierarchical middleware layer (global and route-specific)
 - Easily augmentable via middleware (based on connect/express middleware)
 - Built-in poisons (bandwidth, error, abort, latency, slow read...)
@@ -226,7 +227,7 @@ Reads incoming payload data packets slowly. Only valid for non-GET request.
 **Arguments**:
 
 - **options** `object`
-  - **chunk*+ `number` - Packet chunk size in bytes. Default to `1024`
+  - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
   - **threshold** `number` - Limit threshold time frame in miliseconds. Default to `1000`
 
 ```js
@@ -419,7 +420,7 @@ Match incoming body payload data by string, regexp or custom filter function
 var rule = toxy.rules.body('"hello":"world"')
 toxy.rule(rule)
 
-// Or using a filter function
+// Or using a filter function returning a boolean
 var rule = toxy.rules.body(function (body) {
   return body.indexOf('hello') !== -1
 })

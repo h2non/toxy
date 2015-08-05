@@ -12,7 +12,7 @@ proxy
     headers: {'Content-Type': 'application/json'}
   }))
   .withRule(rules.method('GET'))
-  .withRule(rules.probability(50))
+  .withRule(rules.probability(90))
 
 proxy.all('/*')
 

@@ -5,8 +5,9 @@ suite('rules#probability', function () {
   test('probability', function (done) {
     probability(100)(null, null, next)
 
-    function next(ignore) {
-      expect(ignore).to.be.false
+    function next(err, ignore) {
+      expect(err).to.be.undefined
+      expect(ignore).to.be.undefined
       done()
     }
   })
