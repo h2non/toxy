@@ -2,13 +2,13 @@
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**.
+**toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
 It was mainly designed for fuzz/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
-Runs in [node.js](http://nodejs.org)/[io.js](https://iojs.org). Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
+Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
 Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
 
 Requires node.js +0.12 or io.js +1.6
@@ -488,11 +488,17 @@ toxy.all('/*')
 #### toxy#get(path, [ middleware... ])
 Return: `ToxyRoute`
 
+Register a new route for `GET` method.
+
 #### toxy#post(path, [ middleware... ])
 Return: `ToxyRoute`
 
+Register a new route for `POST` method.
+
 #### toxy#put(path, [ middleware... ])
 Return: `ToxyRoute`
+
+Register a new route for `PUT` method.
 
 #### toxy#patch(path, [ middleware... ])
 Return: `ToxyRoute`
@@ -500,68 +506,135 @@ Return: `ToxyRoute`
 #### toxy#delete(path, [ middleware... ])
 Return: `ToxyRoute`
 
+Register a new route for `DELETE` method.
+
 #### toxy#head(path, [ middleware... ])
 Return: `ToxyRoute`
+
+Register a new route for `HEAD` method.
 
 #### toxy#all(path, [ middleware... ])
 Return: `ToxyRoute`
 
+Register a new route for any method.
+
 #### toxy#forward(url)
+
+Define a URL to forward the incoming traffic received by the proxy.
 
 #### toxy#balance(urls)
 
+Forward to multiple servers balancing between them.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
+
 #### toxy#replay(url)
+
+Define a new replay server. 
+You can call this method multiple times to define multiple replay servers.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
 
 #### toxy#use(middleware)
 
+Plug in a custom middleware. 
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#middleware-layer).
+
 #### toxy#useResponse(middleware)
 
+Plug in a response outgoing traffic middleware.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#middleware-layer).
+
 #### toxy#useReplay(middleware)
+
+Plug in a replay traffic middleware.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#middleware-layer)
+
+#### toxy#middleware()
+
+Return a standard middleware to use with connect/express.
 
 #### toxy#poison(poison)
 Alias: `usePoison`
 
+Register a new poison.
+
 #### toxy#rule(rule)
 Alias: `useRule`
+
+Register a new rule.
 
 #### toxy#withRule(rule)
 Aliases: `poisonRule`, `poisonFilter`
 
+Apply a new rule for the latest registered poison.
+
 #### toxy#enable(poison)
 
+Enable a poison by name identifier
+
 #### toxy#disable(poison)
+
+Disable a poison by name identifier
 
 #### toxy#remove(poison)
 Return: `boolean`
 
+Remove poison by name identifier.
+
 #### toxy#isEnabled(poison)
 Return: `boolean`
+
+Checks if a poison is enabled by name identifier.
 
 #### toxy#disableAll()
 Alias: `disablePoisons`
 
+Disable all the registered poisons.
+
 #### toxy#poisons()
 Return: `array<Directive>` Alias: `getPoisons`
+
+Return an array of poisons wrapped as `Directive`.
 
 #### toxy#flush()
 Alias: `flushPoisons`
 
+Remove all the registered poisons.
+
 #### toxy#enableRule(rule)
 
+Enable a rule by name identifier.
+
 #### toxy#disableRule(rule)
+
+Disable a rule by name identifier.
 
 #### toxy#removeRule(rule)
 Return: `boolean`
 
+Remove a rule by name identifier.
+
 #### toxy#disableRules()
+
+Disable all the registered rules.
 
 #### toxy#isRuleEnabled(rule)
 Return: `boolean`
 
+Checks if the given rule is enabled by name identifier.
+
 #### toxy#rules()
 Return: `array<Directive>` Alias: `getRules`
 
+Return the registered rules wrapped as `Directive`.
+
 #### toxy#flushRules()
+
+Remove all the rules.
 
 ### ToxyRoute
 
