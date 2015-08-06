@@ -279,7 +279,9 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 #### Throttle
 Name: `throttle`
 
-Restricts the amount of packets sent over the network in a specific threshold time frame.**Arguments**:
+Restricts the amount of packets sent over the network in a specific threshold time frame.
+
+**Arguments**:
 
 - **options** `object`
   - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
@@ -353,7 +355,8 @@ For featured real example, take a look to the [built-in poisons](https://github.
 
 Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
 
-Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. You can also define globally applied rules or nested poison-scope rules only.
+Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. 
+Rules can be applied to the global, route or even poison scope.
 
 Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.
 
