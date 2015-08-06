@@ -2,7 +2,7 @@
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
+**toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
 It was mainly designed for fuzz/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, tipically in service-oriented distributed architectures, where toxy may act as intermediate proxy among services.
 
