@@ -48,7 +48,7 @@ Requires node.js +0.12 or io.js +1.6
 
 ## Features
 
-- Full-featured HTTP/S proxy (backed by [http-proxy](https://github.com/nodejistu/node-http-proxy))
+- Full-featured HTTP/S proxy (backed by [rocky](https://github.com/nodejitsu/node-http-proxy)
 - Hackable and elegant programmatic API (inspired on connect/express)
 - Featured built-in router with nested configuration
 - Hierarchical poisioning and rules based filtering
@@ -541,7 +541,7 @@ Define a URL to forward the incoming traffic received by the proxy.
 
 #### toxy#balance(urls)
 
-Forward to multiple servers balancing between them.
+Forward to multiple servers balancing among them.
 
 For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
 
