@@ -4,12 +4,11 @@
 
 **toxy** is a **hackable HTTP proxy** to **simulate** **failure scenarios** and **unexpected conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzz/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, tipically in service-oriented distributed architectures, where `toxy` may act as intermediate proxy among services.
+It was mainly designed for fuzz/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, tipically in service-oriented distributed architectures, where toxy may act as intermediate proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
-Compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com).
-Built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP/S proxy.
+toxy is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP proxy.
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -67,17 +66,17 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack only instead of providing more features to the scope of HTTP applicacion level protocol, like toxy does.
+There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack only instead of providing more specific features to the scope of the HTTP applicacion level protocol, like toxy does.
 
-`toxy` provides a powerful hacking-driven and extensible solution with a convenient low-level interface and extensible programmatic control, serveds with a simple and fluent API and the power, simplicity and fun of node.js.
+`toxy` provides a powerful hacking-driven and extensible solution with a convenient low-level interface and extensible programmatic features with a simple and fluent API and the power, simplicity and fun of node.js.
 
 ### Concepts
 
-`toxy` introduces two main core directives worth knowing before using it:
+`toxy` introduces two core directives that you can plug in in the proxy and worth knowing before using: poisons and rules.
 
-**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and you can plug in poisons at global or route level.
+**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be applied to inject both global or route level traffic.
 
-**Rules** are a kind of validation filters that are applied to the whole global HTTP flow or to a concrete poison, in order to determine if one or multiple poisons should be enabled or not to infect the HTTP traffic (e.g: match headers, query params, method...).
+**Rules** are a kind of validation filters that can be reused and applied to global incoming HTTP traffic, route level traffic or into a specific poison. Their responsability is to determine, via inspecting each incoming HTTP request, if the registered poisons should be enabled or not, and therefore infecting or not the HTTP traffic (e.g: match headers, query params, method, body...).
 
 ### How it works
 
@@ -114,8 +113,6 @@ npm install toxy
 
 See the [examples](https://github.com/h2non/toxy/tree/master/examples) directory for more use cases
 
-#### Basic poisioning
-
 ```js
 var toxy = require('toxy')
 var poisons = toxy.poisons
@@ -126,13 +123,30 @@ var proxy = toxy()
 proxy
   .forward('http://httpbin.org')
 
+// Register global poisons and rules
 proxy
   .poison(poisons.latency({ jitter: 500 }))
-  .rule(rules.random(50))
-  .poison(poisons.bandwidth({ bps: 1024 }))
-  .withRule(rules.method('GET'))
+  .rule(rules.probability(25))
 
-proxy.get('/*')
+// Register multiple routes
+proxy
+  .get('/download/*')
+  .poison(poisons.bandwidth({ bps: 1024 })
+  .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i ))
+
+proxy
+  .all('/api/*')
+  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 })
+  .withRule(rules.method(['POST', 'PUT', 'DELETE']))
+
+// Handle the rest of the traffic
+proxy
+  .all('/*')
+  .poison(poison.poison(poisons.slowClose({ delay: 1000 })
+  .poison(poison.poison(poisons.slowRead({ bps: 128 })
+  .withRule(rules.probability(50))
+
+
 proxy.listen(3000)
 ```
 
