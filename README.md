@@ -92,12 +92,12 @@ There're some other similar solutions to `toxy` in the market, but most of them 
 ↓     ----------------    ↓
 ↓          |||            ↓
 ↓     ----------------    ↓
-↓     | Exec Poisons |    ↓ --> If all rules passed, poisoning the HTTP flow
+↓     | Exec Poisons |    ↓ --> If all rules passed, poison the HTTP flow
 ↓     ----------------    ↓
 ↓        /       \        ↓
 ↓        \       /        ↓
 ↓   -------------------   ↓
-↓   | HTTP dispatcher |   ↓ --> Proxy the HTTP traffic for both poisoned or not
+↓   | HTTP dispatcher |   ↓ --> Proxy the HTTP traffic, either poisoned or not
 ↓   -------------------   ↓
 ```
 
@@ -207,8 +207,8 @@ Limits the amount of bytes sent over the network in outgoing HTTP traffic for a 
 **Arguments**:
 
 - **options** `object`
-  - **bps** `number` - Bytes per seconds
-  - **threshold** `number` - Threshold time frame in miliseconds
+  - **bps** `number` - Bytes per second. Default to `1024`
+  - **threshold** `number` - Threshold time frame in miliseconds. Default `1000`
 
 ```js
 toxy.poison(toxy.poisons.bandwidth({ bps: 1024 }))
@@ -224,13 +224,13 @@ Limits are stored in-memory, meaning they are volalite and therfore flushed on e
 **Arguments**:
 
 - **options** `object`
-  - **limit** `number` - Total amount of request
-  - **threshold** `number` - Limit threshold time frame in miliseconds.
+  - **limit** `number` - Total amount of request. Default to `10`
+  - **threshold** `number` - Limit threshold time frame in miliseconds. Default to `1000`
   - **message** `string` - Optional error message when limit reached.
-  - **code** `number` - HTTP status code when limit reached. Default to 429.
+  - **code** `number` - HTTP status code when limit reached. Default to `429`.
 
 ```js
-toxy.poison(toxy.poisons.rateLimit({ limit: 10, threshold: 1000 }))
+toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 ```
 
 #### Slow read
@@ -285,7 +285,7 @@ Restricts the amount of packets sent over the network in a specific threshold ti
 
 - **options** `object`
   - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
-  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
+  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `100`
 
 ```js
 toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
