@@ -168,7 +168,7 @@ Infects the HTTP flow injecting a latency jitter in the response
 **Arguments**:
 
 - **options** `object`
-  - **jitter*+ `number` - Jitter value in miliseconds
+  - **jitter** `number` - Jitter value in miliseconds
   - **max** `number` - Random jitter maximum value
   - **min** `number` - Random jitter minimum value
 
@@ -186,7 +186,7 @@ Injects a custom response, intercepting the request before sending it to the tar
 **Arguments**:
 
 - **options** `object`
-  - **code*+ `number` - Response HTTP status code
+  - **code** `number` - Response HTTP status code
   - **headers** `object` - Optional headers to send
   - **body** `mixed` - Optional body data to send
   - **encoding** `string` - Body encoding. Default to `utf8`
@@ -207,7 +207,7 @@ Limits the amount of bytes sent over the network in outgoing HTTP traffic for a 
 **Arguments**:
 
 - **options** `object`
-  - **bps*+ `number` - Bytes per seconds
+  - **bps** `number` - Bytes per seconds
   - **threshold** `number` - Threshold time frame in miliseconds
 
 ```js
@@ -224,7 +224,7 @@ Limits are stored in-memory, meaning they are volalite and therfore flushed on e
 **Arguments**:
 
 - **options** `object`
-  - **limit*+ `number` - Total amount of request
+  - **limit** `number` - Total amount of request
   - **threshold** `number` - Limit threshold time frame in miliseconds.
   - **message** `string` - Optional error message when limit reached.
   - **code** `number` - HTTP status code when limit reached. Default to 429.
@@ -282,7 +282,7 @@ Name: `throttle`
 Restricts the amount of packets sent over the network in a specific threshold time frame.**Arguments**:
 
 - **options** `object`
-  - **chunk*+ `number` - Packet chunk size in bytes. Default to `1024`
+  - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
   - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
 
 ```js
@@ -544,14 +544,14 @@ For more information, see the [rocky docs](https://github.com/h2non/rocky#progra
 
 #### toxy#replay(url)
 
-Define a new replay server. 
+Define a new replay server.
 You can call this method multiple times to define multiple replay servers.
 
 For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
 
 #### toxy#use(middleware)
 
-Plug in a custom middleware. 
+Plug in a custom middleware.
 
 For more information, see the [rocky docs](https://github.com/h2non/rocky#middleware-layer).
 

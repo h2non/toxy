@@ -40,7 +40,7 @@ suite('poison#throttle', function () {
   test('single chunk', function (done) {
     var req = new http.IncomingMessage
     var res = new http.OutgoingMessage
-    var opts = { chunk: 1024, threshold: 5 }
+    var opts = { chunk: 1024, threshold: 10 }
 
     var buf = []
     var body = new Buffer('Hello World')
@@ -49,7 +49,7 @@ suite('poison#throttle', function () {
 
     res.__proto__.write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(body.length)
-      expect(Date.now() - lastWrite).to.be.at.least(opts.threshold)
+      expect(Date.now() - lastWrite).to.be.at.least(opts.threshold - 1)
       buf.push(buffer)
       next()
     }

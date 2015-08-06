@@ -1,4 +1,5 @@
 const http = require('http')
+const sinon = require('sinon')
 const expect = require('chai').expect
 const toxy = require('..')
 const supertest = require('supertest')
@@ -55,21 +56,26 @@ suite('toxy', function () {
 
   test('e2e', function (done) {
     var proxy = toxy()
-    var server = createServer(9001, 200)
+    var spy = sinon.spy()
+    var server = createServer(9081, 200)
     var timeout = 100
 
-    proxy.poison(toxy.poisons.latency(timeout))
-
-    proxy.rule(function method(req, res, next) {
-      next(req.method === 'GET' ? null : true)
+    proxy.poison(function delay(req, res, next) {
+      spy(req, res)
+      setTimeout(next, timeout)
     })
 
-    proxy.forward('http://localhost:9001')
+    proxy.rule(function method(req, res, next) {
+      spy(req, res)
+      next(null, req.method !== 'GET')
+    })
+
+    proxy.forward('http://localhost:9081')
     proxy.get('/foo')
-    proxy.listen(9000)
+    proxy.listen(9080)
 
     var init = Date.now()
-    supertest('http://localhost:9000')
+    supertest('http://localhost:9080')
       .get('/foo')
       .expect(200)
       .expect('Content-Type', 'application/json')
@@ -78,6 +84,9 @@ suite('toxy', function () {
 
     function assert(err) {
       expect(Date.now() - init).to.be.at.least(timeout - 1)
+      expect(spy.calledTwice).to.be.true
+      expect(spy.args[0][0].url).to.be.equal('/foo')
+      expect(spy.args[0][0].method).to.be.equal('GET')
       done(err)
     }
   })
