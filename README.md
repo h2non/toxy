@@ -4,7 +4,7 @@
 
 **toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzz/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, tipically in service-oriented distributed architectures, where toxy may act as intermediate proxy among services.
+It was mainly designed for fuzzing/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
@@ -92,12 +92,12 @@ There're some other similar solutions to `toxy` in the market, but most of them 
 ↓     ----------------    ↓
 ↓          |||            ↓
 ↓     ----------------    ↓
-↓     | Exec Poisons |    ↓ --> If all rules passed, poisoning the HTTP flow
+↓     | Exec Poisons |    ↓ --> If all rules passed, poison the HTTP flow
 ↓     ----------------    ↓
 ↓        /       \        ↓
 ↓        \       /        ↓
 ↓   -------------------   ↓
-↓   | HTTP dispatcher |   ↓ --> Proxy the HTTP traffic for both poisoned or not
+↓   | HTTP dispatcher |   ↓ --> Proxy the HTTP traffic, either poisoned or not
 ↓   -------------------   ↓
 ```
 
@@ -207,8 +207,8 @@ Limits the amount of bytes sent over the network in outgoing HTTP traffic for a 
 **Arguments**:
 
 - **options** `object`
-  - **bps** `number` - Bytes per seconds
-  - **threshold** `number` - Threshold time frame in miliseconds
+  - **bps** `number` - Bytes per second. Default to `1024`
+  - **threshold** `number` - Threshold time frame in miliseconds. Default `1000`
 
 ```js
 toxy.poison(toxy.poisons.bandwidth({ bps: 1024 }))
@@ -224,13 +224,13 @@ Limits are stored in-memory, meaning they are volalite and therfore flushed on e
 **Arguments**:
 
 - **options** `object`
-  - **limit** `number` - Total amount of request
-  - **threshold** `number` - Limit threshold time frame in miliseconds.
+  - **limit** `number` - Total amount of request. Default to `10`
+  - **threshold** `number` - Limit threshold time frame in miliseconds. Default to `1000`
   - **message** `string` - Optional error message when limit reached.
-  - **code** `number` - HTTP status code when limit reached. Default to 429.
+  - **code** `number` - HTTP status code when limit reached. Default to `429`.
 
 ```js
-toxy.poison(toxy.poisons.rateLimit({ limit: 10, threshold: 1000 }))
+toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 ```
 
 #### Slow read
@@ -279,11 +279,13 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 #### Throttle
 Name: `throttle`
 
-Restricts the amount of packets sent over the network in a specific threshold time frame.**Arguments**:
+Restricts the amount of packets sent over the network in a specific threshold time frame.
+
+**Arguments**:
 
 - **options** `object`
   - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
-  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
+  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `100`
 
 ```js
 toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
@@ -353,7 +355,8 @@ For featured real example, take a look to the [built-in poisons](https://github.
 
 Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
 
-Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. You can also define globally applied rules or nested poison-scope rules only.
+Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. 
+Rules can be applied to the global, route or even poison scope.
 
 Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.
 
