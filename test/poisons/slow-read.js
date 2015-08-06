@@ -36,10 +36,10 @@ suite('poison#slowRead', function () {
     }
   })
 
-  test('close', function (done) {
+  test('premature close', function (done) {
     var req = new http.IncomingMessage
     var res = new http.OutgoingMessage
-    var threshold = 5
+    var threshold = 10
     var spy = sinon.spy()
     var init = Date.now()
 
@@ -59,7 +59,7 @@ suite('poison#slowRead', function () {
     req.push(null)
 
     function assert() {
-      expect(Date.now() - init).to.be.within(0, 2)
+      expect(Date.now() - init).to.be.within(0, 5)
       expect(spy.args).to.have.length(3)
       done()
     }

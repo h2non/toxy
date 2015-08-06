@@ -50,7 +50,7 @@ proxy.removeRule('method')
 proxy.rules() // -> [ probability ]
 
 // Flush all rules (aka remove all)
-proxy.flushFlush()
+proxy.flush()
 
 proxy.all('/*')
 
