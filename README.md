@@ -48,7 +48,7 @@ Requires node.js +0.12 or io.js +1.6
 
 ## Features
 
-- Full-featured HTTP/S proxy (backed by [rocky](https://github.com/nodejitsu/node-http-proxy)
+- Full-featured HTTP/S proxy (backed by [rocky](https://github.com/h2non/rocky))
 - Hackable and elegant programmatic API (inspired on connect/express)
 - Featured built-in router with nested configuration
 - Hierarchical poisioning and rules based filtering
