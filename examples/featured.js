@@ -1,4 +1,4 @@
-ar toxy = require('toxy')
+var toxy = require('..')
 var poisons = toxy.poisons
 var rules = toxy.rules
 
@@ -19,9 +19,16 @@ proxy
   .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
 proxy
+  .get('/image/*')
+  .poison(poisons.bandwidth({ bps: 1024 }))
+
+proxy
   .all('/api/*')
   .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
   .withRule(rules.method(['POST', 'PUT', 'DELETE']))
+  // And use a different more permissive poison for GET requests
+  .poison(poisons.rateLimit({ limit: 50, threshold: 1000 }))
+  .withRule(rules.method('GET'))
 
 // Handle the rest of the traffic
 proxy
@@ -32,4 +39,4 @@ proxy
 
 proxy.listen(3000)
 console.log('Server listening on port:', 3000)
-console.log('To test it, open: http://localhost:3000/image/jpeg')
+console.log('Test it:', 'http://localhost:3000/image/jpeg')
