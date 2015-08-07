@@ -9,7 +9,7 @@ proxy
 
 // Register global poisons and rules
 proxy
-  .poison(poisons.latency({ jitter: 500 }))
+  .poison(poisons.latency({ jitter: 100 }))
   .rule(rules.probability(25))
 
 // Register multiple routes
@@ -23,11 +23,11 @@ proxy
   .poison(poisons.bandwidth({ bps: 1024 }))
 
 proxy
-  .all('/api/*')
-  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
+  .all('/ip')
+  .poison(poisons.rateLimit({ limit: 1, threshold: 1000 }))
   .withRule(rules.method(['POST', 'PUT', 'DELETE']))
   // And use a different more permissive poison for GET requests
-  .poison(poisons.rateLimit({ limit: 50, threshold: 1000 }))
+  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
   .withRule(rules.method('GET'))
 
 // Handle the rest of the traffic
@@ -39,4 +39,6 @@ proxy
 
 proxy.listen(3000)
 console.log('Server listening on port:', 3000)
-console.log('Test it:', 'http://localhost:3000/image/jpeg')
+console.log('Test it opening:')
+console.log('http://localhost:3000/ip')
+console.log('http://localhost:3000/image/jpeg')
