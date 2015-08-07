@@ -58,7 +58,7 @@ Requires node.js +0.12 or io.js +1.6
 - Rule-based poisoning (probabilistic, HTTP method, headers, body...)
 - Support third-party poisons and rules
 - Built-in balancer and traffic intercept via middleware
-- Inherits the API and features from [rocky](https://github.com/h2non/rocky)
+- Inherits API and features from [rocky](https://github.com/h2non/rocky)
 - Compatible with connect/express (and most of their middleware)
 - Runs as standalone HTTP proxy
 
@@ -66,15 +66,15 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack only instead of providing more specific features to the scope of the HTTP applicacion level protocol, like toxy does.
+There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack, instead of providing features to the specific domain of the HTTP protocol, like toxy does.
 
-`toxy` provides a powerful hacking-driven and extensible solution with a convenient low-level interface and extensible programmatic features with a simple and fluent API and the power, simplicity and fun of node.js.
+`toxy` provides a powerful hackable and extensible solution with a convenient low-level interface and programmatic features based on simple fluent API, and the power, simplicity and fun of node.js.
 
 ### Concepts
 
-`toxy` introduces two core directives that you can plug in in the proxy and worth knowing before using: poisons and rules.
+`toxy` introduces two core directives that you can plug in the proxy and should knowing before using: poisons and rules.
 
-**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be applied to inject both global or route level traffic.
+**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be plugged to infect both global or route level incoming traffic.
 
 **Rules** are a kind of validation filters that can be reused and applied to global incoming HTTP traffic, route level traffic or into a specific poison. Their responsability is to determine, via inspecting each incoming HTTP request, if the registered poisons should be enabled or not, and therefore infecting or not the HTTP traffic (e.g: match headers, query params, method, body...).
 
