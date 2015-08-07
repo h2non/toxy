@@ -6,7 +6,7 @@
 
 It was mainly designed for fuzzing/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
-toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you want, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
 toxy is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP proxy.
 
@@ -355,7 +355,7 @@ For featured real example, take a look to the [built-in poisons](https://github.
 
 Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
 
-Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning. 
+Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning.
 Rules can be applied to the global, route or even poison scope.
 
 Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.

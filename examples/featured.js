@@ -1,39 +1,35 @@
-const toxy = require('..')
+ar toxy = require('toxy')
+var poisons = toxy.poisons
+var rules = toxy.rules
 
-const proxy = toxy()
-const rules = proxy.rules
-const poisons = proxy.poisons
+var proxy = toxy()
 
 proxy
   .forward('http://httpbin.org')
-  .rule(rules.probability(50))
-  .poison(poisons.slowOpen({ delay: 500 }))
 
-var route = proxy.get('/*')
+// Register global poisons and rules
+proxy
+  .poison(poisons.latency({ jitter: 500 }))
+  .rule(rules.probability(25))
 
-route
-  .poison(poisons.latency({ jitter: 1000 }))
+// Register multiple routes
+proxy
+  .get('/download/*')
+  .poison(poisons.bandwidth({ bps: 1024 }))
+  .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
-route
-  .poison(poisons.inject({ code: 502, body: 'Error!', headers: { 'X-Toxy-Poison': 'error' } }))
-  .withRule(rules.probability(20))
+proxy
+  .all('/api/*')
+  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
+  .withRule(rules.method(['POST', 'PUT', 'DELETE']))
 
-route
+// Handle the rest of the traffic
+proxy
+  .all('/*')
   .poison(poisons.slowClose({ delay: 1000 }))
-  .withRule(rules.probability(20))
-
-route
-  .poison(poisons.rateLimit({ limit: 2, threshold: 5000 }))
-  .withRule(rules.probability(20))
-
-route
-  .poison(poisons.slowRead({ bps: 100 }))
-  .withRule(rules.probability(35))
-
-route
-  .poison(poisons.abort())
-  .poisonRule(rules.probability(5)) // does the same as withRule()
-  .poisonRule(rules.method('GET'))
+  .poison(poisons.slowRead({ bps: 128 }))
+  .withRule(rules.probability(50))
 
 proxy.listen(3000)
 console.log('Server listening on port:', 3000)
+console.log('To test it, open: http://localhost:3000/image/jpeg')
