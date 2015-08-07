@@ -48,7 +48,7 @@ Requires node.js +0.12 or io.js +1.6
 
 ## Features
 
-- Full-featured HTTP/S proxy (backed by [rocky](https://github.com/h2non/rocky))
+- Full-featured HTTP/S proxy (backed by [rocky](https://github.com/h2non/rocky) and [http-proxy](https://github.com/nodejitsu/node-http-proxy))
 - Hackable and elegant programmatic API (inspired on connect/express)
 - Featured built-in router with nested configuration
 - Hierarchical poisioning and rules based filtering
@@ -84,15 +84,15 @@ There're some other similar solutions to `toxy` in the market, but most of them 
 ↓   ( Incoming request )  ↓
 ↓           |||           ↓
 ↓     ----------------    ↓
-↓     |  Toxy Router |    ↓ --> Match a route based on the incoming request
+↓     |  Toxy Router |    ↓ --> Match the incoming request
 ↓     ----------------    ↓
 ↓           |||           ↓
 ↓     ----------------    ↓
 ↓     |  Exec Rules  |    ↓ --> Apply configured rules for the request
 ↓     ----------------    ↓
-↓          |||            ↓
+↓           |||           ↓
 ↓     ----------------    ↓
-↓     | Exec Poisons |    ↓ --> If all rules passed, poison the HTTP flow
+↓     | Exec Poisons |    ↓ --> If all rules passed, then poison the HTTP flow
 ↓     ----------------    ↓
 ↓        /       \        ↓
 ↓        \       /        ↓
@@ -135,9 +135,16 @@ proxy
   .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
 proxy
+  .get('/image/*')
+  .poison(poisons.bandwidth({ bps: 512 }))
+
+proxy
   .all('/api/*')
   .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
   .withRule(rules.method(['POST', 'PUT', 'DELETE']))
+  // And use a different more permissive poison for GET requests
+  .poison(poisons.rateLimit({ limit: 50, threshold: 1000 }))
+  .withRule(rules.method('GET'))
 
 // Handle the rest of the traffic
 proxy
@@ -145,7 +152,6 @@ proxy
   .poison(poisons.slowClose({ delay: 1000 }))
   .poison(poisons.slowRead({ bps: 128 }))
   .withRule(rules.probability(50))
-
 
 proxy.listen(3000)
 ```
@@ -204,14 +210,16 @@ Name: `bandwidth`
 
 Limits the amount of bytes sent over the network in outgoing HTTP traffic for a specific threshold time frame.
 
+This poison is basically an alias to [throttle](#throttle).
+
 **Arguments**:
 
 - **options** `object`
   - **bps** `number` - Bytes per second. Default to `1024`
-  - **threshold** `number` - Threshold time frame in miliseconds. Default `1000`
+  - **threshold** `number` - Limit time frame in miliseconds. Default `1000`
 
 ```js
-toxy.poison(toxy.poisons.bandwidth({ bps: 1024 }))
+toxy.poison(toxy.poisons.bandwidth({ bps: 512 }))
 ```
 
 #### Rate limit
