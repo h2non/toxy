@@ -131,19 +131,19 @@ proxy
 // Register multiple routes
 proxy
   .get('/download/*')
-  .poison(poisons.bandwidth({ bps: 1024 })
-  .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i ))
+  .poison(poisons.bandwidth({ bps: 1024 }))
+  .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
 proxy
   .all('/api/*')
-  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 })
+  .poison(poisons.rateLimit({ limit: 10, threshold: 1000 }))
   .withRule(rules.method(['POST', 'PUT', 'DELETE']))
 
 // Handle the rest of the traffic
 proxy
   .all('/*')
-  .poison(poison.poison(poisons.slowClose({ delay: 1000 })
-  .poison(poison.poison(poisons.slowRead({ bps: 128 })
+  .poison(poisons.slowClose({ delay: 1000 }))
+  .poison(poisons.slowRead({ bps: 128 }))
   .withRule(rules.probability(50))
 
 
