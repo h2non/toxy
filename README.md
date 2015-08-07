@@ -227,9 +227,9 @@ toxy.poison(toxy.poisons.bandwidth({ bps: 512 }))
 #### Rate limit
 Name: `rateLimit`
 
-Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes the `X-RateLimit-*` headers.
+Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
-Limits are stored in-memory, meaning they are volalite and therfore flushed on every server stop.
+Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite. There're a bunch of real featured rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit).
 
 **Arguments**:
 
