@@ -275,7 +275,7 @@ toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
 #### Slow close
 Name: `slowClose`
 
-Delays the HTTP connection close signal.
+Delays the HTTP connection close signal (EOF).
 
 **Arguments**:
 
