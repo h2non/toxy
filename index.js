@@ -25,7 +25,7 @@ toxy.Rocky     = require('rocky').Rocky
  * Expose current version
  */
 
-toxy.VERSION   = require('./package.json').version
+toxy.VERSION = require('./package.json').version
 
 /**
  * Expose built-in poisons
