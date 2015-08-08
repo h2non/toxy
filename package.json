@@ -1,6 +1,6 @@
 {
   "name": "toxy",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Hackable HTTP proxy to simulate server failure scenarios and unexpected conditions",
   "repository": "h2non/toxy",
   "author": "Tomas Aparicio",
