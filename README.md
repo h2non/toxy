@@ -512,18 +512,6 @@ toxy
 toxy.all('/*')
 ```
 
-### toxy.poisons `=>` Object
-
-Exposes a map with the built-in poisons.
-
-### toxy.rules `=>` Object
-
-Exposes a map with the built-in rules.
-
-### toxy.VERSION `=>` String
-
-Current toxy semantic version.
-
 #### toxy#get(path, [ middleware... ])
 Return: `ToxyRoute`
 
@@ -700,6 +688,18 @@ Returns and array with the registered rules wrapped as `Directive`.
 #### toxy#flushRules()
 
 Remove all the rules.
+
+### toxy.poisons `=>` Object
+
+Exposes a map with the built-in poisons.
+
+### toxy.rules `=>` Object
+
+Exposes a map with the built-in rules.
+
+### toxy.VERSION `=>` String
+
+Current toxy semantic version.
 
 ### ToxyRoute
 
