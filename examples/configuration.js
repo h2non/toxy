@@ -13,11 +13,21 @@ proxy
     body: '{"error": "toxy injected error"}',
     headers: {'Content-Type': 'application/json'}
   }))
-  .withRule(rules.method('GET'))
   .withRule(rules.probability(50))
+  .rule(rules.method('GET'))
+
+// Get poison
+var poison = proxy.getPoison('inject')
+poison.isEnabled() // -> true
+
+// Get rule in the poison scope (nested)
+var rule = poison.getRule('probability') // -> Directive
+rule.isEnabled() // -> true
+rule.disable()
+poison.isRuleEnabled('probability') // -> false
 
 // Disable poison
-proxy.disable('inject')
+poison.disable() // Or: proxy.disable('inject')
 proxy.isEnabled('inject') // -> false
 
 // Re-enable it
@@ -34,8 +44,12 @@ proxy.getPoisons() // -> []
 // Flush all poisons (not necessary, though)
 proxy.flush()
 
+// Get rule
+var rule = proxy.getRule('method')
+rule.isEnabled() // -> true
+
 // Disable rule
-proxy.disableRule('method')
+poison.disable() // Or: proxy.disableRule('method')
 proxy.isRuleEnabled('method') // -> false
 
 // Re-enable it
