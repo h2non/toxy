@@ -34,7 +34,7 @@ toxy.VERSION = require('./package.json').version
 toxy.poisons = Toxy.prototype.poisons = Object.create(null)
 
 poisons.forEach(function (poison) {
-  Toxy.prototype.poisons[poison.name] = function () {
+  toxy.poisons[poison.name] = function () {
     return poison.apply(null, arguments)
   }
 })
@@ -46,7 +46,7 @@ poisons.forEach(function (poison) {
 toxy.rules = Toxy.prototype.rules = Object.create(null)
 
 rules.forEach(function (rule) {
-  Toxy.prototype.rules[rule.name] = function () {
+  toxy.rules[rule.name] = function () {
     return rule.apply(null, arguments)
   }
 })

@@ -54,7 +54,51 @@ suite('toxy', function () {
     })
   })
 
-  test('e2e', function (done) {
+  test('get directives', function () {
+    var proxy = toxy()
+    var called = false
+
+    proxy.poison(function delay() {})
+    proxy.rule(function match() {})
+
+    expect(proxy.isEnabled('delay')).to.be.true
+    expect(proxy.isRuleEnabled('match')).to.be.true
+
+    var poison = proxy.getPoison('delay')
+    expect(poison).to.be.an('object')
+    expect(poison.isEnabled()).to.be.true
+    poison.disable()
+    expect(poison.isEnabled()).to.be.false
+
+    var rule = proxy.getRule('match')
+    expect(rule).to.be.an('object')
+    expect(rule.isEnabled()).to.be.true
+    rule.disable()
+    expect(rule.isEnabled()).to.be.false
+  })
+
+  test('flush directives', function () {
+    var proxy = toxy()
+    var called = false
+
+    proxy.poison(function delay() {})
+    proxy.rule(function match() {})
+
+    expect(proxy.isEnabled('delay')).to.be.true
+    expect(proxy.isRuleEnabled('match')).to.be.true
+
+    proxy.flush()
+    expect(proxy.isEnabled('delay')).to.be.false
+    expect(proxy.getPoison('delay')).to.be.null
+    expect(proxy.getPoisons()).to.have.length(0)
+
+    proxy.flushRules()
+    expect(proxy.isRuleEnabled('match')).to.be.false
+    expect(proxy.getRule('match')).to.be.null
+    expect(proxy.getRules()).to.have.length(0)
+  })
+
+  test('basic proxy', function (done) {
     var proxy = toxy()
     var spy = sinon.spy()
     var server = createServer(9081, 200)
@@ -85,6 +129,43 @@ suite('toxy', function () {
     function assert(err) {
       expect(Date.now() - init).to.be.at.least(timeout - 1)
       expect(spy.calledTwice).to.be.true
+      expect(spy.args[0][0].url).to.be.equal('/foo')
+      expect(spy.args[0][0].method).to.be.equal('GET')
+
+      server.close()
+      proxy.close(done)
+    }
+  })
+
+  test('final route handler when no matches', function (done) {
+    var proxy = toxy()
+    var spy = sinon.spy()
+    var server = createServer(9081, 200)
+    var timeout = 100
+
+    proxy.poison(function delay(req, res, next) {
+      throw 'Should not be called'
+    })
+
+    proxy.rule(function method(req, res, next) {
+      spy(req, res)
+      next(null, true)
+    })
+
+    proxy.forward('http://localhost:9081')
+    proxy.get('/foo')
+    proxy.listen(9080)
+
+    var init = Date.now()
+    supertest('http://localhost:9080')
+      .get('/foo')
+      .expect(200)
+      .expect('Content-Type', 'application/json')
+      .expect({ hello: 'world' })
+      .end(assert)
+
+    function assert(err) {
+      expect(spy.calledOnce).to.be.true
       expect(spy.args[0][0].url).to.be.equal('/foo')
       expect(spy.args[0][0].method).to.be.equal('GET')
       done(err)

@@ -25,11 +25,11 @@ proxy.enable('inject')
 proxy.isEnabled('inject') // -> true
 
 // Get registered poisons
-proxy.poisons() // -> [ inject ]
+proxy.getPoisons() // -> [ inject ]
 
 // Remove the poison
 proxy.remove('inject')
-proxy.poisons() // -> []
+proxy.getPoisons() // -> []
 
 // Flush all poisons (not necessary, though)
 proxy.flush()
@@ -43,11 +43,11 @@ proxy.enableRule('method')
 proxy.isRuleEnabled('method') // -> true
 
 // Get registered rules
-proxy.rules() // -> [ method, probability ]
+proxy.getRules() // -> [ method, probability ]
 
 // Remove the rule
 proxy.removeRule('method')
-proxy.rules() // -> [ probability ]
+proxy.getRules() // -> [ probability ]
 
 // Flush all rules (aka remove all)
 proxy.flush()

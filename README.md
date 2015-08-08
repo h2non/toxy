@@ -68,7 +68,7 @@ Requires node.js +0.12 or io.js +1.6
 
 There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack, instead of providing features to the specific domain of the HTTP protocol, like toxy does.
 
-`toxy` provides a powerful hackable and extensible solution with a convenient low-level interface and programmatic features based on simple fluent API, and the power, simplicity and fun of node.js.
+`toxy` provides a powerful hackable and extensible solution with a convenient low-level interface and programmatic features based on simple, concise and fluent API, with the power, simplicity and fun of node.js.
 
 ### Concepts
 
@@ -229,7 +229,7 @@ Name: `rateLimit`
 
 Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
-Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite. There're a bunch of real featured rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit).
+Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite. There're a bunch of more featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison.
 
 **Arguments**:
 
@@ -512,6 +512,18 @@ toxy
 toxy.all('/*')
 ```
 
+### toxy.poisons `=>` Object
+
+Exposes a map with the built-in poisons.
+
+### toxy.rules `=>` Object
+
+Exposes a map with the built-in rules.
+
+### toxy.VERSION `=>` String
+
+Current toxy semantic version.
+
 #### toxy#get(path, [ middleware... ])
 Return: `ToxyRoute`
 
@@ -544,6 +556,14 @@ Register a new route for `HEAD` method.
 Return: `ToxyRoute`
 
 Register a new route for any method.
+
+#### toxy#poisons `=>` Object
+
+Exposes a map with the built-in poisons. Prototype alias to `toxy.poisons`
+
+#### toxy#rules `=>` Object
+
+Exposes a map with the built-in poisons. Prototype alias to `toxy.rules`
 
 #### toxy#forward(url)
 
@@ -584,6 +604,14 @@ For more information, see the [rocky docs](https://github.com/h2non/rocky#middle
 
 Return a standard middleware to use with connect/express.
 
+#### toxy#listen(port)
+
+Starts the built-in HTTP server, listening on a specific TCP port.
+
+#### toxy#close([ callback ])
+
+Closes the HTTP server.
+
 #### toxy#poison(poison)
 Alias: `usePoison`
 
@@ -622,10 +650,15 @@ Alias: `disablePoisons`
 
 Disable all the registered poisons.
 
-#### toxy#poisons()
-Return: `array<Directive>` Alias: `getPoisons`
+#### toxy#getPoison(poison)
+Return: `Directive|null`
 
-Return an array of poisons wrapped as `Directive`.
+Searchs and retrieves a registered poison in the stack by name identifier.
+
+#### toxy#getPoisons()
+Return: `array<Directive>`
+
+Return an array of registered poisons wrapped as `Directive`.
 
 #### toxy#flush()
 Alias: `flushPoisons`
@@ -654,10 +687,15 @@ Return: `boolean`
 
 Checks if the given rule is enabled by name identifier.
 
-#### toxy#rules()
-Return: `array<Directive>` Alias: `getRules`
+#### toxy#getRule(rule)
+Return: `Directive|null`
 
-Return the registered rules wrapped as `Directive`.
+Searchs and retrieves a registered rule in the stack by name identifier.
+
+#### toxy#getRules()
+Return: `array<Directive>`
+
+Returns and array with the registered rules wrapped as `Directive`.
 
 #### toxy#flushRules()
 
@@ -665,7 +703,9 @@ Remove all the rules.
 
 ### ToxyRoute
 
-Toxy route has, indeed, the same interface as `Toxy` global interface, but further actions you perform againts the API will only be applicable at route-level. In other words: good news, you already know the API.
+Toxy route has, indeed, the same interface as `Toxy` global interface, it just adds some route level [additional methods](https://github.com/h2non/rocky#routepath).
+
+Further actions you perform againts the `ToxyRoute` API will only be applicable at route-level (nested). In other words: you already know the API.
 
 This example will probably clarify possible doubts:
 ```js
@@ -674,11 +714,16 @@ var proxy = toxy()
 
 // Now using the global API
 proxy
+  .forward('http://server.net')
   .poison(toxy.poisons.bandwidth({ bps: 1024 }))
   .rule(toxy.rules.method('GET'))
 
 // Now create a route
-var route = proxy.get('/foo')
+var route = proxy
+  .get('/foo')
+  .toPath('/bar') // Route-level API method
+  .host('server.net') // Route-level API method
+  .forward('http://new.server.net')
 
 // Now using the ToxyRoute interface
 route
