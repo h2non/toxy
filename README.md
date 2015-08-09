@@ -304,11 +304,12 @@ toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
 #### Abort connection
 Name: `abort`
 
-Aborts the TCP connection, optionally with a custom error. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
+Aborts the TCP connection. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
 
 **Arguments**:
 
-- **miliseconds** `number` - Optional socket destroy delay in miliseconds
+- **options** `object`
+  - **delay** `number` - Socket destroy delay in miliseconds. Default to `0`
 
 ```js
 toxy.poison(toxy.poisons.abort())
