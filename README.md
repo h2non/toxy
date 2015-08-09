@@ -2,7 +2,7 @@
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-**toxy** is a **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
+**toxy** is a fully programmatic and **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
 It was mainly designed for fuzzing/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
@@ -66,9 +66,9 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions to `toxy` in the market, but most of them don't provide a proper programmatic control and are not easy to hack, configure and/or extend. Additionally, most of the those solutions are based only on the TCP stack, instead of providing features to the specific domain of the HTTP protocol, like toxy does.
+There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operatores at TCP level stack instead of providing high-level abstraction to cover common requirements of the specific domain and nature of the HTTP protocol, like toxy does.
 
-`toxy` provides a powerful hackable and extensible solution with a convenient low-level interface and programmatic features based on simple, concise and fluent API, with the power, simplicity and fun of node.js.
+toxy provides a powerful hackable and extensible solution with a convenient abstraction, but also a low-level interface and programmatic capabilities exposed as a simple, concise and fluent API, with the implicit power, simplicity and fun of node.js.
 
 ### Concepts
 
