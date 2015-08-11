@@ -66,7 +66,7 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operatores at TCP level stack instead of providing high-level abstraction to cover common requirements of the specific domain and nature of the HTTP protocol, like toxy does.
+There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operate at TCP level stack instead of providing high-level abstraction to cover common requirements of the specific domain and nature of the HTTP protocol, like toxy does.
 
 toxy provides a powerful hackable and extensible solution with a convenient abstraction, but also a low-level interface and programmatic capabilities exposed as a simple, concise and fluent API, with the implicit power, simplicity and fun of node.js.
 
