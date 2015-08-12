@@ -1,14 +1,15 @@
-# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) ![Stability](http://img.shields.io/badge/stability-beta-orange.svg?style=flat)
+# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy)
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
 **toxy** is a fully programmatic and **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzzing/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
+Originally designed for fuzzing/evil testing purposes, toxy becomes particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
-toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
-toxy is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP proxy.
+toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
+It's compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy.
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -44,15 +45,17 @@ Requires node.js +0.12 or io.js +1.6
     - [Body](#body)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
+- [HTTP API](#http-api)
 - [License](#license)
 
 ## Features
 
 - Full-featured HTTP/S proxy (backed by [rocky](https://github.com/h2non/rocky) and [http-proxy](https://github.com/nodejitsu/node-http-proxy))
 - Hackable and elegant programmatic API (inspired on connect/express)
+- Admin HTTP API for external management and dynamic configuration
 - Featured built-in router with nested configuration
-- Hierarchical poisioning and rules based filtering
-- Hierarchical middleware layer (global and route-specific)
+- Hierarchical and composable poisioning with rule based filtering
+- Hierarchical middleware layer (both global and route scopes)
 - Easily augmentable via middleware (based on connect/express middleware)
 - Built-in poisons (bandwidth, error, abort, latency, slow read...)
 - Rule-based poisoning (probabilistic, HTTP method, headers, body...)
@@ -60,7 +63,7 @@ Requires node.js +0.12 or io.js +1.6
 - Built-in balancer and traffic intercept via middleware
 - Inherits API and features from [rocky](https://github.com/h2non/rocky)
 - Compatible with connect/express (and most of their middleware)
-- Runs as standalone HTTP proxy
+- Able to run as standalone HTTP proxy
 
 ## Introduction
 
@@ -111,15 +114,17 @@ npm install toxy
 
 ### Examples
 
-See the [examples](https://github.com/h2non/toxy/tree/master/examples) directory for more use cases
+See [examples](https://github.com/h2non/toxy/tree/master/examples) directory for more use cases.
 
 ```js
 var toxy = require('toxy')
 var poisons = toxy.poisons
 var rules = toxy.rules
 
+// Create a new toxy proxy
 var proxy = toxy()
 
+// Default server to forward incoming traffic
 proxy
   .forward('http://httpbin.org')
 
@@ -131,6 +136,7 @@ proxy
 // Register multiple routes
 proxy
   .get('/download/*')
+  .forward('http://files.myserver.net')
   .poison(poisons.bandwidth({ bps: 1024 }))
   .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
@@ -229,7 +235,8 @@ Name: `rateLimit`
 
 Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
-Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite. There're a bunch of more featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison.
+Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite.
+There're a bunch of featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison. You might also interested in [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket).
 
 **Arguments**:
 

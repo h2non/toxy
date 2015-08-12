@@ -1,7 +1,7 @@
 {
   "name": "toxy",
-  "version": "0.1.3",
-  "description": "Hackable HTTP proxy to simulate server failure scenarios and unexpected conditions",
+  "version": "0.2.0",
+  "description": "Hackable HTTP proxy to simulate server failure scenarios and unexpected network conditions",
   "repository": "h2non/toxy",
   "author": "Tomas Aparicio",
   "license": "MIT",
@@ -23,7 +23,10 @@
     "resilient",
     "retry",
     "unexpected",
-    "backoff"
+    "backoff",
+    "network",
+    "latency",
+    "jitter"
   ],
   "engines": {
     "node": ">= 0.12"
@@ -33,8 +36,10 @@
   },
   "dependencies": {
     "midware": "^0.1.3",
+    "object-assign": "^3.0.0",
     "raw-body": "^2.1.2",
-    "rocky": "^0.3.3"
+    "rocky": "^0.3.3",
+    "router": "^1.1.3"
   },
   "devDependencies": {
     "chai": "^3.0.0",
