@@ -97,6 +97,17 @@ suite('admin#server', function () {
       .end(done)
   })
 
+  test('GET /servers/:id/poisons/:id', function (done) {
+    var path = '/servers/bcc/poisons/foo'
+    supertest(adminUrl)
+      .get(path)
+      .expect(200)
+      .expect(function (res) {
+        assertDirective(res.body, path)
+      })
+      .end(done)
+  })
+
   test('GET /servers/:id/rules', function (done) {
     var path = '/servers/bcc/rules'
     supertest(adminUrl)
@@ -105,6 +116,17 @@ suite('admin#server', function () {
       .expect(function (res) {
         expect(res.body).to.have.length(2)
         assertDirective(res.body.shift(), path + '/foo')
+      })
+      .end(done)
+  })
+
+  test('GET /servers/:id/rules/:id', function (done) {
+    var path = '/servers/bcc/rules/foo'
+    supertest(adminUrl)
+      .get(path)
+      .expect(200)
+      .expect(function (res) {
+        assertDirective(res.body, path)
       })
       .end(done)
   })
