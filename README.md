@@ -715,7 +715,7 @@ Current toxy semantic version.
 
 ### ToxyRoute
 
-Toxy route has, indeed, the same interface as `Toxy` global interface, it just adds some route level [additional methods](https://github.com/h2non/rocky#routepath).
+`ToxyRoute` exposes the same interface as `Toxy` global interface, it just adds some route level [additional methods](https://github.com/h2non/rocky#routepath).
 
 Further actions you perform againts the `ToxyRoute` API will only be applicable at route-level (nested). In other words: you already know the API.
 
@@ -811,15 +811,15 @@ console.log('protected toxy admin server listening on port:', 9000)
 
 **Hierarchy**:
 
-- Servers - Managed `toxy` instances
-  - Rules - Globally applied rules
-  - Poisons - Globally applied poisons
-    - Rules - Poison-specific rules
-  - Routes - List of configured routes
-    - Route - Object for each specific route
-      - Rules - Route-level registered rules
-      - Poisons - Route-level registered poisons
-        - Rules - Route-level and poison-specific rules
+- **Servers** - Managed `toxy` instances
+  - **Rules** - Globally applied rules
+  - **Poisons** - Globally applied poisons
+    - **Rules** - Poison-specific rules
+  - **Routes** - List of configured routes
+    - **Route** - Object for each specific route
+      - **Rules** - Route-level registered rules
+      - **Poisons** - Route-level registered poisons
+        - **Rules** - Route-level poison-specific rules
 
 #### GET /
 
