@@ -766,7 +766,7 @@ Return: `function(req, res, next)`
 
 ## HTTP API
 
-The `toxy` HTTP API follows the [JSON API](http://jsonapi.org) conventions, including resouce based hypermedia linking.
+The `toxy` HTTP API follows the [JSON API](http://jsonapi.org) conventions, including resource based hypermedia linking.
 
 ### Usage
 
