@@ -338,7 +338,7 @@ suite('admin server', function () {
     test('reset', shutdown)
   })
 
-  suite('poison rules', function () {
+  suite('route poison rules', function () {
     test('setup', setup)
 
     test('get all', function (done) {
