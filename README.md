@@ -1,14 +1,15 @@
-# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) ![Stability](http://img.shields.io/badge/stability-beta-orange.svg?style=flat)
+# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy)
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
 **toxy** is a fully programmatic and **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzzing/evil testing purposes, becoming particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
+It was mainly designed for fuzzing/evil testing purposes, toxy becomes particulary useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
-toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which basically can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 
-toxy is compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured, middleware-oriented HTTP proxy.
+toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
+It's compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy.
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -44,15 +45,21 @@ Requires node.js +0.12 or io.js +1.6
     - [Body](#body)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
+- [HTTP API](#http-api)
+  - [Usage](#usage)
+  - [Authorization](#authorization)
+  - [API](#api)
+  - [Programmatic API](#programmatic-api-1)
 - [License](#license)
 
 ## Features
 
 - Full-featured HTTP/S proxy (backed by [rocky](https://github.com/h2non/rocky) and [http-proxy](https://github.com/nodejitsu/node-http-proxy))
 - Hackable and elegant programmatic API (inspired on connect/express)
+- Admin HTTP API for external management and dynamic configuration
 - Featured built-in router with nested configuration
-- Hierarchical poisioning and rules based filtering
-- Hierarchical middleware layer (global and route-specific)
+- Hierarchical and composable poisioning with rule based filtering
+- Hierarchical middleware layer (both global and route scopes)
 - Easily augmentable via middleware (based on connect/express middleware)
 - Built-in poisons (bandwidth, error, abort, latency, slow read...)
 - Rule-based poisoning (probabilistic, HTTP method, headers, body...)
@@ -60,7 +67,7 @@ Requires node.js +0.12 or io.js +1.6
 - Built-in balancer and traffic intercept via middleware
 - Inherits API and features from [rocky](https://github.com/h2non/rocky)
 - Compatible with connect/express (and most of their middleware)
-- Runs as standalone HTTP proxy
+- Able to run as standalone HTTP proxy
 
 ## Introduction
 
@@ -111,15 +118,17 @@ npm install toxy
 
 ### Examples
 
-See the [examples](https://github.com/h2non/toxy/tree/master/examples) directory for more use cases
+See [examples](https://github.com/h2non/toxy/tree/master/examples) directory for more use cases.
 
 ```js
 var toxy = require('toxy')
 var poisons = toxy.poisons
 var rules = toxy.rules
 
+// Create a new toxy proxy
 var proxy = toxy()
 
+// Default server to forward incoming traffic
 proxy
   .forward('http://httpbin.org')
 
@@ -131,6 +140,7 @@ proxy
 // Register multiple routes
 proxy
   .get('/download/*')
+  .forward('http://files.myserver.net')
   .poison(poisons.bandwidth({ bps: 1024 }))
   .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
@@ -229,7 +239,8 @@ Name: `rateLimit`
 
 Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
-Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite. There're a bunch of more featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison.
+Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite.
+There're a bunch of featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison. You might also interested in [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket).
 
 **Arguments**:
 
@@ -752,6 +763,285 @@ Alias: `filter`
 
 #### Directive#handler()
 Return: `function(req, res, next)`
+
+## HTTP API
+
+The `toxy` HTTP API follows the [JSON API](http://jsonapi.org) conventions, including resouce based hypermedia linking.
+
+### Usage
+
+```js
+const toxy = require('toxy')
+
+// Create the toxy admin server
+var admin = toxy.admin()
+admin.listen(9000)
+
+// Create the toxy proxy
+var proxy = toxy()
+proxy.listen(3000)
+
+// Add the toxy instance to be managed by the admin server
+admin.manage(proxy)
+
+console.log('toxy proxy listening on port:', 3000)
+console.log('toxy admin server listening on port:', 9000)
+```
+
+For more details about the admin programmatic API, see [below](#programmatic-api-1).
+
+### Authorization
+
+The HTTP API can be protected to unauthorized clients.
+Authorized clients must define the API key token via `API-Key` or `Authorization` HTTP headers.
+
+To enable it, you should simple pass the following options to `toxy` admin server:
+
+```js
+const toxy = require('toxy')
+
+const opts = { apiKey: 's3cr3t' }
+var admin = toxy.admin(opts)
+
+admin.listen(9000)
+console.log('protected toxy admin server listening on port:', 9000)
+```
+
+### API
+
+**Hierarchy**:
+
+- Servers - Managed `toxy` instances
+  - Rules - Globally applied rules
+  - Poisons - Globally applied poisons
+    - Rules - Poison-specific rules
+  - Routes - List of configured routes
+    - Route - Object for each specific route
+      - Rules - Route-level registered rules
+      - Poisons - Route-level registered poisons
+        - Rules - Route-level and poison-specific rules
+
+#### GET /
+
+### Servers
+
+#### GET /servers
+
+#### GET /servers/:id
+
+### Rules
+
+#### GET /servers/:id/rules
+
+#### POST /servers/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/rules
+
+#### GET /servers/:id/rules/:id
+
+#### DELETE /servers/:id/rules/:id
+
+### Poisons
+
+#### GET /servers/:id/poison
+
+#### POST /servers/:id/poisons
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "latency",
+  "options": { "jitter": 1000 }
+}
+```
+
+#### DELETE /servers/:id/poisons
+
+#### GET /servers/:id/poisons/:id
+
+#### DELETE /servers/:id/poisons/:id
+
+#### GET /servers/:id/poisons/:id/rules
+
+#### POST /servers/:id/poisons/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/poisons/:id/rules
+
+#### GET /servers/:id/poisons/:id/rules/:id
+
+#### DELETE /servers/:id/poisons/:id/rules/:id
+
+### Routes
+
+#### GET /servers/:id/routes
+
+#### POST /servers/:id/routes
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "path": "/foo", // Required
+  "method": "GET", // use ALL for all the methods
+  "forward": "http://my.server", // Optional custom forward server URL
+}
+```
+
+#### DELETE /servers/:id/routes
+
+#### GET /servers/:id/routes/:id
+
+#### DELETE /servers/:id/routes/:id
+
+### Route rules
+
+#### GET /servers/:id/routes/:id/rules
+
+#### POST /servers/:id/routes/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/routes/:id/rules
+
+#### GET /servers/:id/routes/:id/rules/:id
+
+#### DELETE /servers/:id/routes/:id/rules/:id
+
+### Route poisons
+
+#### GET /servers/:id/routes/:id/poisons
+
+#### POST /servers/:id/routes/:id/poisons
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "latency",
+  "options": { "jitter": 1000 }
+}
+```
+
+#### DELETE /servers/:id/routes/:id/poisons
+
+#### GET /servers/:id/routes/:id/poisons/:id
+
+#### DELETE /servers/:id/routes/:id/poisons/:id
+
+#### GET /servers/:id/routes/:id/poisons/:id/rules
+
+#### POST /servers/:id/routes/:id/poisons/:id/rules
+
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/routes/:id/poisons/:id/rules
+
+#### GET /servers/:id/routes/:id/poisons/:id/rules/:id
+
+#### DELETE /servers/:id/routes/:id/poisons/:id/rules/:id
+
+### Programmatic API
+
+The built-in HTTP admin server also provides a simple interface open to extensibility and hacking purposes.
+For instance, you can plug in additional middleware to the admin server, or register new routes.
+
+#### toxy.admin([ opts ])
+Returns: `Admin`
+
+**Supported options**:
+
+- **apiKey** - Optional API key to protect the server
+- **port** - Optional. TCP port to listen
+
+##### Admin#listen([ port, host ])
+
+Start listening on the network.
+
+##### Admin#manage(toxy)
+
+Manage a `toxy` server instance.
+
+##### Admin#find(toxy)
+
+Find a toxy instance. Accepts toxy server ID or toxy instance.
+
+##### Admin#remove(toxy)
+
+Stop managing a toxy instance.
+
+##### Admin#use(...middleware)
+
+Register a middleware.
+
+##### Admin#param(...middleware)
+
+Register a param middleware.
+
+##### Admin#get(path, [ ...middleware ])
+
+Register a GET route.
+
+##### Admin#post(path, [ ...middleware ])
+
+Register a POST route.
+
+##### Admin#put(path, [ ...middleware ])
+
+Register a PUT route.
+
+##### Admin#delete(path, [ ...middleware ])
+
+Register a DELETE route.
+
+##### Admin#patch(path, [ ...middleware ])
+
+Register a PATCH route.
+
+##### Admin#all(path, [ ...middleware ])
+
+Register a route accepting any HTTP method.
+
+##### Admin#middleware(req, res, next)
+
+Middleware to plug in with connect/express.
+
+##### Admin#close(cb)
+
+Stop the server.
 
 ## License
 

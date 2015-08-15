@@ -16,6 +16,7 @@ function toxy(opts) {
  * Expose internal modules as static members
  */
 
+toxy.admin     = require('./lib/admin')
 toxy.Rule      = require('./lib/rule')
 toxy.Base      = require('./lib/base')
 toxy.Directive = require('./lib/directive')
