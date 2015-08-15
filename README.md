@@ -46,6 +46,10 @@ Requires node.js +0.12 or io.js +1.6
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
 - [HTTP API](#http-api)
+  - [Usage](#usage)
+  - [Authorization](#authorization)
+  - [API](#api)
+  - [Programmatic API](#programmatic-api-1)
 - [License](#license)
 
 ## Features
@@ -758,6 +762,285 @@ Alias: `filter`
 
 #### Directive#handler()
 Return: `function(req, res, next)`
+
+## HTTP API
+
+The `toxy` HTTP API follows the [JSON API](http://jsonapi.org) conventions, including resouce based hypermedia linking.
+
+### Usage
+
+```js
+const toxy = require('toxy')
+
+// Create the toxy admin server
+var admin = toxy.admin()
+admin.listen(9000)
+
+// Create the toxy proxy
+var proxy = toxy()
+proxy.listen(3000)
+
+// Add the toxy instance to be managed by the admin server
+admin.manage(proxy)
+
+console.log('toxy proxy listening on port:', 3000)
+console.log('toxy admin server listening on port:', 9000)
+```
+
+For more details about the admin programmatic API, see [below](#programmatic-api-1).
+
+### Authorization
+
+The HTTP API can be protected to unauthorized clients.
+Authorized clients must define the API key token via `API-Key` or `Authorization` HTTP headers.
+
+To enable it, you should simple pass the following options to `toxy` admin server:
+
+```js
+const toxy = require('toxy')
+
+const opts = { apiKey: 's3cr3t' }
+var admin = toxy.admin(opts)
+
+admin.listen(9000)
+console.log('protected toxy admin server listening on port:', 9000)
+```
+
+### API
+
+**Hierarchy**:
+
+- Servers - Managed `toxy` instances
+  - Rules - Globally applied rules
+  - Poisons - Globally applied poisons
+    - Rules - Poison-specific rules
+  - Routes - List of configured routes
+    - Route - Object for each specific route
+      - Rules - Route-level registered rules
+      - Poisons - Route-level registered poisons
+        - Rules - Route-level and poison-specific rules
+
+#### GET /
+
+### Servers
+
+#### GET /servers
+
+#### GET /servers/:id
+
+### Rules
+
+#### GET /servers/:id/rules
+
+#### POST /servers/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/rules
+
+#### GET /servers/:id/rules/:id
+
+#### DELETE /servers/:id/rules/:id
+
+### Poisons
+
+#### GET /servers/:id/poison
+
+#### POST /servers/:id/poisons
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "latency",
+  "options": { "jitter": 1000 }
+}
+```
+
+#### DELETE /servers/:id/poisons
+
+#### GET /servers/:id/poisons/:id
+
+#### DELETE /servers/:id/poisons/:id
+
+#### GET /servers/:id/poisons/:id/rules
+
+#### POST /servers/:id/poisons/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/poisons/:id/rules
+
+#### GET /servers/:id/poisons/:id/rules/:id
+
+#### DELETE /servers/:id/poisons/:id/rules/:id
+
+### Routes
+
+#### GET /servers/:id/routes
+
+#### POST /servers/:id/routes
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "path": "/foo", // Required
+  "method": "GET", // use ALL for all the methods
+  "forward": "http://my.server", // Optional custom forward server URL
+}
+```
+
+#### DELETE /servers/:id/routes
+
+#### GET /servers/:id/routes/:id
+
+#### DELETE /servers/:id/routes/:id
+
+### Route rules
+
+#### GET /servers/:id/routes/:id/rules
+
+#### POST /servers/:id/routes/:id/rules
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/routes/:id/rules
+
+#### GET /servers/:id/routes/:id/rules/:id
+
+#### DELETE /servers/:id/routes/:id/rules/:id
+
+### Route poisons
+
+#### GET /servers/:id/routes/:id/poisons
+
+#### POST /servers/:id/routes/:id/poisons
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "latency",
+  "options": { "jitter": 1000 }
+}
+```
+
+#### DELETE /servers/:id/routes/:id/poisons
+
+#### GET /servers/:id/routes/:id/poisons/:id
+
+#### DELETE /servers/:id/routes/:id/poisons/:id
+
+#### GET /servers/:id/routes/:id/poisons/:id/rules
+
+#### POST /servers/:id/routes/:id/poisons/:id/rules
+
+Accepts: `application/json`
+
+Example payload:
+```js
+{
+  "name": "method",
+  "options": "GET"
+}
+```
+
+#### DELETE /servers/:id/routes/:id/poisons/:id/rules
+
+#### GET /servers/:id/routes/:id/poisons/:id/rules/:id
+
+#### DELETE /servers/:id/routes/:id/poisons/:id/rules/:id
+
+### Programmatic API
+
+The built-in HTTP admin server also provides a simple interface open to extensibility and hacking purposes.
+For instance, you can plug in additional middleware to the admin server, or register new routes.
+
+#### toxy.admin([ opts ])
+Returns: `Admin`
+
+**Supported options**:
+
+- **apiKey** - Optional API key to protect the server
+- **port** - Optional. TCP port to listen
+
+##### Admin#listen([ port, host ])
+
+Start listening on the network.
+
+##### Admin#manage(toxy)
+
+Manage a `toxy` server instance.
+
+##### Admin#find(toxy)
+
+Find a toxy instance. Accepts toxy server ID or toxy instance.
+
+##### Admin#remove(toxy)
+
+Stop managing a toxy instance.
+
+##### Admin#use(...middleware)
+
+Register a middleware.
+
+##### Admin#param(...middleware)
+
+Register a param middleware.
+
+##### Admin#get(path, [ ...middleware ])
+
+Register a GET route.
+
+##### Admin#post(path, [ ...middleware ])
+
+Register a POST route.
+
+##### Admin#put(path, [ ...middleware ])
+
+Register a PUT route.
+
+##### Admin#delete(path, [ ...middleware ])
+
+Register a DELETE route.
+
+##### Admin#patch(path, [ ...middleware ])
+
+Register a PATCH route.
+
+##### Admin#all(path, [ ...middleware ])
+
+Register a route accepting any HTTP method.
+
+##### Admin#middleware(req, res, next)
+
+Middleware to plug in with connect/express.
+
+##### Admin#close(cb)
+
+Stop the server.
 
 ## License
 
