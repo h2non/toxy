@@ -14,7 +14,7 @@ var opts = {
 var proxy = toxy(opts)
 
 proxy
-  .forward('http://localhost:3001')
+  .forward('http://httpbin.org')
   .poison(toxy.poisons.latency(1000))
   .poison(toxy.poisons.slowRead(512))
   .all('/*')
