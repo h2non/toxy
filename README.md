@@ -367,9 +367,9 @@ function customLatency(delay) {
   }
 }
 
-// Register and enable the poison
 var proxy = toxy()
 
+// Register and enable the poison
 proxy
   .get('/foo')
   .poison(customLatency(2000))
@@ -490,6 +490,8 @@ shouldIgnore)` function in the middleware, passing a `true` value if the rule ha
 
 Here's an example of a simple rule matching the HTTP method to determine if:
 ```js
+var toxy = require('toxy')
+
 function customMethodRule(matchMethod) {
   /**
    * We name the function since it's used by toxy to identify the rule to get/disable/remove it in the future
@@ -500,8 +502,10 @@ function customMethodRule(matchMethod) {
   }
 }
 
+var proxy = toxy()
+
 // Register and enable the rule
-toxy
+proxy
   .get('/foo')
   .rule(customMethodRule('GET'))
   .poison(/* ... */)
