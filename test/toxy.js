@@ -54,6 +54,26 @@ suite('toxy', function () {
     })
   })
 
+  test('add custom directives', function () {
+    function testPoison() {}
+    toxy.addPoison(testPoison)
+    expect(toxy.poisons.testPoison).to.be.equal(testPoison)
+
+    function testRule() {}
+    toxy.addRule(testRule)
+    expect(toxy.rules.testRule).to.be.equal(testRule)
+
+    function testRule() {}
+    toxy.addRule('nameRule', testRule)
+    expect(toxy.rules.nameRule).to.be.equal(testRule)
+
+    function errorType() { toxy.addRule(null) }
+    expect(errorType).to.throw(/Directive must be a function/i)
+
+    function errorName() { toxy.addRule(function () {}) }
+    expect(errorName).to.throw(/Directive must have a name/i)
+  })
+
   test('get directives', function () {
     var proxy = toxy()
     var called = false

@@ -345,11 +345,13 @@ Poisons are implemented as standalone middleware (like in connect/express).
 
 Here's a simple example of a server latency poison:
 ```js
-function latency(delay) {
+var toxy = require('toxy')
+
+function customLatency(delay) {
   /**
    * We name the function since toxy uses it as identifier to get/disable/remove it in the future
    */
-  return function latency(req, res, next) {
+  return function customLatency(req, res, next) {
     var timeout = setTimeout(clean, delay)
     req.once('close', onClose)
 
@@ -366,9 +368,22 @@ function latency(delay) {
 }
 
 // Register and enable the poison
-toxy
+var proxy = toxy()
+
+proxy
   .get('/foo')
-  .poison(latency(2000))
+  .poison(customLatency(2000))
+```
+
+You can optionally extend the build-in poisons with your own poisons:
+
+```js
+toxy.addPoison(customLatency)
+
+// Then you can use it as a built-in poison
+proxy
+  .get('/foo')
+  .poison(toxy.poisons.customLatency)
 ```
 
 For featured real example, take a look to the [built-in poisons](https://github.com/h2non/toxy/tree/master/lib/poisons) implementation.
@@ -475,11 +490,11 @@ shouldIgnore)` function in the middleware, passing a `true` value if the rule ha
 
 Here's an example of a simple rule matching the HTTP method to determine if:
 ```js
-function method(matchMethod) {
+function customMethodRule(matchMethod) {
   /**
    * We name the function since it's used by toxy to identify the rule to get/disable/remove it in the future
    */
-  return function method(req, res, next) {
+  return function customMethodRule(req, res, next) {
     var shouldIgnore = req.method !== matchMethod
     next(null, shouldIgnore)
   }
@@ -488,8 +503,19 @@ function method(matchMethod) {
 // Register and enable the rule
 toxy
   .get('/foo')
-  .rule(method('GET'))
+  .rule(customMethodRule('GET'))
   .poison(/* ... */)
+```
+
+You can optionally extend the build-in rules with your own rules:
+
+```js
+toxy.addRule(customMethodRule)
+
+// Then you can use it as a built-in poison
+proxy
+  .get('/foo')
+  .rules(toxy.rules.customMethodRule)
 ```
 
 For featured real examples, take a look to the built-in rules [implementation](https://github.com/h2non/toxy/tree/master/lib/rules)
@@ -700,6 +726,14 @@ Returns and array with the registered rules wrapped as `Directive`.
 #### toxy#flushRules()
 
 Remove all the rules.
+
+### toxy.addPoison(name, fn)
+
+Extend built-in poisons.
+
+### toxy.addRule(name, fn)
+
+Extend built-in rules.
 
 ### toxy.poisons `=>` Object
 

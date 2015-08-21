@@ -51,3 +51,42 @@ rules.forEach(function (rule) {
     return rule.apply(null, arguments)
   }
 })
+
+/**
+ * Extend built-in rules
+ */
+
+toxy.addRule = addDirective('rules')
+
+/**
+ * Extend built-in poisons
+ */
+
+toxy.addPoison = addDirective('poisons')
+
+/**
+ * Extend helper
+ */
+
+function addDirective(type) {
+  return function (name, directive) {
+    if (typeof name === 'function') {
+      directive = name
+    }
+
+    if (typeof directive !== 'function') {
+      throw new TypeError('Directive must be a function')
+    }
+
+    name = typeof name === 'string'
+      ? name
+      : directive.name
+
+    if (!name) {
+      throw new Error('Directive must have a name')
+    }
+
+    toxy[type][name] = directive
+    return toxy
+  }
+}
