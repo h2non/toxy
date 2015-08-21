@@ -4,7 +4,7 @@ const poisons = toxy.poisons
 const proxy = toxy()
 
 proxy
-  .balance(['http://httpbin.org', 'http://httpbin.org'])
+  .balance(['http://httpbin.org', 'http://example.com'])
 
 proxy
   .all('/*')
