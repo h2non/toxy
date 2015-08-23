@@ -13,6 +13,8 @@ suite('examples', function () {
 
     var files = fs.readdirSync(examplesDir)
     async.eachSeries(files, function (file, next) {
+      if (!(/.js$/.test(file))) return next()
+
       var assert = false
       var examplePath = path.join(examplesDir, file)
       var child = spawn('node', [ examplePath ])
