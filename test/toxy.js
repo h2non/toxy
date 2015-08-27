@@ -71,7 +71,7 @@ suite('toxy', function () {
     expect(errorType).to.throw(/Directive must be a function/i)
 
     function errorName() { toxy.addRule(function () {}) }
-    expect(errorName).to.throw(/Directive must have a name/i)
+    expect(errorName).to.throw(/Directive function must have a name/i)
   })
 
   test('get directives', function () {

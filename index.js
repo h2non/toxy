@@ -83,9 +83,10 @@ function addDirective(type) {
       : directive.name
 
     if (!name) {
-      throw new Error('Directive must have a name')
+      throw new TypeError('Directive function must have a name')
     }
 
+    directive.$name = name
     toxy[type][name] = directive
     return toxy
   }
