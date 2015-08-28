@@ -7,6 +7,7 @@
 It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially in [service-oriented](http://microservices.io/) architectures, where toxy may act as intermediate proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
+It operates only at L7 (application level).
 
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
 It's compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy.
@@ -73,9 +74,9 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operate at TCP level stack instead of providing high-level abstraction to cover common requirements of the specific domain and nature of the HTTP protocol, like toxy does.
+There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operate at TCP L3 level stack instead of providing high-level abstraction to cover common requirements in the specific domain and nature of the HTTP L7 protocol, like toxy does.
 
-toxy provides a powerful hackable and extensible solution with a convenient abstraction, but also a low-level interface and programmatic capabilities exposed as a simple, concise and fluent API, with the implicit power, simplicity and fun of node.js.
+toxy provides a powerful hackable and extensible solution with a convenient abstraction, but also a low-level interface and programmatic capabilities exposed as a simple, pluggable, concise and fluent API, and, for sure, with the implicit power, simplicity and fun of node.js.
 
 ### Concepts
 
@@ -808,6 +809,8 @@ The `toxy` HTTP API follows the [JSON API](http://jsonapi.org) conventions, incl
 
 ### Usage
 
+For a featured use case, see the [admin server](examples/admin.js) example.
+
 ```js
 const toxy = require('toxy')
 
@@ -821,6 +824,19 @@ proxy.listen(3000)
 
 // Add the toxy instance to be managed by the admin server
 admin.manage(proxy)
+
+// Then configure the proxy
+proxy
+  .forward('http://my.target.net')
+
+proxy
+  .get('/slow')
+  .poison(toxy.poisons.bandwidth({ bps: 1024 }))
+
+// Handle the rest of the traffic
+proxy
+  .all('/*')
+  .poison(toxy.poisons.bandwidth({ bps: 1024 * 5 }))
 
 console.log('toxy proxy listening on port:', 3000)
 console.log('toxy admin server listening on port:', 9000)

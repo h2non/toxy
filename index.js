@@ -65,7 +65,7 @@ toxy.addRule = addDirective('rules')
 toxy.addPoison = addDirective('poisons')
 
 /**
- * Extend helper
+ * Add directive helper
  */
 
 function addDirective(type) {
@@ -88,6 +88,7 @@ function addDirective(type) {
 
     directive.$name = name
     toxy[type][name] = directive
+
     return toxy
   }
 }
