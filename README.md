@@ -635,6 +635,10 @@ For more information, see the [rocky docs](https://github.com/h2non/rocky#middle
 
 Return a standard middleware to use with connect/express.
 
+#### toxy#findRoute(routeIdOrPath, [ method ])
+
+Find a route by ID or path and method.
+
 #### toxy#listen(port)
 
 Starts the built-in HTTP server, listening on a specific TCP port.

@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const async = require('async')
 const expect = require('chai').expect
 const spawn = require('child_process').spawn
+const eachSeries = require('../lib/common').eachSeries
 
 const rootDir = path.join(__dirname, '..')
 const examplesDir = path.join(rootDir, 'examples')
@@ -12,7 +12,7 @@ suite('examples', function () {
     this.timeout(30 * 1000)
 
     var files = fs.readdirSync(examplesDir)
-    async.eachSeries(files, function (file, next) {
+    eachSeries(files, function (file, next) {
       if (!(/.js$/.test(file))) return next()
 
       var assert = false
