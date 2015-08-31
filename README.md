@@ -200,14 +200,15 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 #### Inject response
 Name: `inject`
 
-Injects a custom response, intercepting the request before sending it to the target server. Useful to inject errors originated in the server.
+Injects a custom response, intercepting the request before sending it to the target server.
+Useful to inject errors originated in the server.
 
 **Arguments**:
 
 - **options** `object`
-  - **code** `number` - Response HTTP status code
+  - **code** `number` - Response HTTP status code. Default `500`
   - **headers** `object` - Optional headers to send
-  - **body** `mixed` - Optional body data to send
+  - **body** `mixed` - Optional body data to send. It can be a `buffer` or `string`
   - **encoding** `string` - Body encoding. Default to `utf8`
 
 ```js
