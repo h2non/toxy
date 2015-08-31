@@ -76,7 +76,10 @@ Requires node.js +0.12 or io.js +1.6
 
 There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operate at TCP L3 level stack instead of providing high-level abstraction to cover common requirements in the specific domain and nature of the HTTP L7 protocol, like toxy does.
 
-toxy provides a powerful hackable and extensible solution with a convenient abstraction, but also a low-level interface and programmatic capabilities exposed as a simple, pluggable, concise and fluent API, and, for sure, with the implicit power, simplicity and fun of node.js.
+toxy provides a powerful hackable and extensible solution with a convenient abstraction, but without losing a convenient low-level interface capabilities to deal with HTTP protocol primitives properly.
+
+toxy was designed based on the rules of composition, simplicity and extensibility. 
+Via its middleware layer you can easily augment toxy features to your own needs.
 
 ### Concepts
 
