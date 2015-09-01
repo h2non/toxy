@@ -109,6 +109,11 @@ suite('admin server', function () {
     expect(directive.links.parent).to.be.deep.equal({ href: parentHref(path) })
   }
 
+  function assertPoison(poison, path) {
+    assertDirective(poison, path)
+    expect(poison.phase).to.be.equal('incoming')
+  }
+
   suite('server poisons', function () {
     test('setup', setup)
 
@@ -120,9 +125,8 @@ suite('admin server', function () {
         .expect(function (res) {
           expect(res.body).to.have.length(2)
           res.body.forEach(function (directive) {
-            assertDirective(directive, path + '/' + directive.name)
+            assertPoison(directive, path + '/' + directive.name)
           })
-
         })
         .end(done)
     })
@@ -159,7 +163,28 @@ suite('admin server', function () {
         .get(path)
         .expect(200)
         .expect(function (res) {
+          assertPoison(res.body, path)
+        })
+        .end(done)
+    })
+
+    test('create outgoing', function (done) {
+      var path = '/servers/bcc/poisons'
+      supertest(adminUrl)
+        .post(path)
+        .send({ name: 'bandwidth', phase: 'outgoing', options: { jitter: 1000 } })
+        .expect(201)
+        .end(done)
+    })
+
+    test('get outgoing rule by name', function (done) {
+      var path = '/servers/bcc/poisons/bandwidth'
+      supertest(adminUrl)
+        .get(path)
+        .expect(200)
+        .expect(function (res) {
           assertDirective(res.body, path)
+          expect(res.body.phase).to.be.equal('outgoing')
         })
         .end(done)
     })
@@ -300,7 +325,7 @@ suite('admin server', function () {
         .expect(200)
         .expect(function (res) {
           expect(res.body).to.have.length(1)
-          assertDirective(res.body.shift(), path + '/foo')
+          assertPoison(res.body.shift(), path + '/foo')
         })
         .end(done)
     })
@@ -311,7 +336,7 @@ suite('admin server', function () {
         .get(path)
         .expect(200)
         .expect(function (res) {
-          assertDirective(res.body, path)
+          assertPoison(res.body, path)
           expect(res.body.rules).to.have.length(1)
           var nestedRule = res.body.rules.shift()
           assertDirective(nestedRule, path + '/rules/foo')

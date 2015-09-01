@@ -19,6 +19,7 @@ function toxy(opts) {
 toxy.admin     = require('./lib/admin')
 toxy.Rule      = require('./lib/rule')
 toxy.Base      = require('./lib/base')
+toxy.Poison    = require('./lib/poison')
 toxy.Directive = require('./lib/directive')
 toxy.Rocky     = require('rocky').Rocky
 

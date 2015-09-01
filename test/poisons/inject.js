@@ -30,7 +30,7 @@ suite('poison#inject', function () {
       code: 500,
       body: 'Hello',
       encoding: 'utf8',
-      headers: {}
+      headers: { 'content-length': 5 }
     }
 
     var res = {}

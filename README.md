@@ -78,7 +78,7 @@ There're some other similar solutions like `toxy` in the market, but most of the
 
 toxy provides a powerful hackable and extensible solution with a convenient abstraction, but without losing a convenient low-level interface capabilities to deal with HTTP protocol primitives properly.
 
-toxy was designed based on the rules of composition, simplicity and extensibility. 
+toxy was designed based on the rules of composition, simplicity and extensibility.
 Via its middleware layer you can easily augment toxy features to your own needs.
 
 ### Concepts
@@ -225,18 +225,18 @@ toxy.poison(toxy.poisons.inject({
 #### Bandwidth
 Name: `bandwidth`
 
-Limits the amount of bytes sent over the network in outgoing HTTP traffic for a specific threshold time frame.
+Limits the amount of bytes sent over the network in outgoing HTTP traffic for a specific time frame.
 
 This poison is basically an alias to [throttle](#throttle).
 
 **Arguments**:
 
 - **options** `object`
-  - **bps** `number` - Bytes per second. Default to `1024`
-  - **threshold** `number` - Limit time frame in miliseconds. Default `1000`
+  - **bytes** `number` - Amount of chunk of bytes to send. Default `1024`
+  - **threshold** `number` - Packets time frame in miliseconds. Default `1000`
 
 ```js
-toxy.poison(toxy.poisons.bandwidth({ bps: 512 }))
+toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 ```
 
 #### Rate limit
@@ -250,10 +250,10 @@ There're a bunch of featured and consistent rate limiter implementations in [npm
 **Arguments**:
 
 - **options** `object`
-  - **limit** `number` - Total amount of request. Default to `10`
-  - **threshold** `number` - Limit threshold time frame in miliseconds. Default to `1000`
-  - **message** `string` - Optional error message when limit reached.
-  - **code** `number` - HTTP status code when limit reached. Default to `429`.
+  - **limit** `number` - Total amount of requests. Default to `10`
+  - **threshold** `number` - Limit time frame in miliseconds. Default to `1000`
+  - **message** `string` - Optional error message when limit is reached.
+  - **code** `number` - HTTP status code when limit is reached. Default to `429`.
 
 ```js
 toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
@@ -310,8 +310,8 @@ Restricts the amount of packets sent over the network in a specific threshold ti
 **Arguments**:
 
 - **options** `object`
-  - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
-  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `100`
+  - **chunk* `number` - Packet chunk size in bytes. Default to `1024`
+  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
 
 ```js
 toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
