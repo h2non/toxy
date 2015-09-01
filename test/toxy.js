@@ -27,7 +27,7 @@ suite('toxy', function () {
     proxy.enable('delay')
     expect(proxy.isEnabled('delay')).to.be.true
 
-    proxy._poisons.run(null, null, function () {
+    proxy._inPoisons.run(null, null, function () {
       expect(called).to.be.true
       done()
     })
