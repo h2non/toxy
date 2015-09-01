@@ -118,7 +118,7 @@ suite('toxy', function () {
     expect(proxy.getRules()).to.have.length(0)
   })
 
-  test('basic proxy', function (done) {
+  test('basic proxy with poisons', function (done) {
     var proxy = toxy()
     var spy = sinon.spy()
     var server = createServer(9081, 200)
@@ -149,8 +149,61 @@ suite('toxy', function () {
     function assert(err) {
       expect(Date.now() - init).to.be.at.least(timeout - 1)
       expect(spy.calledTwice).to.be.true
-      expect(spy.args[0][0].url).to.be.equal('/foo')
-      expect(spy.args[0][0].method).to.be.equal('GET')
+
+      var req = spy.args[0][0]
+      expect(req.url).to.be.equal('/foo')
+      expect(req.method).to.be.equal('GET')
+
+      server.close()
+      proxy.close(done)
+    }
+  })
+
+  test('proxy with outgoing poisons', function (done) {
+    var proxy = toxy()
+    var spy = sinon.spy()
+    var server = createServer(9081, 200)
+    var timeout = 100
+
+    proxy.outgoingPoison(function delay(req, res, next) {
+      spy(req, res)
+      setTimeout(next, timeout)
+    })
+
+    proxy.outgoingPoison(function capture(req, res, next) {
+      spy(req, res)
+      next()
+    })
+
+    proxy.rule(function method(req, res, next) {
+      spy(req, res)
+      next(null, req.method !== 'GET')
+    })
+
+    proxy.forward('http://localhost:9081')
+    proxy.get('/foo')
+    proxy.listen(9080)
+
+    var init = Date.now()
+    supertest('http://localhost:9080')
+      .get('/foo')
+      .expect(200)
+      .expect('Content-Type', 'application/json')
+      .expect({ hello: 'world' })
+      .end(assert)
+
+    function assert(err) {
+      expect(Date.now() - init).to.be.at.least(timeout - 1)
+      expect(spy.calledThrice).to.be.true
+
+      var req = spy.args[0][0]
+      expect(req.url).to.be.equal('/foo')
+      expect(req.method).to.be.equal('GET')
+
+      var res = spy.args[0][1]
+      expect(res.getHeader('server')).to.be.deep.equal('rocky')
+      expect(res._originalBody.toString()).to.be.deep.equal('{"hello":"world"}')
+      expect(res.body.toString()).to.be.deep.equal('{"hello":"world"}')
 
       server.close()
       proxy.close(done)
@@ -186,8 +239,9 @@ suite('toxy', function () {
 
     function assert(err) {
       expect(spy.calledOnce).to.be.true
-      expect(spy.args[0][0].url).to.be.equal('/foo')
-      expect(spy.args[0][0].method).to.be.equal('GET')
+      var req = spy.args[0][0]
+      expect(req.url).to.be.equal('/foo')
+      expect(req.method).to.be.equal('GET')
       done(err)
     }
   })
