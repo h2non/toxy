@@ -85,7 +85,7 @@ Via its middleware layer you can easily augment toxy features to your own needs.
 
 `toxy` introduces two core directives that you can plug in the proxy and should knowing before using: poisons and rules.
 
-**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be plugged to infect both global or route level incoming traffic.
+**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be plugged to infect both global or route level traffic, and in both incoming and outgoing traffic flows.
 
 **Rules** are a kind of validation filters that can be reused and applied to global incoming HTTP traffic, route level traffic or into a specific poison. Their responsability is to determine, via inspecting each incoming HTTP request, if the registered poisons should be enabled or not, and therefore infecting or not the HTTP traffic (e.g: match headers, query params, method, body...).
 
@@ -175,10 +175,39 @@ console.log('Test it:', 'http://localhost:3000/image/jpeg')
 ## Poisons
 
 Poisons host specific logic which intercepts and mutates, wraps, modify and/or cancel an HTTP transaction in the proxy server.
-Poisons can be applied to incoming or outgoing, or even both traffic flows.
+Poisons can be applied to incoming or outgoing, or even both traffic flows (see [poison phases](#poisioning-phases)).
 
 Poisons can be composed and reused for different HTTP scenarios.
 They are executed in FIFO order and asynchronously.
+
+### Poisoning scopes
+
+`toxy` has a hierarchical design. There're two different scopes: `global` and `route`.
+
+Poisons can be plugged to both scopes, meaning you can limit the scope of the poisioning,
+for instance, you might wanna apply a bandwidth limit poisioning only to
+a certain routes, such as `/download` or `/images`.
+
+See [routes.js](https://github.com/h2non/toxy/blob/master/examples/routes.js) for a featured example.
+
+### Poisoning phases
+
+Poisoning can be done to incoming or outgoing traffic flows, or even both.
+
+**Incoming** poisoning is applied when the traffic is still receiving by proxy
+and it has not been forwarded to the target server yet.
+
+**Outgoing** poisoning is applied when the traffic has been forwarded to the target server and
+the proxy recieves the response from it, but that response has not been send to the client yet.
+
+This is, essentially, that you can plug in your poisons to infect the HTTP traffic
+before or after the request is forwarded to the target HTTP server.
+
+This allows you apply a better and more accurated poisoning based on the server response.
+For instance, given the nature of some poisons, like `inject error`,
+you may require to enable it according to the target server response.
+
+See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison-phases.js) for a featured example.
 
 ### Built-in poisons
 

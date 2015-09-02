@@ -5,19 +5,23 @@ const toxy = require('..')
 const supertest = require('supertest')
 
 suite('toxy', function () {
-  test('static members', function () {
+  test('public static members', function () {
     expect(toxy.rules).to.be.an('object')
     expect(toxy.poisons).to.be.an('object')
     expect(toxy.Directive).to.be.a('function')
+    expect(toxy.Poison).to.be.a('function')
+    expect(toxy.Rule).to.be.a('function')
+    expect(toxy.Rocky).to.be.a('function')
+    expect(toxy.admin).to.be.a('function')
     expect(toxy.VERSION).to.be.a('string')
   })
 
   test('use poison', function (done) {
     var proxy = toxy()
-    var called = false
+    var spy = sinon.spy()
 
     proxy.poison(function delay(req, res, next) {
-      called = true
+      spy(req, res)
       setTimeout(next, 5)
     })
 
@@ -28,7 +32,51 @@ suite('toxy', function () {
     expect(proxy.isEnabled('delay')).to.be.true
 
     proxy._inPoisons.run(null, null, function () {
-      expect(called).to.be.true
+      expect(spy.calledOnce).to.be.true
+      done()
+    })
+  })
+
+  test('use poison phases', function (done) {
+    var proxy = toxy()
+    var spy = sinon.spy()
+
+    proxy.poison(function delay(req, res, next) {
+      spy(req, res)
+      next()
+    })
+
+    proxy.outgoingPoison(function delay(req, res, next) {
+      spy(req, res)
+      next()
+    })
+
+    expect(proxy.isEnabled('delay')).to.be.true
+    proxy.disable('delay')
+    expect(proxy.isEnabled('delay')).to.be.false
+    expect(proxy.isEnabledOutgoing('delay')).to.be.true
+    proxy.enable('delay')
+    expect(proxy.isEnabled('delay')).to.be.true
+    proxy.disableOutgoing('delay')
+    expect(proxy.isEnabled('delay')).to.be.true
+    expect(proxy.isEnabledOutgoing('delay')).to.be.false
+    proxy.enableOutgoing('delay')
+
+    proxy._inPoisons.run(null, null, function () {
+      expect(spy.calledOnce).to.be.true
+    })
+
+    proxy._outPoisons.run(null, null, function () {
+      expect(spy.calledTwice).to.be.true
+
+      proxy.remove('delay')
+      expect(proxy.isEnabled('delay')).to.be.false
+      expect(proxy.isEnabledOutgoing('delay')).to.be.true
+
+      proxy.removeOutgoing('delay')
+      expect(proxy.isEnabled('delay')).to.be.false
+      expect(proxy.isEnabledOutgoing('delay')).to.be.false
+
       done()
     })
   })

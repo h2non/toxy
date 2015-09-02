@@ -32,6 +32,11 @@ suite('helpers', function () {
     })
   })
 
+  test('randomId', function () {
+    var id = helpers.randomId('foo', 'bar')
+    expect(id).to.be.equal('2f5')
+  })
+
   test('splitBuffer', function () {
     var buf = []
     var buffer = new Buffer('Hello World')
