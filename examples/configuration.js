@@ -8,16 +8,26 @@ proxy
   .forward('http://httpbin.org')
 
 proxy
+  .rule(rules.method('GET'))
+
   .poison(poisons.inject({
     code: 503,
     body: '{"error": "toxy injected error"}',
     headers: {'Content-Type': 'application/json'}
   }))
   .withRule(rules.probability(50))
-  .rule(rules.method('GET'))
+
+  .outgoingPoison(poisons.bandwidth({ 
+    bytes: 1024
+  }))
+  .withRule(rules.probability(50))
 
 // Get poison
 var poison = proxy.getPoison('inject')
+poison.isEnabled() // -> true
+
+// Get outgoing poison
+var poison = proxy.getOutgoingPoison('bandwidth')
 poison.isEnabled() // -> true
 
 // Get rule in the poison scope (nested)
@@ -40,6 +50,9 @@ proxy.getPoisons() // -> [ inject ]
 // Remove the poison
 proxy.remove('inject')
 proxy.getPoisons() // -> []
+
+// Outgoing poison
+proxy.isEnabledOutgoing('bandwidth') // -> true
 
 // Flush all poisons (not necessary, though)
 proxy.flush()

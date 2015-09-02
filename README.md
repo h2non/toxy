@@ -25,6 +25,8 @@ Requires node.js +0.12 or io.js +1.6
   - [Installation](#installation)
   - [Examples](#examples)
 - [Poisons](#poisons)
+  - [Poisoning scopes](#poisioning-scopes)
+  - [Poisoning phases](#poisioning-phases)
   - [Built-in poisons](#built-in-poisons)
     - [Latency](#latency)
     - [Inject response](#inject-response)
@@ -148,9 +150,12 @@ proxy
   .poison(poisons.bandwidth({ bps: 1024 }))
   .withRule(rules.headers({'Authorization': /^Bearer (.*)$/i }))
 
+// Infect outgoing traffic only (after the server replied properly)
 proxy
   .get('/image/*')
-  .poison(poisons.bandwidth({ bps: 512 }))
+  .outgoingPoison(poisons.bandwidth({ bps: 512 }))
+  .withRule(rules.method('GET'))
+  .withRule(rules.responseStatus({ range: [ 200, 400 ] }))
 
 proxy
   .all('/api/*')
@@ -493,6 +498,21 @@ var rule = toxy.rules.contentType('application/json')
 toxy.rule(rule)
 ```
 
+#### Response status
+
+Evaluates the response status from the target server.
+Only applicable to outgoing poisons.
+
+**Arguments**:
+
+- **range** `array` - Pair of status code range. Default to `[200, 400]`.
+- **value** `string|regexp` - Header value to match.
+
+```js
+var rule = toxy.rules.contentType('application/json')
+toxy.rule(rule)
+```
+
 #### Body
 
 Match incoming body payload data by string, regexp or custom filter function
@@ -585,7 +605,15 @@ toxy
   .withRule(toxy.rules.probability(50))
   .forward('http://bar.server')
 
+toxy
+  .post('/boo')
+  .outgoingPoison(toxy.poisons.bandwidth({ bps: 1024 }))
+  .withRule(toxy.rules.method('GET'))
+  .forward('http://boo.server')
+
 toxy.all('/*')
+
+toxy.listen(3000)
 ```
 
 #### toxy#get(path, [ middleware... ])
