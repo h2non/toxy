@@ -44,7 +44,9 @@ Requires node.js +0.12 or io.js +1.6
     - [Probability](#probability)
     - [Method](#method)
     - [Headers](#headers)
+    - [Response headers](#response-headers)
     - [Content Type](#content-type)
+    - [Response status](#response-status)
     - [Body](#body)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
@@ -466,7 +468,7 @@ toxy.rule(method)
 
 #### Headers
 
-Filter by certain headers.
+Filter by request headers.
 
 **Arguments**:
 
@@ -482,6 +484,27 @@ var matchHeaders = {
 }
 
 var rule = toxy.rules.headers(matchHeaders)
+toxy.rule(rule)
+```
+
+#### Response headers
+
+Filter by response headers from target server.
+
+**Arguments**:
+
+- **headers** `object` - Headers to match by key-value pair. `value` can be a string, regexp, `boolean` or `function(headerValue, headerName) => boolean`
+
+```js
+var matchHeaders = {
+  'content-type': /^application/\json/i,
+  'server': true, // meaning it should be present,
+  'accept': function (value, key) {
+    return value.indexOf('text') !== -1
+  }
+}
+
+var rule = toxy.rules.responseHeaders(matchHeaders)
 toxy.rule(rule)
 ```
 
@@ -515,7 +538,9 @@ toxy.rule(rule)
 
 #### Body
 
-Match incoming body payload data by string, regexp or custom filter function
+Match incoming body payload data by `string`, `regexp` or custom filter `function`.
+
+This rule is pretty simple, so for complex body matching you should probably write your own rule.
 
 **Arguments**:
 

@@ -16,10 +16,12 @@ proxy
 // Route level, incoming and outgoing traffic poisioning
 proxy
   .get('/*')
+
+  // Define poison to infect incoming traffic
   .poison(poisons.slowOpen({ delay: 500 }))
   .withRule(rules.method('GET'))
 
-  // Define a outgoing traffic poisons
+  // Define multiple poisons to infect outgoing traffic
   .outgoingPoison(poisons.bandwidth({ bytes: 1024 }))
   .withRule(rules.method('GET'))
 
