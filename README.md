@@ -278,7 +278,7 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Reaches the server</b></td><td>false (only if used in incoming phase)</td>
+<td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
 </tr>
 </table>
 
@@ -473,7 +473,7 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Reaches the server</b></td><td>false (only if used in incoming phase)</td>
+<td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
 </tr>
 </table>
 
