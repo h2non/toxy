@@ -210,7 +210,10 @@ They are executed in FIFO order and asynchronously.
 
 ### Poisoning scopes
 
-`toxy` has a hierarchical design. There're two different scopes: `global` and `route`.
+`toxy` has a hierarchical design based on two different scopes: `global` and `route`.
+
+Global scope points to all the incoming HTTP traffic received by the proxy server, regardless of the HTTP method or path.
+Route scope points to any incoming traffic which matches with a specific HTTP verb and URI path.
 
 Poisons can be plugged to both scopes, meaning you can limit the scope of the poisioning,
 for instance, you might wanna apply a bandwidth limit poisioning only to
