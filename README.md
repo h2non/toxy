@@ -48,6 +48,7 @@ Requires node.js +0.12 or io.js +1.6
     - [Content Type](#content-type)
     - [Response status](#response-status)
     - [Body](#body)
+    - [Response body](#response-body)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
 - [HTTP API](#http-api)
@@ -66,10 +67,11 @@ Requires node.js +0.12 or io.js +1.6
 - Hierarchical and composable poisioning with rule based filtering
 - Hierarchical middleware layer (both global and route scopes)
 - Easily augmentable via middleware (based on connect/express middleware)
+- Supports both incoming and outgoing traffic poisioning
 - Built-in poisons (bandwidth, error, abort, latency, slow read...)
 - Rule-based poisoning (probabilistic, HTTP method, headers, body...)
-- Support third-party poisons and rules
-- Built-in balancer and traffic intercept via middleware
+- Supports third-party poisons and rules
+- Built-in balancer and traffic interceptor via middleware
 - Inherits API and features from [rocky](https://github.com/h2non/rocky)
 - Compatible with connect/express (and most of their middleware)
 - Able to run as standalone HTTP proxy
@@ -96,24 +98,43 @@ Via its middleware layer you can easily augment toxy features to your own needs.
 ### How it works
 
 ```
-↓   ( Incoming request )  ↓
-↓           |||           ↓
-↓     ----------------    ↓
-↓     |  Toxy Router |    ↓ --> Match the incoming request
-↓     ----------------    ↓
-↓           |||           ↓
-↓     ----------------    ↓
-↓     |  Exec Rules  |    ↓ --> Apply configured rules for the request
-↓     ----------------    ↓
-↓           |||           ↓
-↓     ----------------    ↓
-↓     | Exec Poisons |    ↓ --> If all rules passed, then poison the HTTP flow
-↓     ----------------    ↓
-↓        /       \        ↓
-↓        \       /        ↓
-↓   -------------------   ↓
-↓   | HTTP dispatcher |   ↓ --> Proxy the HTTP traffic, either poisoned or not
-↓   -------------------   ↓
+↓  ( Incoming request )  ↓
+↓          |||           ↓
+↓    ---------------     ↓
+↓    | Toxy Router |     ↓ --> Match the incoming request
+↓    ---------------     ↓
+↓          |||           ↓
+↓ |--------------------| ↓
+↓ |   Incoming phase   | ↓
+↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓ |  ----------------  | ↓
+↓ |  |  Exec Rules  |  | ↓ --> Apply configured rules for the incoming request
+↓ |  ----------------  | ↓
+↓ |        |||         | ↓
+↓ |  ----------------  | ↓
+↓ |  | Exec Poisons |  | ↓ --> If all rules passed, then poison the HTTP flow
+↓ |  ----------------  | ↓
+↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓        /      \        ↓
+↓        \      /        ↓
+↓ /--------------------\ ↓
+↓ |  HTTP dispatcher   | ↓ --> Forward the HTTP traffic to the target server, either poisoned or not
+↓ \--------------------/ ↓
+↓        /      \        ↓
+↓        \      /        ↓
+↓ |--------------------| ↓
+↓ |   Outgoing phase   | ↓ --> Receives response from target server
+↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓ |  ----------------  | ↓
+↓ |  |  Exec Rules  |  | ↓ --> Apply configured rules for the outoing request
+↓ |  ----------------  | ↓
+↓ |        |||         | ↓
+↓ |  ----------------  | ↓
+↓ |  | Exec Poisons |  | ↓ --> If all rules passed, then poison the HTTP flow before send it to the client
+↓ |  ----------------  | ↓
+↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓          |||           ↓
+↓ ( Dispatch to client ) ↓ --> Finally, send the request to the client, either poisoned or not
 ```
 
 ## Usage
@@ -219,7 +240,18 @@ See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison
 ### Built-in poisons
 
 #### Latency
-Name: `latency`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>latency</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Reachs the target</b></td><td>`true`</td>
+</tr>
+</table>
 
 Infects the HTTP flow injecting a latency jitter in the response
 
@@ -237,7 +269,18 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 ```
 
 #### Inject response
-Name: `inject`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>inject</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`false` (only if used in incoming phase)</td>
+</tr>
+</table>
 
 Injects a custom response, intercepting the request before sending it to the target server.
 Useful to inject errors originated in the server.
@@ -259,7 +302,18 @@ toxy.poison(toxy.poisons.inject({
 ```
 
 #### Bandwidth
-Name: `bandwidth`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>bandwidth</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Limits the amount of bytes sent over the network in outgoing HTTP traffic for a specific time frame.
 
@@ -276,7 +330,18 @@ toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 ```
 
 #### Rate limit
-Name: `rateLimit`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>rateLimit</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
@@ -296,7 +361,18 @@ toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 ```
 
 #### Slow read
-Name: `slowRead`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>rateLimit</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Reads incoming payload data packets slowly. Only valid for non-GET request.
 
@@ -313,6 +389,18 @@ toxy.poison(toxy.poisons.slowRead({ chunk: 2048, threshold: 1000 }))
 #### Slow open
 Name: `slowOpen`
 
+<table>
+<tr>
+<td><b>Name</b></td><td>slowOpen</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
+
 Delays the HTTP connection ready state.
 
 **Arguments**:
@@ -325,7 +413,18 @@ toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
 ```
 
 #### Slow close
-Name: `slowClose`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>slowClose</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Delays the HTTP connection close signal (EOF).
 
@@ -339,7 +438,18 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 ```
 
 #### Throttle
-Name: `throttle`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>throttle</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Restricts the amount of packets sent over the network in a specific threshold time frame.
 
@@ -354,7 +464,18 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 ```
 
 #### Abort connection
-Name: `abort`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>slowClose</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`false` (only if used in incoming phase)</td>
+</tr>
+</table>
 
 Aborts the TCP connection. From the low-level perspective, this will destroy the socket on the server, operating only at TCP level without sending any specific HTTP application level data.
 
@@ -368,7 +489,18 @@ toxy.poison(toxy.poisons.abort())
 ```
 
 #### Timeout
-Name: `timeout`
+
+<table>
+<tr>
+<td><b>Name</b></td><td>timout</td>
+</tr>
+<tr>
+<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+</tr>
+<tr>
+<td><b>Target server reached</b></td><td>`true`</td>
+</tr>
+</table>
 
 Defines a response timeout. Useful when forward to potentially slow servers.
 
@@ -489,7 +621,7 @@ toxy.rule(rule)
 
 #### Response headers
 
-Filter by response headers from target server.
+Filter by response headers from target server. Same as `headers` rule, but evaluating the outgoing request.
 
 **Arguments**:
 
@@ -538,9 +670,10 @@ toxy.rule(rule)
 
 #### Body
 
-Match incoming body payload data by `string`, `regexp` or custom filter `function`.
+Match incoming body payload by a given `string`, `regexp` or custom filter `function`.
 
-This rule is pretty simple, so for complex body matching you should probably write your own rule.
+This rule is pretty simple, so for complex body matching (e.g: validating againts a JSON schema)
+you should probably write your own rule.
 
 **Arguments**:
 
@@ -554,7 +687,28 @@ var rule = toxy.rules.body('"hello":"world"')
 toxy.rule(rule)
 
 // Or using a filter function returning a boolean
-var rule = toxy.rules.body(function (body) {
+var rule = toxy.rules.body(function contains(body) {
+  return body.indexOf('hello') !== -1
+})
+toxy.rule(rule)
+```
+
+#### Response body
+
+Match outgoing body payload by a given `string`, `regexp` or custom filter `function`.
+
+**Arguments**:
+
+- **match** `string|regexp|function` - Body content to match
+- **encoding** `string` - Body encoding. Default to `utf8`
+- **length** `number` - Body length. Default taken from `Content-Length` header
+
+```js
+var rule = toxy.rules.responseBody('"hello":"world"')
+toxy.rule(rule)
+
+// Or using a filter function returning a boolean
+var rule = toxy.rules.responseBody(function contains(body) {
   return body.indexOf('hello') !== -1
 })
 toxy.rule(rule)
@@ -717,6 +871,18 @@ Plug in a replay traffic middleware.
 
 For more information, see the [rocky docs](https://github.com/h2non/rocky#middleware-layer)
 
+#### toxy#requestBody(middleware)
+
+Intercept incoming request body. Useful to modify it on the fly.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
+
+#### toxy#responseBody(middleware)
+
+Intercept outgoing response body. Useful to modify it on the fly.
+
+For more information, see the [rocky docs](https://github.com/h2non/rocky#programmatic-api)
+
 #### toxy#middleware()
 
 Return a standard middleware to use with connect/express.
@@ -736,7 +902,12 @@ Closes the HTTP server.
 #### toxy#poison(poison)
 Alias: `usePoison`
 
-Register a new poison.
+Register a new poison to be applied to [incoming](#poisioning-phases) traffic.
+
+#### toxy#outgoingPoison(poison)
+Alias: `useOutgoingPoison`
+
+Register a new poison to be applied to [outgoing](#poisioning-phases) traffic.
 
 #### toxy#rule(rule)
 Alias: `useRule`
@@ -1005,6 +1176,7 @@ Example payload:
 ```js
 {
   "name": "latency",
+  "phase": "outgoing",
   "options": { "jitter": 1000 }
 }
 ```
@@ -1088,6 +1260,7 @@ Example payload:
 ```js
 {
   "name": "latency",
+  "phase": "outgoing",
   "options": { "jitter": 1000 }
 }
 ```

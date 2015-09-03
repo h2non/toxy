@@ -37,6 +37,39 @@ suite('helpers', function () {
     expect(id).to.be.equal('2f5')
   })
 
+  test('matchBody', function () {
+    var match = helpers.matchBody('foobar', 'foo')
+    expect(match).to.be.true
+
+    var match = helpers.matchBody('foobar', /^foo/i)
+    expect(match).to.be.true
+
+    var match = helpers.matchBody('foobar', function (body) {
+      return !!~body.indexOf('foo')
+    })
+    expect(match).to.be.true
+
+    var match = helpers.matchBody('foo', 'bar')
+    expect(match).to.be.false
+
+    var match = helpers.matchBody('foo', /bar/i)
+    expect(match).to.be.false
+  })
+
+  test('matchHeaders', function () {
+    var res = { headers: { server: 'foobar' } }
+
+    var match = helpers.matchHeaders(res, { server: /^Foo/i })
+    expect(match).to.be.true
+
+    var match = helpers.matchHeaders(res, { server: 'foo' })
+    expect(match).to.be.true
+
+    function assert(value, key) { return !!~value.indexOf('foo') }
+    var match = helpers.matchHeaders(res, { server: assert })
+    expect(match).to.be.true
+  })
+
   test('splitBuffer', function () {
     var buf = []
     var buffer = new Buffer('Hello World')
