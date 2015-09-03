@@ -249,7 +249,7 @@ See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Reachs the target</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -278,7 +278,7 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`false` (only if used in incoming phase)</td>
+<td><b>Reaches the server</b></td><td>false (only if used in incoming phase)</td>
 </tr>
 </table>
 
@@ -311,7 +311,7 @@ toxy.poison(toxy.poisons.inject({
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -339,7 +339,7 @@ toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -370,7 +370,7 @@ toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 <td><b>Poisioning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -397,7 +397,7 @@ Name: `slowOpen`
 <td><b>Poisioning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -422,7 +422,7 @@ toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -447,7 +447,7 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
@@ -473,7 +473,7 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`false` (only if used in incoming phase)</td>
+<td><b>Reaches the server</b></td><td>false (only if used in incoming phase)</td>
 </tr>
 </table>
 
@@ -498,7 +498,7 @@ toxy.poison(toxy.poisons.abort())
 <td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
-<td><b>Target server reached</b></td><td>`true`</td>
+<td><b>Reaches the server</b></td><td>true</td>
 </tr>
 </table>
 
