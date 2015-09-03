@@ -30,6 +30,7 @@ proxy
     res.end('Error')
   })
   .withRule(rules.probability(75))
+  .withRule(rules.responseHeaders({ 'Content-Type': /json/i }))
   .withRule(function (req, res, next) {
     // This rule evaluates the server response headers
     // in order to determine if the poison should be applied or not

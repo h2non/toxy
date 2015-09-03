@@ -25,8 +25,8 @@ Requires node.js +0.12 or io.js +1.6
   - [Installation](#installation)
   - [Examples](#examples)
 - [Poisons](#poisons)
-  - [Poisoning scopes](#poisioning-scopes)
-  - [Poisoning phases](#poisioning-phases)
+  - [Poisoning scopes](#poisoning-scopes)
+  - [Poisoning phases](#poisoning-phases)
   - [Built-in poisons](#built-in-poisons)
     - [Latency](#latency)
     - [Inject response](#inject-response)
@@ -101,40 +101,40 @@ Via its middleware layer you can easily augment toxy features to your own needs.
 ↓  ( Incoming request )  ↓
 ↓          |||           ↓
 ↓    ---------------     ↓
-↓    | Toxy Router |     ↓ --> Match the incoming request
+↓    | Toxy Router |     ↓ -> Match the incoming request
 ↓    ---------------     ↓
 ↓          |||           ↓
 ↓ |--------------------| ↓
 ↓ |   Incoming phase   | ↓
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
-↓ |  |  Exec Rules  |  | ↓ --> Apply configured rules for the incoming request
+↓ |  |  Exec Rules  |  | ↓ -> Apply configured rules for the incoming request
 ↓ |  ----------------  | ↓
 ↓ |        |||         | ↓
 ↓ |  ----------------  | ↓
-↓ |  | Exec Poisons |  | ↓ --> If all rules passed, then poison the HTTP flow
+↓ |  | Exec Poisons |  | ↓ -> If all rules passed, then poison the HTTP flow
 ↓ |  ----------------  | ↓
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓        /      \        ↓
 ↓        \      /        ↓
 ↓ /--------------------\ ↓
-↓ |  HTTP dispatcher   | ↓ --> Forward the HTTP traffic to the target server, either poisoned or not
+↓ |  HTTP dispatcher   | ↓ -> Forward the HTTP traffic to the target server, either poisoned or not
 ↓ \--------------------/ ↓
 ↓        /      \        ↓
 ↓        \      /        ↓
 ↓ |--------------------| ↓
-↓ |   Outgoing phase   | ↓ --> Receives response from target server
+↓ |   Outgoing phase   | ↓ -> Receives response from target server
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
-↓ |  |  Exec Rules  |  | ↓ --> Apply configured rules for the outoing request
+↓ |  |  Exec Rules  |  | ↓ -> Apply configured rules for the outoing request
 ↓ |  ----------------  | ↓
 ↓ |        |||         | ↓
 ↓ |  ----------------  | ↓
-↓ |  | Exec Poisons |  | ↓ --> If all rules passed, then poison the HTTP flow before send it to the client
+↓ |  | Exec Poisons |  | ↓ -> If all rules passed, then poison the HTTP flow before send it to the client
 ↓ |  ----------------  | ↓
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓          |||           ↓
-↓ ( Dispatch to client ) ↓ --> Finally, send the request to the client, either poisoned or not
+↓ ( Send to the client ) ↓ -> Finally, send the request to the client, either poisoned or not
 ```
 
 ## Usage
