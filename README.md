@@ -64,10 +64,10 @@ Requires node.js +0.12 or io.js +1.6
 - Hackable and elegant programmatic API (inspired on connect/express)
 - Admin HTTP API for external management and dynamic configuration
 - Featured built-in router with nested configuration
-- Hierarchical and composable poisioning with rule based filtering
+- Hierarchical and composable poisoning with rule based filtering
 - Hierarchical middleware layer (both global and route scopes)
 - Easily augmentable via middleware (based on connect/express middleware)
-- Supports both incoming and outgoing traffic poisioning
+- Supports both incoming and outgoing traffic poisoning
 - Built-in poisons (bandwidth, error, abort, latency, slow read...)
 - Rule-based poisoning (probabilistic, HTTP method, headers, body...)
 - Supports third-party poisons and rules
@@ -203,7 +203,7 @@ console.log('Test it:', 'http://localhost:3000/image/jpeg')
 ## Poisons
 
 Poisons host specific logic which intercepts and mutates, wraps, modify and/or cancel an HTTP transaction in the proxy server.
-Poisons can be applied to incoming or outgoing, or even both traffic flows (see [poison phases](#poisioning-phases)).
+Poisons can be applied to incoming or outgoing, or even both traffic flows (see [poison phases](#poisoning-phases)).
 
 Poisons can be composed and reused for different HTTP scenarios.
 They are executed in FIFO order and asynchronously.
@@ -215,8 +215,8 @@ They are executed in FIFO order and asynchronously.
 Global scope points to all the incoming HTTP traffic received by the proxy server, regardless of the HTTP method or path.
 Route scope points to any incoming traffic which matches with a specific HTTP verb and URI path.
 
-Poisons can be plugged to both scopes, meaning you can limit the scope of the poisioning,
-for instance, you might wanna apply a bandwidth limit poisioning only to
+Poisons can be plugged to both scopes, meaning you can limit the scope of the poisoning,
+for instance, you might wanna apply a bandwidth limit poisoning only to
 a certain routes, such as `/download` or `/images`.
 
 See [routes.js](https://github.com/h2non/toxy/blob/master/examples/routes.js) for a featured example.
@@ -249,7 +249,7 @@ See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison
 <td><b>Name</b></td><td>latency</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -278,7 +278,7 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 <td><b>Name</b></td><td>inject</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
@@ -311,7 +311,7 @@ toxy.poison(toxy.poisons.inject({
 <td><b>Name</b></td><td>bandwidth</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -339,7 +339,7 @@ toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 <td><b>Name</b></td><td>rateLimit</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -370,7 +370,7 @@ toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 <td><b>Name</b></td><td>rateLimit</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming</td>
+<td><b>poisoning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -397,7 +397,7 @@ Name: `slowOpen`
 <td><b>Name</b></td><td>slowOpen</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming</td>
+<td><b>poisoning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -422,7 +422,7 @@ toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
 <td><b>Name</b></td><td>slowClose</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -447,7 +447,7 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 <td><b>Name</b></td><td>throttle</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -473,7 +473,7 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 <td><b>Name</b></td><td>slowClose</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
@@ -498,7 +498,7 @@ toxy.poison(toxy.poisons.abort())
 <td><b>Name</b></td><td>timout</td>
 </tr>
 <tr>
-<td><b>Poisioning Phase</b></td><td>incoming / outgoing</td>
+<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -577,7 +577,7 @@ Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array
 
 #### Probability
 
-Enables the rule by a random probabilistic. Useful for random poisioning.
+Enables the rule by a random probabilistic. Useful for random poisoning.
 
 **Arguments**:
 
@@ -722,7 +722,7 @@ toxy.rule(rule)
 Rules are simple middleware functions that resolve asyncronously with a `boolean` value to determine if a given HTTP transaction should be ignored when poisoning.
 
 Your rule must resolve with a `boolean` param calling the `next(err,
-shouldIgnore)` function in the middleware, passing a `true` value if the rule has not matches and should not apply the poisioning, and therefore continuing with the next middleware stack.
+shouldIgnore)` function in the middleware, passing a `true` value if the rule has not matches and should not apply the poisoning, and therefore continuing with the next middleware stack.
 
 Here's an example of a simple rule matching the HTTP method to determine if:
 ```js
@@ -905,12 +905,12 @@ Closes the HTTP server.
 #### toxy#poison(poison)
 Alias: `usePoison`
 
-Register a new poison to be applied to [incoming](#poisioning-phases) traffic.
+Register a new poison to be applied to [incoming](#poisoning-phases) traffic.
 
 #### toxy#outgoingPoison(poison)
 Alias: `useOutgoingPoison`
 
-Register a new poison to be applied to [outgoing](#poisioning-phases) traffic.
+Register a new poison to be applied to [outgoing](#poisoning-phases) traffic.
 
 #### toxy#rule(rule)
 Alias: `useRule`
