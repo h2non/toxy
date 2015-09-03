@@ -43,12 +43,12 @@ Requires node.js +0.12 or io.js +1.6
   - [Built-in rules](#built-in-rules)
     - [Probability](#probability)
     - [Method](#method)
+    - [Content Type](#content-type)
     - [Headers](#headers)
     - [Response headers](#response-headers)
-    - [Content Type](#content-type)
-    - [Response status](#response-status)
     - [Body](#body)
     - [Response body](#response-body)
+    - [Response status](#response-status)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
 - [HTTP API](#http-api)
@@ -80,20 +80,22 @@ Requires node.js +0.12 or io.js +1.6
 
 ### Why toxy?
 
-There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or extend. Additionally, most of the those solutions only operate at TCP L3 level stack instead of providing high-level abstraction to cover common requirements in the specific domain and nature of the HTTP L7 protocol, like toxy does.
+There're some other similar solutions like `toxy` in the market, but most of them do not provide a proper programmatic control and usually are not easy to hack, configure and/or directly closed to extensibility.
+Additionally, most of the those solutions only operates at TCP L3 level stack instead of providing high-level abstractions to cover common requirements in the specific domain and nature of the HTTP L7 protocol, like toxy try to provide.
 
-toxy provides a powerful hackable and extensible solution with a convenient abstraction, but without losing a convenient low-level interface capabilities to deal with HTTP protocol primitives properly.
+toxy brings a powerful hackable and extensible solution with a convenient abstraction, but without losing a proper low-level interface capabilities to deal with HTTP protocol primitives easily.
 
 toxy was designed based on the rules of composition, simplicity and extensibility.
-Via its middleware layer you can easily augment toxy features to your own needs.
+Via its built-in hierarchical domain specific middleware layer you can easily augment toxy features to your own needs.
 
 ### Concepts
 
-`toxy` introduces two core directives that you can plug in the proxy and should knowing before using: poisons and rules.
+`toxy` introduces two core directives: poisons and rules.
 
-**Poisons** are the specific logic to infect an incoming or outgoing HTTP flow (e.g: injecting a latency, replying with an error). HTTP flow can be poisoned by one or multiple poisons, and poisons can be plugged to infect both global or route level traffic, and in both incoming and outgoing traffic flows.
+**Poisons** are the specific logic which infects an incoming or outgoing HTTP transaction (e.g: injecting a latency, replying with an error). One HTTP transaction can be poisoned by one or multiple poisons, and those poisons can be also configured to infect both global or route level traffic.
 
-**Rules** are a kind of validation filters that can be reused and applied to global incoming HTTP traffic, route level traffic or into a specific poison. Their responsability is to determine, via inspecting each incoming HTTP request, if the registered poisons should be enabled or not, and therefore infecting or not the HTTP traffic (e.g: match headers, query params, method, body...).
+**Rules** are a kind of match validation filters that inspects the an HTTP request/response in order to determine if, given a certain rules, the HTTP transaction should be poisioned or not (e.g: match headers, query params, method, body...).
+Rules can be reused and applied to incoming and outgoing traffic flows, including different scopes: global, route or poison level.
 
 ### How it works
 
@@ -566,10 +568,10 @@ For featured real example, take a look to the [built-in poisons](https://github.
 
 ## Rules
 
-Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
+Rules are simple validation filters which inspects an incoming or outgoing HTTP traffic in order to determine, given a certain rules (e.g: matches the method, headers, query params, body...), if the current HTTP transaction should be poisoned or not, based on the resolution value of the rule.
 
 Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning.
-Rules can be applied to the global, route or even poison scope, and also to multiple phases of poisoning.
+Rules can be applied to global, route or even poison scope, and it also applies to both [phases of poisoning](#poisoning-phases).
 
 Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.
 
@@ -617,6 +619,19 @@ Filters by HTTP method.
 ```js
 var method = toxy.rules.method(['GET', 'POST'])
 toxy.rule(method)
+```
+
+#### Content Type
+
+Filters by content type header. It should be present
+
+**Arguments**:
+
+- **value** `string|regexp` - Header value to match.
+
+```js
+var rule = toxy.rules.contentType('application/json')
+toxy.rule(rule)
 ```
 
 #### Headers
@@ -676,43 +691,6 @@ var matchHeaders = {
 }
 
 var rule = toxy.rules.responseHeaders(matchHeaders)
-toxy.rule(rule)
-```
-
-#### Content Type
-
-Filters by content type header. It should be present
-
-**Arguments**:
-
-- **value** `string|regexp` - Header value to match.
-
-```js
-var rule = toxy.rules.contentType('application/json')
-toxy.rule(rule)
-```
-
-#### Response status
-
-<table>
-<tr>
-<td><b>Name</b></td><td>responseStatus</td>
-</tr>
-<tr>
-<td><b>Poison Phase</b></td><td>outgoing</td>
-</tr>
-</table>
-
-Evaluates the response status from the target server.
-Only applicable to outgoing poisons.
-
-**Arguments**:
-
-- **range** `array` - Pair of status code range. Default to `[200, 400]`.
-- **value** `string|regexp` - Header value to match.
-
-```js
-var rule = toxy.rules.contentType('application/json')
 toxy.rule(rule)
 ```
 
@@ -777,6 +755,30 @@ toxy.rule(rule)
 var rule = toxy.rules.responseBody(function contains(body) {
   return body.indexOf('hello') !== -1
 })
+toxy.rule(rule)
+```
+
+#### Response status
+
+<table>
+<tr>
+<td><b>Name</b></td><td>responseStatus</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>outgoing</td>
+</tr>
+</table>
+
+Evaluates the response status from the target server.
+Only applicable to outgoing poisons.
+
+**Arguments**:
+
+- **range** `array` - Pair of status code range. Default to `[200, 400]`.
+- **value** `string|regexp` - Header value to match.
+
+```js
+var rule = toxy.rules.contentType('application/json')
 toxy.rule(rule)
 ```
 
