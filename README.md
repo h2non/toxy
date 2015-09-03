@@ -231,7 +231,7 @@ and it has not been forwarded to the target server yet.
 **Outgoing** poisoning is applied when the traffic has been forwarded to the target server and
 the proxy recieves the response from it, but that response has not been send to the client yet.
 
-This is, essentially, that you can plug in your poisons to infect the HTTP traffic
+This means, essentially, that you can plug in your poisons to infect the HTTP traffic
 before or after the request is forwarded to the target HTTP server.
 
 This allows you apply a better and more accurated poisoning based on the server response.
