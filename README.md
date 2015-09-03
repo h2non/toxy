@@ -456,7 +456,7 @@ Restricts the amount of packets sent over the network in a specific threshold ti
 **Arguments**:
 
 - **options** `object`
-  - **chunk* `number` - Packet chunk size in bytes. Default to `1024`
+  - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
   - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
 
 ```js
