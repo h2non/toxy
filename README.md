@@ -249,7 +249,7 @@ See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison
 <td><b>Name</b></td><td>latency</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -278,7 +278,7 @@ toxy.poison(toxy.poisons.latency({ max: 1000, min: 100 }))
 <td><b>Name</b></td><td>inject</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
@@ -311,7 +311,7 @@ toxy.poison(toxy.poisons.inject({
 <td><b>Name</b></td><td>bandwidth</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -339,7 +339,7 @@ toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 <td><b>Name</b></td><td>rateLimit</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -370,7 +370,7 @@ toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 <td><b>Name</b></td><td>rateLimit</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming</td>
+<td><b>Poisoning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -397,7 +397,7 @@ Name: `slowOpen`
 <td><b>Name</b></td><td>slowOpen</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming</td>
+<td><b>Poisoning Phase</b></td><td>incoming</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -422,7 +422,7 @@ toxy.poison(toxy.poisons.slowOpen({ delay: 2000 }))
 <td><b>Name</b></td><td>slowClose</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -447,7 +447,7 @@ toxy.poison(toxy.poisons.slowClose({ delay: 2000 }))
 <td><b>Name</b></td><td>throttle</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -473,7 +473,7 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 <td><b>Name</b></td><td>slowClose</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>false (only as incoming poison)</td>
@@ -498,7 +498,7 @@ toxy.poison(toxy.poisons.abort())
 <td><b>Name</b></td><td>timout</td>
 </tr>
 <tr>
-<td><b>poisoning Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
 </tr>
 <tr>
 <td><b>Reaches the server</b></td><td>true</td>
@@ -569,13 +569,22 @@ For featured real example, take a look to the [built-in poisons](https://github.
 Rules are simple validation filters which inspect an HTTP request and determine, given a certain rules (e.g: method, headers, query params), if  the HTTP transaction should be poisoned or not.
 
 Rules are useful to compose, decouple and reuse logic among different scenarios of poisoning.
-Rules can be applied to the global, route or even poison scope.
+Rules can be applied to the global, route or even poison scope, and also to multiple phases of poisoning.
 
 Rules are executed in FIFO order. Their evaluation logic is equivalent to `Array#every()` in JavaScript: all the rules must pass in order to proceed with the poisoning.
 
 ### Built-in rules
 
 #### Probability
+
+<table>
+<tr>
+<td><b>Name</b></td><td>probability</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
 
 Enables the rule by a random probabilistic. Useful for random poisoning.
 
@@ -590,6 +599,15 @@ toxy.rule(rule)
 
 #### Method
 
+<table>
+<tr>
+<td><b>Name</b></td><td>method</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
+
 Filters by HTTP method.
 
 **Arguments**:
@@ -602,6 +620,15 @@ toxy.rule(method)
 ```
 
 #### Headers
+
+<table>
+<tr>
+<td><b>Name</b></td><td>headers</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
 
 Filter by request headers.
 
@@ -623,6 +650,15 @@ toxy.rule(rule)
 ```
 
 #### Response headers
+
+<table>
+<tr>
+<td><b>Name</b></td><td>responseHeaders</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>outgoing</td>
+</tr>
+</table>
 
 Filter by response headers from target server. Same as `headers` rule, but evaluating the outgoing request.
 
@@ -658,6 +694,15 @@ toxy.rule(rule)
 
 #### Response status
 
+<table>
+<tr>
+<td><b>Name</b></td><td>responseStatus</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>outgoing</td>
+</tr>
+</table>
+
 Evaluates the response status from the target server.
 Only applicable to outgoing poisons.
 
@@ -672,6 +717,15 @@ toxy.rule(rule)
 ```
 
 #### Body
+
+<table>
+<tr>
+<td><b>Name</b></td><td>body</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
 
 Match incoming body payload by a given `string`, `regexp` or custom filter `function`.
 
@@ -697,6 +751,15 @@ toxy.rule(rule)
 ```
 
 #### Response body
+
+<table>
+<tr>
+<td><b>Name</b></td><td>responseBody</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
 
 Match outgoing body payload by a given `string`, `regexp` or custom filter `function`.
 
