@@ -102,11 +102,11 @@ Rules can be reused and applied to incoming and outgoing traffic flows, includin
 ```
 ↓  ( Incoming request )  ↓
 ↓          |||           ↓
-↓    ---------------     ↓
+↓    +-------------+     ↓
 ↓    | Toxy Router |     ↓ -> Match the incoming request
-↓    ---------------     ↓
+↓    +-------------+     ↓
 ↓          |||           ↓
-↓ |--------------------| ↓
+↓ +--------------------+ ↓
 ↓ |   Incoming phase   | ↓
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
@@ -116,15 +116,15 @@ Rules can be reused and applied to incoming and outgoing traffic flows, includin
 ↓ |  ----------------  | ↓
 ↓ |  | Exec Poisons |  | ↓ -> If all rules passed, then poison the HTTP flow
 ↓ |  ----------------  | ↓
-↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓ +~~~~~~~~~~~~~~~~~~~~+ ↓
 ↓        /      \        ↓
 ↓        \      /        ↓
-↓ /--------------------\ ↓
+↓ +--------------------+ ↓
 ↓ |  HTTP dispatcher   | ↓ -> Forward the HTTP traffic to the target server, either poisoned or not
-↓ \--------------------/ ↓
+↓ +--------------------+ ↓
 ↓        /      \        ↓
 ↓        \      /        ↓
-↓ |--------------------| ↓
+↓ +--------------------+ ↓
 ↓ |   Outgoing phase   | ↓ -> Receives response from target server
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
@@ -134,7 +134,7 @@ Rules can be reused and applied to incoming and outgoing traffic flows, includin
 ↓ |  ----------------  | ↓
 ↓ |  | Exec Poisons |  | ↓ -> If all rules passed, then poison the HTTP flow before send it to the client
 ↓ |  ----------------  | ↓
-↓ |~~~~~~~~~~~~~~~~~~~~| ↓
+↓ +~~~~~~~~~~~~~~~~~~~~+ ↓
 ↓          |||           ↓
 ↓ ( Send to the client ) ↓ -> Finally, send the request to the client, either poisoned or not
 ```
@@ -735,7 +735,7 @@ toxy.rule(rule)
 <td><b>Name</b></td><td>responseBody</td>
 </tr>
 <tr>
-<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+<td><b>Poison Phase</b></td><td>outgoing</td>
 </tr>
 </table>
 
