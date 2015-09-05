@@ -968,14 +968,14 @@ Starts the built-in HTTP server, listening on a specific TCP port.
 Closes the HTTP server.
 
 #### toxy#poison(poison)
-Alias: `usePoison`
+Alias: `usePoison`, `useIncomingPoison`
 
-Register a new poison to be applied to [incoming](#poisoning-phases) traffic.
+Register a new poison to infect [incoming](#poisoning-phases) traffic.
 
 #### toxy#outgoingPoison(poison)
 Alias: `useOutgoingPoison`
 
-Register a new poison to be applied to [outgoing](#poisoning-phases) traffic.
+Register a new poison to infect [outgoing](#poisoning-phases) traffic.
 
 #### toxy#rule(rule)
 Alias: `useRule`
