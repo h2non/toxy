@@ -679,7 +679,7 @@ Filter by response headers from target server. Same as `headers` rule, but evalu
 
 **Arguments**:
 
-- **headers** `object` - Headers to match by key-value pair. `value` can be a string, regexp, `boolean` or `function(headerValue, headerName) => boolean`
+- **headers** `object` - Headers to match by key-value pair. `value` can be a `string`, `regexp`, `boolean` or `function(headerValue, headerName) => boolean`
 
 ```js
 var matchHeaders = {
@@ -707,7 +707,7 @@ toxy.rule(rule)
 
 Match incoming body payload by a given `string`, `regexp` or custom filter `function`.
 
-This rule is pretty simple, so for complex body matching (e.g: validating againts a JSON schema)
+This rule is pretty simple, so for complex body matching (e.g: validating against a JSON schema)
 you should probably write your own rule.
 
 **Arguments**:
