@@ -10,7 +10,7 @@ toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#
 It operates only at L7 (application level).
 
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
-It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's pluggable in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
+It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's [pluggable](https://github.com/h2non/toxy/blob/master/examples/express.js) in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -90,12 +90,12 @@ Via its built-in hierarchical domain specific middleware layer you can easily au
 
 ### Concepts
 
-`toxy` introduces two core directives: poisons and rules.
+`toxy` introduces two directives: poisons and rules.
 
 **Poisons** are the specific logic which infects an incoming or outgoing HTTP transaction (e.g: injecting a latency, replying with an error). One HTTP transaction can be poisoned by one or multiple poisons, and those poisons can be also configured to infect both global or route level traffic.
 
-**Rules** are a kind of match validation filters that inspects the an HTTP request/response in order to determine if, given a certain rules, the HTTP transaction should be poisioned or not (e.g: match headers, query params, method, body...).
-Rules can be reused and applied to incoming and outgoing traffic flows, including different scopes: global, route or poison level.
+**Rules** are a kind of match validation filters that inspects an HTTP request/response in order to determine, given a certain rules, if the HTTP transaction should be poisioned or not (e.g: if headers matches, query params, method, body...).
+Rules can be reused and applied to both incoming and outgoing traffic flows, including different scopes: global, route or poison level.
 
 ### How it works
 
@@ -214,10 +214,11 @@ They are executed in FIFO order and asynchronously.
 
 `toxy` has a hierarchical design based on two different scopes: `global` and `route`.
 
-Global scope points to all the incoming HTTP traffic received by the proxy server, regardless of the HTTP method or path.
-Route scope points to any incoming traffic which matches with a specific HTTP verb and URI path.
+**Global** scope points to all the incoming HTTP traffic received by the proxy server, regardless of the HTTP method or path.
 
-Poisons can be plugged to both scopes, meaning you can limit the scope of the poisoning,
+**Route** scope points to any incoming traffic which matches with a specific HTTP verb and URI path.
+
+Poisons can be plugged to both scopes, meaning you can operate with better accuracy and restrict the scope of the poisoning,
 for instance, you might wanna apply a bandwidth limit poisoning only to
 a certain routes, such as `/download` or `/images`.
 
@@ -225,20 +226,20 @@ See [routes.js](https://github.com/h2non/toxy/blob/master/examples/routes.js) fo
 
 ### Poisoning phases
 
-Poisoning can be done to incoming or outgoing traffic flows, or even both.
+Poisons can be plugged to incoming or outgoing traffic flows, or even both.
 
-**Incoming** poisoning is applied when the traffic is still receiving by proxy
-and it has not been forwarded to the target server yet.
+**Incoming** poisoning is applied when the traffic has been received by proxy
+but it has not been forwarded to the target server yet.
 
-**Outgoing** poisoning is applied when the traffic has been forwarded to the target server and
-the proxy recieves the response from it, but that response has not been send to the client yet.
+**Outgoing** poisoning refers to the traffic that has been forwarded to the target server and
+when proxy recieves the response from it, but that response has not been sent to the client yet.
 
 This means, essentially, that you can plug in your poisons to infect the HTTP traffic
-before or after the request is forwarded to the target HTTP server.
+before or after the request is forwarded to the target HTTP server or sent to the client.
 
-This allows you apply a better and more accurated poisoning based on the server response.
+This allows you apply a better and more accurated poisoning based on the request or server response.
 For instance, given the nature of some poisons, like `inject error`,
-you may require to enable it according to the target server response.
+you may want to enable it according to the target server response (e.g: some header is present or not).
 
 See [poison-phases.js](https://github.com/h2non/toxy/blob/master/examples/poison-phases.js) for a featured example.
 
