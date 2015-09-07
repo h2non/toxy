@@ -10,7 +10,7 @@ toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#
 It operates only at L7 (application level).
 
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
-It's compatible with [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com), and it was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy.
+It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's pluggable in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
 
 Requires node.js +0.12 or io.js +1.6
 
