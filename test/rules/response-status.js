@@ -16,6 +16,13 @@ suite('rules#responseStatus', function () {
     assert([200, 200], 201, equals(true))
   })
 
+  test('value', function () {
+    assert(204, 204, equals(false))
+    assert(400, 400, equals(false))
+    assert(300, 500, equals(true))
+    assert(-1, 200, equals(true))
+  })
+
   test('lower', function () {
     assert({ lower: 300 }, 204, equals(false))
     assert({ lower: 300 }, 400, equals(true))

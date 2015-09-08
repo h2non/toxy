@@ -4,7 +4,7 @@
 
 **toxy** is a fully programmatic and **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as intermediate proxy among services
+It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as intermediate proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 It operates only at L7 (application level).
@@ -775,8 +775,10 @@ Only applicable to outgoing poisons.
 
 **Arguments**:
 
-- **range** `array` - Pair of status code range. Default to `[200, 400]`.
-- **value** `string|regexp` - Header value to match.
+- **range** `array` - Pair of status code range to match. Default `[200, 300]`.
+- **lower** `number` - Compare status as `lower than` operation. Default to `null`.
+- **higher** `number` - Compare status as `higher than` operation. Default to `null`.
+- **value** `number` - Status code to match using a strict equality comparison. Default `null`.
 
 ```js
 var rule = toxy.rules.contentType('application/json')
