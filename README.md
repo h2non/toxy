@@ -49,6 +49,7 @@ Requires node.js +0.12 or io.js +1.6
     - [Body](#body)
     - [Response body](#response-body)
     - [Response status](#response-status)
+  - [Third-party rules](#third-party-rules)
   - [How to write rules](#how-to-write-rules)
 - [Programmatic API](#programmatic-api)
 - [HTTP API](#http-api)
@@ -784,6 +785,12 @@ Only applicable to outgoing poisons.
 var rule = toxy.rules.contentType('application/json')
 toxy.rule(rule)
 ```
+
+### Third-party rules
+
+List of available third-party rules provided by the community. PR are welcome.
+
+- [IP](https://github.com/h2non/toxy-ip) - Filter incomming traffic by IP address or subnet.
 
 ### How to write rules
 
