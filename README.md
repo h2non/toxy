@@ -790,7 +790,7 @@ toxy.rule(rule)
 
 List of available third-party rules provided by the community. PR are welcome.
 
-- [IP](https://github.com/h2non/toxy-ip) - Filter incomming traffic by IP address or subnet.
+- [IP](https://github.com/h2non/toxy-ip) - Enable/disable poisons based on the client IP address (supports CIDR, subnets, ranges...).
 
 ### How to write rules
 
