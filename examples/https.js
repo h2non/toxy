@@ -1,5 +1,4 @@
 var fs = require('fs')
-var http = require('http')
 var toxy = require('..')
 
 var fixtures = __dirname + '/../test/fixtures'
