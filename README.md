@@ -353,7 +353,7 @@ toxy.poison(toxy.poisons.bandwidth({ bytes: 512 }))
 Limits the amount of requests received by the proxy in a specific threshold time frame. Designed to test API limits. Exposes typical `X-RateLimit-*` headers.
 
 Note that this is very simple rate limit implementation, indeed limits are stored in-memory, therefore are completely volalite.
-There're a bunch of featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison. You might also interested in [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket).
+There're a bunch of featured and consistent rate limiter implementations in [npm](https://www.npmjs.com/search?q=rate+limit) that you can plug in as poison. You might be also interested in [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket).
 
 **Arguments**:
 
