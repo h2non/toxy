@@ -489,10 +489,17 @@ Aborts the TCP connection. From the low-level perspective, this will destroy the
 **Arguments**:
 
 - **options** `object`
-  - **delay** `number` - Socket destroy delay in miliseconds. Default to `0`
+  - **delay** `number` - Delay socket destroy in miliseconds. Default to `0`
+  - **next** `boolean` - Don't block the middleware stack call chain, continuing with the next. Default to `false`
+  - **error** `Error` - Custom error when destroying the socket. Default to `null`
 
 ```js
+// Basic connection abort
 toxy.poison(toxy.poisons.abort())
+// Abort after a delay
+toxy.poison(toxy.poisons.abort(1000))
+// Passing custom options
+toxy.poison(toxy.poisons.abort({ delay: 1000, next: true }))
 ```
 
 #### Timeout
@@ -983,7 +990,7 @@ Alias: `usePoison`, `useIncomingPoison`
 Register a new poison to infect [incoming](#poisoning-phases) traffic.
 
 #### toxy#outgoingPoison(poison)
-Alias: `useOutgoingPoison`
+Alias: `useOutgoingPoison`, `responsePoison`
 
 Register a new poison to infect [outgoing](#poisoning-phases) traffic.
 
@@ -1020,15 +1027,35 @@ Alias: `disablePoisons`
 
 Disable all the registered poisons.
 
-#### toxy#getPoison(poison)
+#### toxy#getPoison(name)
 Return: `Directive|null`
 
 Searchs and retrieves a registered poison in the stack by name identifier.
 
+#### toxy#getIncomingPoison(name)
+Return: `Directive|null`
+
+Searchs and retrieves a registered `incoming` poison in the stack by name identifier.
+
+#### toxy#getOutgoingPoison(name)
+Return: `Directive|null`
+
+Searchs and retrieves a registered `outgoing` poison in the stack by name identifier.
+
 #### toxy#getPoisons()
 Return: `array<Directive>`
 
-Return an array of registered poisons wrapped as `Directive`.
+Return an array of registered poisons.
+
+#### toxy#getIncomingPoisons()
+Return: `array<Directive>`
+
+Return an array of registered `incoming` poisons.
+
+#### toxy#getOutgoingPoisons()
+Return: `array<Directive>`
+
+Return an array of registered `outgoing` poisons.
 
 #### toxy#flush()
 Alias: `flushPoisons`
