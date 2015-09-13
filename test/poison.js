@@ -5,7 +5,6 @@ suite('poison', function () {
   test('default', function (done) {
     var p = new Poison(done)
     expect(p.phase).to.be.equal('incoming')
-    expect(p._outPoisonsEnabled).to.be.false
     expect(p.isEnabled()).to.be.true
     p.handler()()
   })
