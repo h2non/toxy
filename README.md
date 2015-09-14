@@ -498,8 +498,10 @@ Aborts the TCP connection. From the low-level perspective, this will destroy the
 toxy.poison(toxy.poisons.abort())
 // Abort after a delay
 toxy.poison(toxy.poisons.abort(1000))
-// Passing custom options
-toxy.poison(toxy.poisons.abort({ delay: 1000, next: true }))
+// In this case, the socket will be closed if
+// the target server doesn't replies with
+// a response after 2 seconds
+toxy.poison(toxy.poisons.abort({ delay: 2000, next: true }))
 ```
 
 #### Timeout
