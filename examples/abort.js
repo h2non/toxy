@@ -13,7 +13,10 @@ proxy
 
 proxy
   .all('/delay/*')
-  .poison(poisons.abort({ delay: 1500, next: true }))
+  // In this case, the socket will be closed if
+  // the target server doesn't replies with
+  // a response after 2 seconds
+  .poison(poisons.abort({ delay: 2000, next: true }))
   .withRule(rules.method('GET'))
 
 proxy.all('/*')
