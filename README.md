@@ -489,9 +489,10 @@ Aborts the TCP connection. From the low-level perspective, this will destroy the
 **Arguments**:
 
 - **options** `object`
-  - **delay** `number` - The TCP connection will be aborted unless the server responds within **delay** milliseconds. Default to `0`
-  - **next** `boolean` - Don't block the middleware stack call chain, continuing with the next. Default to `false`
   - **error** `Error` - Custom error when destroying the socket. Default to `null`
+  - **delay** `number` - Abort TCP connection after waiting the given miliseconds . Default to `0`
+  - **next** `boolean` - If `true`, the connection will be aborted unless the server responds within `delay` milliseconds. Internally, it won't block the middleware call chain, continuing with the next middleware. Default to `false`
+
 
 ```js
 // Basic connection abort
