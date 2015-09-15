@@ -489,7 +489,7 @@ Aborts the TCP connection. From the low-level perspective, this will destroy the
 **Arguments**:
 
 - **options** `object`
-  - **delay** `number` - Delay socket destroy in miliseconds. Default to `0`
+  - **delay** `number` - The TCP connection will be aborted unless the server responds within **delay** milliseconds. Default to `0`
   - **next** `boolean` - Don't block the middleware stack call chain, continuing with the next. Default to `false`
   - **error** `Error` - Custom error when destroying the socket. Default to `null`
 
