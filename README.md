@@ -10,7 +10,7 @@ toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#
 It operates only at L7 (application level).
 
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
-It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's [pluggable](https://github.com/h2non/toxy/blob/master/examples/express.js) in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
+It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's also [pluggable](https://github.com/h2non/toxy/blob/master/examples/express.js) in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
 
 Requires node.js +0.12 or io.js +1.6
 
@@ -474,7 +474,7 @@ toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
 
 <table>
 <tr>
-<td><b>Name</b></td><td>slowClose</td>
+<td><b>Name</b></td><td>abort</td>
 </tr>
 <tr>
 <td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
@@ -489,10 +489,9 @@ Aborts the TCP connection. From the low-level perspective, this will destroy the
 **Arguments**:
 
 - **options** `object`
-  - **error** `Error` - Custom error when destroying the socket. Default to `null`
-  - **delay** `number` - Abort TCP connection after waiting the given miliseconds . Default to `0`
-  - **next** `boolean` - If `true`, the connection will be aborted unless the server responds within `delay` milliseconds. Internally, it won't block the middleware call chain, continuing with the next middleware. Default to `false`
-
+  - **delay** `number` - Aborts TCP connection after waiting the given miliseconds. Default to `0`
+  - **next** `boolean` - If `true`, the connection will be aborted if the target server takes more than the `delay` param time to reply. Default to `false`
+  - **error** `Error` - Custom internal node.js error to use when destroying the socket. Default to `null`
 
 ```js
 // Basic connection abort
