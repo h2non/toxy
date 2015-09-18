@@ -34,7 +34,7 @@ proxy.listen(3000)
 console.log('Server listening on port:', 3000)
 
 // Enable the admin HTTP server
-var admin = toxy.admin(/* { apiKey: 's3cr3t' } */)
+var admin = toxy.admin({ cors: true })
 
 // Add the toxy proxy instance
 admin.manage(proxy)

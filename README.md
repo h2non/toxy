@@ -499,8 +499,8 @@ toxy.poison(toxy.poisons.abort())
 // Abort after a delay
 toxy.poison(toxy.poisons.abort(1000))
 // In this case, the socket will be closed if
-// the target server doesn't replies with
-// a response after 2 seconds
+// the target server takes more than
+// 2 seconds to respond
 toxy.poison(toxy.poisons.abort({ delay: 2000, next: true }))
 ```
 
@@ -1183,7 +1183,7 @@ For a featured use case, see the [admin server](examples/admin.js) example.
 const toxy = require('toxy')
 
 // Create the toxy admin server
-var admin = toxy.admin()
+var admin = toxy.admin({ cors: true })
 admin.listen(9000)
 
 // Create the toxy proxy
@@ -1408,8 +1408,10 @@ Returns: `Admin`
 
 **Supported options**:
 
-- **apiKey** - Optional API key to protect the server
-- **port** - Optional. TCP port to listen
+- **apiKey** `string` - Optional API key to protect the server
+- **port** `number` - Optional. TCP port to listen
+- **cors** `boolean` - Enable CORS for web browser access
+- **middleware** `array<function>` - Plug in additional middleware
 
 ##### Admin#listen([ port, host ])
 
