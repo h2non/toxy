@@ -1412,6 +1412,7 @@ Returns: `Admin`
 - **port** `number` - Optional. TCP port to listen
 - **cors** `boolean` - Enable CORS for web browser access
 - **middleware** `array<function>` - Plug in additional middleware
+- **ssl** `object` - Node.js HTTPS server [TLS options](https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
 
 ##### Admin#listen([ port, host ])
 

@@ -1,8 +1,8 @@
-const toxy = require('../..')
+const toxy = require('../../..')
 const expect = require('chai').expect
 const supertest = require('supertest')
 
-suite('admin authorization', function () {
+suite('admin#middleware#authorization', function () {
   const opts = { apiKey: 'foobar' }
   const admin = toxy.admin(opts)
   const port = 9889

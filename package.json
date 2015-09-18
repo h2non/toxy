@@ -32,7 +32,7 @@
     "node": ">= 0.12"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/*"
+    "test": "./node_modules/.bin/mocha --timeout 5000 --reporter spec --ui tdd test/* test/admin/*"
   },
   "dependencies": {
     "midware": "^0.1.3",
