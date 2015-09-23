@@ -791,8 +791,12 @@ Only applicable to outgoing poisons.
 - **value** `number` - Status code to match using a strict equality comparison. Default `null`.
 
 ```js
-var rule = toxy.rules.contentType('application/json')
-toxy.rule(rule)
+// Strict evaluation of the status code
+toxy.rule(toxy.rules.responseBody(200))
+// Using a range of valid status
+toxy.rule(toxy.rules.responseBody([200, 204]))
+// Using relational operator for comparison
+toxy.rule(toxy.rules.responseBody({ higher: 199, lower: 400 }))
 ```
 
 ### Third-party rules
