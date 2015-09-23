@@ -789,14 +789,17 @@ Only applicable to outgoing poisons.
 - **lower** `number` - Compare status as `lower than` operation. Default to `null`.
 - **higher** `number` - Compare status as `higher than` operation. Default to `null`.
 - **value** `number` - Status code to match using a strict equality comparison. Default `null`.
+- **include** `array` - Unordered list of status codes to match. Useful to specify custom status. Default `null`
 
 ```js
 // Strict evaluation of the status code
 toxy.rule(toxy.rules.responseBody(200))
 // Using a range of valid status
 toxy.rule(toxy.rules.responseBody([200, 204]))
-// Using relational operator for comparison
+// Using relational comparison
 toxy.rule(toxy.rules.responseBody({ higher: 199, lower: 400 }))
+// Custom unordered status code to match
+toxy.rule(toxy.rules.responseBody({ include: [200, 204, 400, 404] }))
 ```
 
 ### Third-party rules

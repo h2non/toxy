@@ -34,6 +34,13 @@ suite('rules#responseStatus', function () {
     assert({ higher: 300 }, 200, equals(true))
     assert({ higher: 0 }, 200, equals(false))
   })
+
+  test('include', function () {
+    assert({ include: [204] }, 204, equals(false))
+    assert({ include: [201] }, 200, equals(true))
+    assert({ include: [204, 400, 200] }, 200, equals(false))
+    assert({ include: [] }, 200, equals(true))
+  })
 })
 
 function assert(opts, status, assert) {
