@@ -182,6 +182,7 @@ proxy
   .get('/image/*')
   .outgoingPoison(poisons.bandwidth({ bps: 512 }))
   .withRule(rules.method('GET'))
+  .withRule(rules.timeThreshold({ duration: 1000, threshold: 1000 * 10 }))
   .withRule(rules.responseStatus({ range: [ 200, 400 ] }))
 
 proxy
@@ -634,7 +635,7 @@ For instance, you can enable a certain poisons during a specific amount of time 
 ```js
 // Enable the poisoning only 100 miliseconds per each 10 seconds
 proxy.rule(toxy.rules.timeThreshold(100))
-// Enable poisioning during 1 second every minute
+// Enable poisoning during 1 second every minute
 proxy.rule(toxy.rules.timeThreshold({ duration: 1000, period: 1000 * 60 }))
 ```
 
