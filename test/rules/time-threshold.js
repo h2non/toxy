@@ -16,11 +16,10 @@ suite('rules#timeThreshold', function () {
     setTimeout(period(disabled), 75)
     setTimeout(period(enabled), 120)
     setTimeout(period(enabled), 150)
-    setTimeout(period(disabled), 170)
+    setTimeout(period(disabled), 180)
     setTimeout(period(disabled), 200)
-    setTimeout(period(disabled), 220)
-    setTimeout(period(enabled), 280)
-    setTimeout(done, 300)
+    setTimeout(period(enabled), 290)
+    setTimeout(done, 350)
 
     function disabled(err, ignore) {
       expect(ignore).to.be.true
