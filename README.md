@@ -42,6 +42,7 @@ Requires node.js +0.12 or io.js +1.6
 - [Rules](#rules)
   - [Built-in rules](#built-in-rules)
     - [Probability](#probability)
+    - [Time threshold](#time-threshold)
     - [Method](#method)
     - [Content Type](#content-type)
     - [Headers](#headers)
@@ -608,6 +609,33 @@ Enables the rule by a random probabilistic. Useful for random poisoning.
 ```js
 var rule = toxy.rules.probability(85)
 toxy.rule(rule)
+```
+
+#### Time threshold
+
+<table>
+<tr>
+<td><b>Name</b></td><td>timeThreshold</td>
+</tr>
+<tr>
+<td><b>Poison Phase</b></td><td>incoming / outgoing</td>
+</tr>
+</table>
+
+Simple rule to enable poisons based on a specific time threshold and duration.
+For instance, you can enable a certain poisons during a specific amount of time (e.g: 1 second) within a time threshold (e.g: 1 minute).
+
+**Arguments**:
+
+- **options** `object`
+  - **duration** `number` - Enable time inverval in miliseconds. Default to `1000`
+  - **threshold** `number` - Time period threshold in miliseconds to wait before re-enable the poisoning. Default to `10000`
+
+```js
+// Enable the poisoning only 100 miliseconds per each 10 seconds
+proxy.rule(toxy.rules.timeThreshold(100))
+// Enable poisioning during 1 second every minute
+proxy.rule(toxy.rules.timeThreshold({ duration: 1000, period: 1000 * 60 }))
 ```
 
 #### Method
