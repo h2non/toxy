@@ -13,7 +13,7 @@ proxy
 proxy
   .poison(poisons.abort())
   // Enable abort poison during 1 second every 5 seconds
-  .withRule(rules.timeThreshold({ duration: 2000, threshold: 1000 * 5 }))
+  .withRule(rules.timeThreshold({ duration: 1000, threshold: 1000 * 5 }))
   .withRule(rules.method('GET'))
 
 proxy.all('/*')
