@@ -4,7 +4,7 @@
 
 **toxy** is a fully programmatic and **hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org)/[io.js](https://iojs.org).
 
-It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as inttermediate proxy among services.
+It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as intermediate MitM proxy among services.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying TCP packets, injecting network jitter latency or replying with a custom error or status code.
 It operates only at L7 (application level).
