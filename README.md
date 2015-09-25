@@ -1010,6 +1010,14 @@ For more information, see the [rocky docs](https://github.com/h2non/rocky#progra
 
 Return a standard middleware to use with connect/express.
 
+#### toxy#host(host)
+
+Overwrite the `Host` header with a custom value. Similar to `forwardHost` option.
+
+#### toxy#redirect(url)
+
+Redirect traffic to the given URL.
+
 #### toxy#findRoute(routeIdOrPath, [ method ])
 
 Find a route by ID or path and method.
