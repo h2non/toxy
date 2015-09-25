@@ -1517,3 +1517,5 @@ Stop the server.
 ## License
 
 MIT - Tomas Aparicio
+
+[![views](https://sourcegraph.com/api/repos/github.com/h2non/toxy/.counters/views.svg)](https://sourcegraph.com/github.com/h2non/toxy)
