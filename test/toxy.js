@@ -40,6 +40,7 @@ suite('toxy', function () {
   test('use poison phases', function (done) {
     var proxy = toxy()
     var spy = sinon.spy()
+    var reqStub = { socket: {}, once: function () {} }
 
     proxy.poison(function delay(req, res, next) {
       spy(req, res)
@@ -62,11 +63,11 @@ suite('toxy', function () {
     expect(proxy.isEnabledOutgoing('delay')).to.be.false
     proxy.enableOutgoing('delay')
 
-    proxy._inPoisons.run(null, null, function () {
+    proxy._inPoisons.run(reqStub, {}, function () {
       expect(spy.calledOnce).to.be.true
     })
 
-    proxy._outPoisons.run(null, null, function () {
+    proxy._outPoisons.run(reqStub, {}, function () {
       expect(spy.calledTwice).to.be.true
 
       proxy.remove('delay')
