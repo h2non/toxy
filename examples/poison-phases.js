@@ -1,8 +1,8 @@
 const toxy = require('..')
 
 const proxy = toxy()
-const rules = proxy.rules
-const poisons = proxy.poisons
+const rules = toxy.rules
+const poisons = toxy.poisons
 
 proxy
   .forward('http://httpbin.org')
