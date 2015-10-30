@@ -467,7 +467,7 @@ Restricts the amount of packets sent over the network in a specific threshold ti
 
 - **options** `object`
   - **chunk** `number` - Packet chunk size in bytes. Default to `1024`
-  - **threshold** `object` - Limit threshold time frame in miliseconds. Default to `1000`
+  - **delay** `object` - Data chunk delay time frame in miliseconds. Default to `100`
 
 ```js
 toxy.poison(toxy.poisons.throttle({ chunk: 2048, threshold: 1000 }))
