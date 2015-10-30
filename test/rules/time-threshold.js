@@ -3,7 +3,7 @@ const timeThreshold = require('../..').rules.timeThreshold
 
 suite('rules#timeThreshold', function () {
   test('options', function (done) {
-    // Workaround: timers in the event-loop are a bit inconsistent in Travis
+    // Workaround: event-loop timers are a bit inconsistent in small machines (e.g: Travis)
     if (process.env.CI) return done()
 
     var opts = { duration: 50, threshold: 100 }
@@ -17,10 +17,10 @@ suite('rules#timeThreshold', function () {
 
     setTimeout(period(disabled), 0)
     setTimeout(period(disabled), 75)
-    setTimeout(period(enabled), 150)
-    setTimeout(period(disabled), 200)
-    setTimeout(period(enabled), 300)
-    setTimeout(done, 350)
+    setTimeout(period(enabled), 200)
+    setTimeout(period(disabled), 250)
+    setTimeout(period(enabled), 350)
+    setTimeout(done, 500)
 
     function disabled(err, ignore) {
       expect(ignore).to.be.true
