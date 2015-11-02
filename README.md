@@ -110,7 +110,7 @@ Rules can be reused and applied to both incoming and outgoing traffic flows, inc
 ↓    +-------------+     ↓
 ↓          |||           ↓
 ↓ +--------------------+ ↓
-↓ |   Incoming phase   | ↓
+↓ |   Incoming phase   | ↓ -> The proxy receives the request from the client
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
 ↓ |  |  Exec Rules  |  | ↓ -> Apply configured rules for the incoming request
@@ -131,7 +131,7 @@ Rules can be reused and applied to both incoming and outgoing traffic flows, inc
 ↓ |   Outgoing phase   | ↓ -> Receives response from target server
 ↓ |~~~~~~~~~~~~~~~~~~~~| ↓
 ↓ |  ----------------  | ↓
-↓ |  |  Exec Rules  |  | ↓ -> Apply configured rules for the outoing request
+↓ |  |  Exec Rules  |  | ↓ -> Apply configured rules for the outgoing request
 ↓ |  ----------------  | ↓
 ↓ |        |||         | ↓
 ↓ |  ----------------  | ↓
