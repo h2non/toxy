@@ -516,7 +516,7 @@ toxy.poison(toxy.poisons.abort({ delay: 2000, next: true }))
 
 <table>
 <tr>
-<td><b>Name</b></td><td>timout</td>
+<td><b>Name</b></td><td>timeout</td>
 </tr>
 <tr>
 <td><b>Poisoning Phase</b></td><td>incoming / outgoing</td>
@@ -538,26 +538,27 @@ toxy.poison(toxy.poisons.timeout(5000))
 
 ### How to write poisons
 
-Poisons are implemented as standalone middleware (like in connect/express).
+Poisons are implemented as standard middleware function with the same interface as connect/express middleware.
+
+Some poisons are not trivial to implement so you've to be familiar with node.js [http](https://nodejs.org/api/http.html) module and its API.
 
 Here's a simple example of a server latency poison:
+
 ```js
 var toxy = require('toxy')
 
-function customLatency(delay) {
-  /**
-   * We name the function since toxy uses it as identifier to get/disable/remove it in the future
-   */
-  return function customLatency(req, res, next) {
-    var timeout = setTimeout(clean, delay)
+function customLatencPoison (delay) {
+  // We name the function since toxy uses it as identifier to get/disable/remove it in the future
+  return function customLatency (req, res, next) {
+    var timeout = setTimeout(process, delay)
     req.once('close', onClose)
 
-    function onClose() {
+    function onClose () {
       clearTimeout(timeout)
       next('client connection closed')
     }
 
-    function clean() {
+    function process () {
       req.removeListener('close', onClose)
       next()
     }
