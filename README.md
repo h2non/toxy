@@ -547,7 +547,7 @@ Here's a simple example of a server latency poison:
 ```js
 var toxy = require('toxy')
 
-function customLatencPoison (delay) {
+function customLatencyPoison (delay) {
   // We name the function since toxy uses it as identifier to get/disable/remove it in the future
   return function customLatency (req, res, next) {
     var timeout = setTimeout(process, delay)
