@@ -35,7 +35,7 @@
     "node": ">= 0.12"
   },
   "scripts": {
-    "test": "standard index.js lib/**/*.js test/**/*.js && mocha --timeout 5000 --bail --reporter spec --ui tdd"
+    "test": "standard index.js lib/**/*.js test/**/*.js && mocha --timeout 5000 --bail --reporter spec --ui tdd test/*.js test/**/*.js test/admin/**/*.js"
   },
   "dependencies": {
     "indexport": "^0.1.1",
