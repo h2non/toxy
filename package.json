@@ -35,9 +35,10 @@
     "node": ">= 0.12"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --timeout 5000 --bail --reporter spec --ui tdd test/* test/admin/*"
+    "test": "standard index.js lib/**/*.js test/**/*.js && mocha --timeout 5000 --bail --reporter spec --ui tdd"
   },
   "dependencies": {
+    "indexport": "^0.1.1",
     "midware": "^0.1.3",
     "object-assign": "^3.0.0",
     "raw-body": "^2.1.2",
@@ -50,6 +51,17 @@
     "express": "^4.13.2",
     "mocha": "^2.2.5",
     "sinon": "^1.15.3",
+    "standard": "^5.4.1",
     "supertest": "^1.0.1"
+  },
+  "standard": {
+    "globals": [
+      "suite",
+      "test",
+      "beforeEach",
+      "before",
+      "after",
+      "afterEach"
+    ]
   }
 }

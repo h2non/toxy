@@ -2,41 +2,37 @@ const Toxy = require('./lib/toxy')
 const rules = require('./lib/rules')
 const poisons = require('./lib/poisons')
 
-module.exports = toxy
-
 /**
  * API factory
  */
 
-function toxy(opts) {
-  return new Toxy(opts)
-}
+module.exports = Toxy
 
 /**
  * Expose internal modules as static members
  */
 
-toxy.admin     = require('./lib/admin')
-toxy.Rule      = require('./lib/rule')
-toxy.Base      = require('./lib/base')
-toxy.Poison    = require('./lib/poison')
-toxy.Directive = require('./lib/directive')
-toxy.Rocky     = require('rocky').Rocky
+Toxy.admin = require('./lib/admin')
+Toxy.Rule = require('./lib/rule')
+Toxy.Base = require('./lib/base')
+Toxy.Poison = require('./lib/poison')
+Toxy.Directive = require('./lib/directive')
+Toxy.Rocky = require('rocky').Rocky
 
 /**
  * Expose current version
  */
 
-toxy.VERSION = require('./package.json').version
+Toxy.VERSION = require('./package.json').version
 
 /**
  * Expose built-in poisons
  */
 
-toxy.poisons = Toxy.prototype.poisons = Object.create(null)
+Toxy.poisons = Toxy.prototype.poisons = Object.create(null)
 
 poisons.forEach(function (poison) {
-  toxy.poisons[poison.name] = function () {
+  Toxy.poisons[poison.name] = function () {
     return poison.apply(null, arguments)
   }
 })
@@ -45,10 +41,10 @@ poisons.forEach(function (poison) {
  * Expose built-in rules
  */
 
-toxy.rules = Toxy.prototype.rules = Object.create(null)
+Toxy.rules = Toxy.prototype.rules = Object.create(null)
 
 rules.forEach(function (rule) {
-  toxy.rules[rule.name] = function () {
+  Toxy.rules[rule.name] = function () {
     return rule.apply(null, arguments)
   }
 })
@@ -57,19 +53,19 @@ rules.forEach(function (rule) {
  * Extend built-in rules
  */
 
-toxy.addRule = addDirective('rules')
+Toxy.addRule = addDirective('rules')
 
 /**
  * Extend built-in poisons
  */
 
-toxy.addPoison = addDirective('poisons')
+Toxy.addPoison = addDirective('poisons')
 
 /**
  * Add directive helper
  */
 
-function addDirective(type) {
+function addDirective (type) {
   return function (name, directive) {
     if (typeof name === 'function') {
       directive = name
@@ -88,8 +84,8 @@ function addDirective(type) {
     }
 
     directive.$name = name
-    toxy[type][name] = directive
+    Toxy[type][name] = directive
 
-    return toxy
+    return Toxy
   }
 }

@@ -12,7 +12,7 @@ suite('poison#timeout', function () {
 
     timeout(delay)(null, res, next)
 
-    function next(err) {
+    function next (err) {
       expect(err).to.be.undefined
       expect(spy.args[0][0]).to.be.equal(delay)
       done()

@@ -9,7 +9,7 @@ suite('rules#timeThreshold', function () {
     var opts = { duration: 50, threshold: 100 }
     var middleware = timeThreshold(opts)
 
-    function period(next) {
+    function period (next) {
       return function () {
         middleware(null, null, next)
       }
@@ -22,11 +22,13 @@ suite('rules#timeThreshold', function () {
     setTimeout(period(enabled), 350)
     setTimeout(done, 500)
 
-    function disabled(err, ignore) {
+    function disabled (err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.true
     }
 
-    function enabled(err, ignore) {
+    function enabled (err, ignore) {
+      expect(err).to.be.null
       expect(ignore).to.be.false
     }
   })

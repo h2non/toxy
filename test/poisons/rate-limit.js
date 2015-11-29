@@ -15,12 +15,15 @@ suite('poison#rateLimit', function () {
 
     var invalidRes = {}
     invalidRes.setHeader = function (key, value) {
-      if (key === 'X-RateLimit-Limit')
+      if (key === 'X-RateLimit-Limit') {
         expect(value).to.be.equal(2)
-      if (key === 'X-RateLimit-Remaining')
+      }
+      if (key === 'X-RateLimit-Remaining') {
         expect(value).to.be.equal(0)
-      if (key === 'X-RateLimit-Reset')
+      }
+      if (key === 'X-RateLimit-Reset') {
         expect(value).to.be.below(10)
+      }
     }
     invalidRes.end = function (body) {
       expect(body).to.match(/Too many requests/i)
@@ -38,11 +41,11 @@ suite('poison#rateLimit', function () {
       limiter(null, res, end)
     }, opts.threshold + 1)
 
-    function next(err) {
+    function next (err) {
       expect(err).to.be.undefined
     }
 
-    function end(err) {
+    function end (err) {
       next(err)
       done()
     }

@@ -4,21 +4,21 @@ const helpers = require('../lib/helpers')
 
 suite('helpers', function () {
   test('isRegExp', function () {
-    expect(helpers.isRegExp(/0-9/)).to.be.true
-    expect(helpers.isRegExp(new RegExp)).to.be.true
-    expect(helpers.isRegExp(null)).to.be.false
-    expect(helpers.isRegExp([])).to.be.false
-    expect(helpers.isRegExp({})).to.be.false
-    expect(helpers.isRegExp('')).to.be.false
-    expect(helpers.isRegExp(123)).to.be.false
-    expect(helpers.isRegExp(void 0)).to.be.false
+    expect(helpers.isRegexp(/0-9/)).to.be.true
+    expect(helpers.isRegexp(new RegExp)).to.be.true
+    expect(helpers.isRegexp(null)).to.be.false
+    expect(helpers.isRegexp([])).to.be.false
+    expect(helpers.isRegexp({})).to.be.false
+    expect(helpers.isRegexp('')).to.be.false
+    expect(helpers.isRegexp(123)).to.be.false
+    expect(helpers.isRegexp(void 0)).to.be.false
   })
 
   test('eachSeries', function (done) {
     var spy = sinon.spy()
     var arr = [ 1, 2, 3 ]
 
-    function iterator(value, next) {
+    function iterator (value, next) {
       spy(value)
       next()
     }
@@ -65,7 +65,7 @@ suite('helpers', function () {
     var match = helpers.matchHeaders(res, { server: 'foo' })
     expect(match).to.be.true
 
-    function assert(value, key) { return !!~value.indexOf('foo') }
+    function assert (value, key) { return !!~value.indexOf('foo') }
     var match = helpers.matchHeaders(res, { server: assert })
     expect(match).to.be.true
   })

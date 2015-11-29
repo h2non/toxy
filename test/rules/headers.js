@@ -8,7 +8,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -21,7 +21,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -34,7 +34,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -45,14 +45,13 @@ suite('rules#headers', function () {
     var matchHeaders = { 'content-type': match }
     var req = { headers: { 'content-type': 'application/json' } }
 
-    function match(value, key) {
-      return key === 'content-type'
-        && value === 'application/json'
+    function match (value, key) {
+      return key === 'content-type' && value === 'application/json'
     }
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -65,7 +64,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -78,7 +77,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -91,7 +90,7 @@ suite('rules#headers', function () {
 
     headers(matchHeaders)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.true
       done()

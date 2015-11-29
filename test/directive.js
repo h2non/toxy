@@ -14,12 +14,12 @@ suite('directive', function () {
     d.rule(rule)
     d.handler()(req, null)
 
-    function directive(req, res, next) {
+    function directive (req, res, next) {
       expect(req.rule).to.be.true
       done()
     }
 
-    function rule(req, res, next) {
+    function rule (req, res, next) {
       req.rule = true
       next()
     }
@@ -32,11 +32,11 @@ suite('directive', function () {
     d.rule(rule)
     d.handler()(req, null, done)
 
-    function directive(req, res, next) {
+    function directive (req, res, next) {
       throw new Error('Directive called')
     }
 
-    function rule(req, res, next) {
+    function rule (req, res, next) {
       next(null, true)
     }
   })
@@ -51,11 +51,11 @@ suite('directive', function () {
     expect(d.isEnabled()).to.be.false
     d.handler()(req, null, done)
 
-    function directive(req, res, next) {
+    function directive (req, res, next) {
       throw new Error('Directive called')
     }
 
-    function rule(req, res, next) {
+    function rule (req, res, next) {
       throw new Error('Rule called')
     }
   })
@@ -70,11 +70,11 @@ suite('directive', function () {
     expect(d.isEnabled()).to.be.true
     d.handler()(req, null, done)
 
-    function directive(req, res, next) {
+    function directive (req, res, next) {
       done()
     }
 
-    function rule(req, res, next) {
+    function rule (req, res, next) {
       throw new Error('Rule called')
     }
   })

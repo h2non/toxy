@@ -43,12 +43,12 @@ suite('rules#responseStatus', function () {
   })
 })
 
-function assert(opts, status, assert) {
+function assert (opts, status, assert) {
   var res = { statusCode: status }
   responseStatus(opts)(null, res, assert)
 }
 
-function equals(value) {
+function equals (value) {
   return function (err, ignore) {
     expect(err).to.be.null
     expect(ignore).to.be.equal(value)

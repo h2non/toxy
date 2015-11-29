@@ -7,7 +7,7 @@ suite('poison#abort', function () {
 
     abort()(req, null)
 
-    function destroy(err) {
+    function destroy (err) {
       expect(err).to.be.undefined
       done()
     }
@@ -18,7 +18,7 @@ suite('poison#abort', function () {
     var error = new Error('oops!')
     abort({ error: error })(req, null)
 
-    function destroy(err) {
+    function destroy (err) {
       expect(err).to.be.equal(error)
       done()
     }
@@ -30,13 +30,13 @@ suite('poison#abort', function () {
 
     abort({ next: true })(req, null, next)
 
-    function destroy(err) {
+    function destroy (err) {
       expect(err).to.be.empty
       expect(continued).to.be.true
       done()
     }
 
-    function next(err) {
+    function next (err) {
       expect(err).to.be.empty
       continued = true
     }

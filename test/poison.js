@@ -25,12 +25,12 @@ suite('poison', function () {
     p.rule(rule)
     p.handler()(req, null)
 
-    function directive(req, res, next) {
+    function directive (req, res, next) {
       expect(req.rule).to.be.true
       done()
     }
 
-    function rule(req, res, next) {
+    function rule (req, res, next) {
       req.rule = true
       next()
     }

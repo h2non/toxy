@@ -1,4 +1,3 @@
-const http = require('http')
 const expect = require('chai').expect
 const body = require('../..').rules.responseBody
 
@@ -8,7 +7,7 @@ suite('rules#responseBody', function () {
 
     body({ match: 'hello world' })(null, res, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -20,7 +19,7 @@ suite('rules#responseBody', function () {
 
     body({ match: /hello world$/i })(null, res, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -28,15 +27,15 @@ suite('rules#responseBody', function () {
   })
 
   test('match by function', function (done) {
-    var res = { body: 'hey, hello world'}
+    var res = { body: 'hey, hello world' }
 
-    function matcher(body) {
+    function matcher (body) {
       return !!~body.indexOf('hello world')
     }
 
     body({ match: matcher })(null, res, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -48,7 +47,7 @@ suite('rules#responseBody', function () {
 
     body({ match: 'hello' })(null, res, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -60,7 +59,7 @@ suite('rules#responseBody', function () {
 
     body({ match: 'hello' })(null, res, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.true
       done()

@@ -5,7 +5,7 @@ const Directive = require('../lib/directive')
 suite('rule', function () {
   test('enable/disable', function () {
     var rule = new Rule()
-    var directive = new Directive(function rule() {
+    var directive = new Directive(function rule () {
       throw new Error('Rule called!')
     })
     rule._rules(directive.handler())
@@ -17,7 +17,7 @@ suite('rule', function () {
 
   test('flush', function () {
     var rule = new Rule()
-    var directive = new Directive(function rule() {
+    var directive = new Directive(function rule () {
       throw new Error('Rule called!')
     })
     rule._rules(directive.handler())
@@ -29,7 +29,7 @@ suite('rule', function () {
 
   test('remove', function () {
     var rule = new Rule()
-    var directive = new Directive(function rule() {
+    var directive = new Directive(function rule () {
       throw new Error('Rule called!')
     })
     rule._rules(directive.handler())
@@ -41,7 +41,7 @@ suite('rule', function () {
 
   test('isEnabled', function () {
     var rule = new Rule()
-    var directive = new Directive(function rule() {
+    var directive = new Directive(function rule () {
       throw new Error('Rule called!')
     })
     rule._rules(directive.handler())

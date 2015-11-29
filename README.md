@@ -1,4 +1,4 @@
-# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy)
+# toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
@@ -12,7 +12,7 @@ It operates only at L7 (application level).
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
 It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's also [pluggable](https://github.com/h2non/toxy/blob/master/examples/express.js) in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
 
-Requires node.js +0.12 or io.js +1.6
+Requires node.js +0.12 or io.js +1.6.
 
 ## Contents
 

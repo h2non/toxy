@@ -13,12 +13,12 @@ suite('poison#inject', function () {
 
     inject(opts)(null, res)
 
-    function writeHead(code, headers) {
+    function writeHead (code, headers) {
       expect(code).to.be.equal(expected.code)
       expect(headers).to.be.deep.equal(expected.headers)
     }
 
-    function end(data) {
+    function end (data) {
       expect(data).to.be.undefined
       done()
     }
@@ -39,12 +39,12 @@ suite('poison#inject', function () {
 
     inject(opts)(null, res)
 
-    function writeHead(code, headers) {
+    function writeHead (code, headers) {
       expect(code).to.be.equal(expected.code)
       expect(headers).to.be.deep.equal(expected.headers)
     }
 
-    function end(data, encoding) {
+    function end (data, encoding) {
       expect(data).to.be.equal(expected.body)
       expect(encoding).to.be.equal(expected.encoding)
       done()
@@ -65,12 +65,12 @@ suite('poison#inject', function () {
 
     inject(opts)(null, res)
 
-    function writeHead(code, headers) {
+    function writeHead (code, headers) {
       expect(code).to.be.equal(expected.code)
       expect(headers).to.be.deep.equal(expected.headers)
     }
 
-    function end(data, encoding) {
+    function end (data, encoding) {
       expect(data).to.be.equal(expected.body)
       expect(encoding).to.be.equal(expected.encoding)
       done()

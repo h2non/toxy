@@ -10,34 +10,34 @@ suite('http api', function () {
 
   admin.listen(ports.admin)
 
-  function setup() {
+  function setup () {
     proxy = toxy()
 
     proxy
-      .poison(function foo(req, res, next) { next() })
-      .poison(function bar(req, res, next) { next() })
-      .withRule(function bar(req, res, next) { next() })
+      .poison(function foo (req, res, next) { next() })
+      .poison(function bar (req, res, next) { next() })
+      .withRule(function bar (req, res, next) { next() })
 
     proxy
-      .rule(function foo(req, res, next) { next() })
-      .rule(function bar(req, res, next) { next() })
+      .rule(function foo (req, res, next) { next() })
+      .rule(function bar (req, res, next) { next() })
 
     proxy
       .get('/foo')
-      .rule(function foo(req, res, next) { next() })
-      .poison(function foo(req, res, next) { next() })
-      .withRule(function foo(req, res, next) { next() })
+      .rule(function foo (req, res, next) { next() })
+      .poison(function foo (req, res, next) { next() })
+      .withRule(function foo (req, res, next) { next() })
 
     proxy
       .get('/bar')
-      .rule(function bar(req, res, next) { next() })
-      .poison(function bar(req, res, next) { next() })
+      .rule(function bar (req, res, next) { next() })
+      .poison(function bar (req, res, next) { next() })
 
     admin.manage(proxy)
     proxy.listen(ports.proxy)
   }
 
-  function shutdown(done) {
+  function shutdown (done) {
     proxy.close(done)
   }
 
@@ -55,7 +55,7 @@ suite('http api', function () {
       .end(done)
   })
 
-  function assertServer(server) {
+  function assertServer (server) {
     expect(server.id).to.be.equal('bcc')
     expect(server.port).to.be.equal(ports.proxy)
     expect(server.totalPoisons).to.be.equal(2)
@@ -101,7 +101,7 @@ suite('http api', function () {
     test('reset', shutdown)
   })
 
-  function assertDirective(directive, path) {
+  function assertDirective (directive, path) {
     expect(directive.name).to.be.a('string')
     expect(directive.enabled).to.be.true
     expect(directive.links).to.be.an('object')
@@ -109,7 +109,7 @@ suite('http api', function () {
     expect(directive.links.parent).to.be.deep.equal({ href: parentHref(path) })
   }
 
-  function assertPoison(poison, path) {
+  function assertPoison (poison, path) {
     assertDirective(poison, path)
     expect(poison.phase).to.be.equal('incoming')
   }
@@ -255,7 +255,7 @@ suite('http api', function () {
     test('reset', shutdown)
   })
 
-  function assertRoute(route, path) {
+  function assertRoute (route, path) {
     expect(route.id).to.have.length(3)
     expect(route.path).to.be.a('string')
     expect(route.method).to.be.equal('GET')
@@ -462,9 +462,8 @@ suite('http api', function () {
 
     test('reset', shutdown)
   })
-
 })
 
-function parentHref(path) {
+function parentHref (path) {
   return path.split('/').slice(0, -1).join('/')
 }

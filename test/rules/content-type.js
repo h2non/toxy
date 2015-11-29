@@ -8,7 +8,7 @@ suite('rules#contentType', function () {
 
     contentType(type)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -21,7 +21,7 @@ suite('rules#contentType', function () {
 
     contentType(type)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -34,7 +34,7 @@ suite('rules#contentType', function () {
 
     contentType(type)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.false
       done()
@@ -47,7 +47,7 @@ suite('rules#contentType', function () {
 
     contentType(type)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.true
       done()
@@ -60,7 +60,7 @@ suite('rules#contentType', function () {
 
     contentType(type)(req, null, next)
 
-    function next(err, ignore) {
+    function next (err, ignore) {
       expect(err).to.be.null
       expect(ignore).to.be.true
       done()

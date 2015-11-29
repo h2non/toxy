@@ -6,8 +6,8 @@ const slowRead = require('../..').poisons.slowRead
 
 suite('poison#slowRead', function () {
   test('read', function (done) {
-    var req = new http.IncomingMessage
-    var res = new http.OutgoingMessage
+    var req = new http.IncomingMessage()
+    var res = new http.OutgoingMessage()
     var threshold = 5
     var spy = sinon.spy()
     var init = Date.now()
@@ -15,7 +15,7 @@ suite('poison#slowRead', function () {
     req.method = 'POST'
     req = clone.clonePrototype(req)
 
-    req.__proto__.push = function (data) {
+    Object.getPrototypeOf(req).push = function (data) {
       spy(data)
       if (data === null) assert()
     }
@@ -25,7 +25,7 @@ suite('poison#slowRead', function () {
     req.push(new Buffer('Hello World'))
     req.push(null)
 
-    function assert() {
+    function assert () {
       expect(Date.now() - init).to.be.at.least(threshold * 10)
       expect(spy.args).to.have.length(13)
       expect(spy.args.shift()[0]).to.be.undefined
@@ -37,8 +37,8 @@ suite('poison#slowRead', function () {
   })
 
   test('premature close', function (done) {
-    var req = new http.IncomingMessage
-    var res = new http.OutgoingMessage
+    var req = new http.IncomingMessage()
+    var res = new http.OutgoingMessage()
     var threshold = 10
     var spy = sinon.spy()
     var init = Date.now()
@@ -46,7 +46,7 @@ suite('poison#slowRead', function () {
     req.method = 'POST'
     req = clone.clonePrototype(req)
 
-    req.__proto__.push = function (data) {
+    Object.getPrototypeOf(req).push = function (data) {
       spy(data)
       if (data === null) assert()
     }
@@ -58,7 +58,7 @@ suite('poison#slowRead', function () {
     req.push(new Buffer('Hello World'))
     req.push(null)
 
-    function assert() {
+    function assert () {
       expect(Date.now() - init).to.be.within(0, 5)
       expect(spy.args).to.have.length(3)
       done()
