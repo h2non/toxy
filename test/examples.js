@@ -11,14 +11,14 @@ suite('examples', function () {
   test('run examples', function (done) {
     this.timeout(30 * 1000)
 
-    var files = fs.readdirSync(examplesDir)
+    const files = fs.readdirSync(examplesDir)
     eachSeries(files, function (file, next) {
       if (!(/.js$/.test(file))) return next()
 
-      var assert = false
-      var examplePath = path.join(examplesDir, file)
-      var child = spawn('node', [ examplePath ])
+      const examplePath = path.join(examplesDir, file)
+      const child = spawn('node', [ examplePath ])
 
+      var assert = false
       child.stdout.on('data', function (chunk) {
         if (assert) return
         expect(chunk.toString()).to.not.match(/error/i)

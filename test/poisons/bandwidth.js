@@ -5,13 +5,12 @@ const bandwidth = require('../..').poisons.bandwidth
 
 suite('poison#bandwidth', function () {
   test('bandwidth', function (done) {
-    var req = new http.IncomingMessage()
-    var res = new http.OutgoingMessage()
-    var opts = { bps: 1, threshold: 5 }
+    const opts = { bps: 1, threshold: 5 }
+    const req = new http.IncomingMessage()
+    const res = clone.clonePrototype(new http.OutgoingMessage())
 
-    var buf = []
+    const buf = []
     var lastWrite = Date.now()
-    res = clone.clonePrototype(res)
 
     Object.getPrototypeOf(res).write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(opts.bps)

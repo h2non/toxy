@@ -44,7 +44,7 @@ suite('rules#responseStatus', function () {
 })
 
 function assert (opts, status, assert) {
-  var res = { statusCode: status }
+  const res = { statusCode: status }
   responseStatus(opts)(null, res, assert)
 }
 

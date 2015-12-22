@@ -6,14 +6,13 @@ const slowRead = require('../..').poisons.slowRead
 
 suite('poison#slowRead', function () {
   test('read', function (done) {
-    var req = new http.IncomingMessage()
-    var res = new http.OutgoingMessage()
-    var threshold = 5
-    var spy = sinon.spy()
-    var init = Date.now()
+    const threshold = 5
+    const spy = sinon.spy()
+    const init = Date.now()
 
+    const res = new http.OutgoingMessage()
+    const req = clone.clonePrototype(new http.IncomingMessage())
     req.method = 'POST'
-    req = clone.clonePrototype(req)
 
     Object.getPrototypeOf(req).push = function (data) {
       spy(data)
@@ -37,14 +36,13 @@ suite('poison#slowRead', function () {
   })
 
   test('premature close', function (done) {
-    var req = new http.IncomingMessage()
-    var res = new http.OutgoingMessage()
-    var threshold = 10
-    var spy = sinon.spy()
-    var init = Date.now()
+    const threshold = 10
+    const spy = sinon.spy()
+    const init = Date.now()
 
+    const res = new http.OutgoingMessage()
+    const req = clone.clonePrototype(new http.IncomingMessage())
     req.method = 'POST'
-    req = clone.clonePrototype(req)
 
     Object.getPrototypeOf(req).push = function (data) {
       spy(data)

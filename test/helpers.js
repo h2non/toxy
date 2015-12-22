@@ -5,7 +5,7 @@ const helpers = require('../lib/helpers')
 suite('helpers', function () {
   test('isRegExp', function () {
     expect(helpers.isRegexp(/0-9/)).to.be.true
-    expect(helpers.isRegexp(new RegExp)).to.be.true
+    expect(helpers.isRegexp(new RegExp())).to.be.true
     expect(helpers.isRegexp(null)).to.be.false
     expect(helpers.isRegexp([])).to.be.false
     expect(helpers.isRegexp({})).to.be.false
@@ -15,8 +15,8 @@ suite('helpers', function () {
   })
 
   test('eachSeries', function (done) {
-    var spy = sinon.spy()
-    var arr = [ 1, 2, 3 ]
+    const spy = sinon.spy()
+    const arr = [ 1, 2, 3 ]
 
     function iterator (value, next) {
       spy(value)
@@ -33,7 +33,7 @@ suite('helpers', function () {
   })
 
   test('randomId', function () {
-    var id = helpers.randomId('foo', 'bar')
+    const id = helpers.randomId('foo', 'bar')
     expect(id).to.be.equal('2f5')
   })
 
@@ -41,38 +41,38 @@ suite('helpers', function () {
     var match = helpers.matchBody('foobar', 'foo')
     expect(match).to.be.true
 
-    var match = helpers.matchBody('foobar', /^foo/i)
+    match = helpers.matchBody('foobar', /^foo/i)
     expect(match).to.be.true
 
-    var match = helpers.matchBody('foobar', function (body) {
+    match = helpers.matchBody('foobar', function (body) {
       return !!~body.indexOf('foo')
     })
     expect(match).to.be.true
 
-    var match = helpers.matchBody('foo', 'bar')
+    match = helpers.matchBody('foo', 'bar')
     expect(match).to.be.false
 
-    var match = helpers.matchBody('foo', /bar/i)
+    match = helpers.matchBody('foo', /bar/i)
     expect(match).to.be.false
   })
 
   test('matchHeaders', function () {
-    var res = { headers: { server: 'foobar' } }
+    const res = { headers: { server: 'foobar' } }
 
     var match = helpers.matchHeaders(res, { server: /^Foo/i })
     expect(match).to.be.true
 
-    var match = helpers.matchHeaders(res, { server: 'foo' })
+    match = helpers.matchHeaders(res, { server: 'foo' })
     expect(match).to.be.true
 
     function assert (value, key) { return !!~value.indexOf('foo') }
-    var match = helpers.matchHeaders(res, { server: assert })
+    match = helpers.matchHeaders(res, { server: assert })
     expect(match).to.be.true
   })
 
   test('splitBuffer', function () {
-    var buf = []
-    var buffer = new Buffer('Hello World')
+    const buf = []
+    const buffer = new Buffer('Hello World')
 
     helpers.splitBuffer(1, buffer, 'utf8', buf)
 
@@ -88,8 +88,8 @@ suite('helpers', function () {
   })
 
   test('splitBuffer in large chunks', function () {
-    var buf = []
-    var buffer = new Buffer('Hello World')
+    const buf = []
+    const buffer = new Buffer('Hello World')
 
     helpers.splitBuffer(1024, buffer, 'utf8', buf)
 

@@ -6,7 +6,7 @@ const poisons = proxy.poisons
 
 proxy
   .forward('http://httpbin.org')
-  .poison(poisons.bandwidth({ bps: 1024 }))
+  .poison(poisons.bandwidth({ bps: 2048 }))
   .withRule(rules.method('GET'))
   .withRule(rules.probability(90))
 

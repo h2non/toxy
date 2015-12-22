@@ -5,14 +5,13 @@ const throttle = require('../..').poisons.throttle
 
 suite('poison#throttle', function () {
   test('small chunks', function (done) {
-    var req = new http.IncomingMessage()
-    var res = new http.OutgoingMessage()
-    var opts = { chunk: 1, threshold: 5 }
+    const opts = { chunk: 1, threshold: 5 }
+    const buf = []
 
-    var buf = []
+    const req = new http.IncomingMessage()
+    const res = clone.clonePrototype(new http.OutgoingMessage())
+
     var lastWrite = Date.now()
-    res = clone.clonePrototype(res)
-
     Object.getPrototypeOf(res).write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(opts.chunk)
       expect(Date.now() - lastWrite).to.be.at.least(opts.threshold - 1)
@@ -37,14 +36,14 @@ suite('poison#throttle', function () {
   })
 
   test('single chunk', function (done) {
-    var req = new http.IncomingMessage()
-    var res = new http.OutgoingMessage()
-    var opts = { chunk: 1024, threshold: 10 }
+    const opts = { chunk: 1024, threshold: 10 }
 
-    var buf = []
-    var body = new Buffer('Hello World')
-    var lastWrite = Date.now()
-    res = clone.clonePrototype(res)
+    const buf = []
+    const body = new Buffer('Hello World')
+    const lastWrite = Date.now()
+
+    const req = new http.IncomingMessage()
+    const res = clone.clonePrototype(new http.OutgoingMessage())
 
     Object.getPrototypeOf(res).write = function (buffer, encoding, next) {
       expect(buffer).to.have.length(body.length)

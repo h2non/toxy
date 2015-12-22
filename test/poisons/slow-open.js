@@ -4,9 +4,9 @@ const slowOpen = require('../..').poisons.slowOpen
 
 suite('poison#slowOpen', function () {
   test('delay', function (done) {
-    var delay = 50
-    var req = new http.IncomingMessage()
-    var init = Date.now()
+    const delay = 50
+    const req = new http.IncomingMessage()
+    const init = Date.now()
 
     slowOpen({ delay: delay })(req, null, next)
 
@@ -18,8 +18,8 @@ suite('poison#slowOpen', function () {
   })
 
   test('close', function (done) {
-    var delay = 20
-    var req = new http.IncomingMessage()
+    const delay = 20
+    const req = new http.IncomingMessage()
 
     slowOpen({ delay: delay })(req, null, next)
 

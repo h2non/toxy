@@ -6,8 +6,8 @@ suite('rules#timeThreshold', function () {
     // Workaround: event-loop timers are a bit inconsistent in small machines (e.g: Travis)
     if (process.env.CI) return done()
 
-    var opts = { duration: 50, threshold: 100 }
-    var middleware = timeThreshold(opts)
+    const opts = { duration: 50, threshold: 100 }
+    const middleware = timeThreshold(opts)
 
     function period (next) {
       return function () {

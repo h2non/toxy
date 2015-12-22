@@ -4,9 +4,9 @@ const latency = require('../..').poisons.latency
 
 suite('poison#latency', function () {
   test('jitter', function (done) {
-    var req = new http.IncomingMessage()
-    var init = Date.now()
-    var opts = { jitter: 50 }
+    const req = new http.IncomingMessage()
+    const init = Date.now()
+    const opts = { jitter: 50 }
 
     latency(opts)(req, null, next)
 
@@ -18,9 +18,9 @@ suite('poison#latency', function () {
   })
 
   test('jitter as number', function (done) {
-    var req = new http.IncomingMessage()
-    var init = Date.now()
-    var jitter = 50
+    const req = new http.IncomingMessage()
+    const init = Date.now()
+    const jitter = 50
 
     latency(jitter)(req, null, next)
 
@@ -32,9 +32,9 @@ suite('poison#latency', function () {
   })
 
   test('range', function (done) {
-    var req = new http.IncomingMessage()
-    var init = Date.now()
-    var opts = { min: 50, max: 100 }
+    const req = new http.IncomingMessage()
+    const init = Date.now()
+    const opts = { min: 50, max: 100 }
 
     latency(opts)(req, null, next)
 
@@ -46,9 +46,9 @@ suite('poison#latency', function () {
   })
 
   test('close connection', function (done) {
-    var req = new http.IncomingMessage()
-    var init = Date.now()
-    var opts = { jitter: 1000 }
+    const req = new http.IncomingMessage()
+    const init = Date.now()
+    const opts = { jitter: 1000 }
 
     latency(opts)(req, null, next)
 

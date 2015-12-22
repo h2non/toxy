@@ -3,11 +3,11 @@ const inject = require('../..').poisons.inject
 
 suite('poison#inject', function () {
   test('head', function (done) {
-    var headers = { 'content-type': 'application/json' }
-    var opts = { code: 500, headers: headers }
-    var expected = { code: 500, headers: headers }
+    const headers = { 'content-type': 'application/json' }
+    const opts = { code: 500, headers: headers }
+    const expected = { code: 500, headers: headers }
 
-    var res = {}
+    const res = {}
     res.writeHead = writeHead
     res.end = end
 
@@ -25,15 +25,15 @@ suite('poison#inject', function () {
   })
 
   test('status', function (done) {
-    var opts = { body: 'Hello', encoding: 'utf8' }
-    var expected = {
+    const opts = { body: 'Hello', encoding: 'utf8' }
+    const expected = {
       code: 500,
       body: 'Hello',
       encoding: 'utf8',
       headers: { 'content-length': 5 }
     }
 
-    var res = {}
+    const res = {}
     res.writeHead = writeHead
     res.end = end
 
@@ -52,13 +52,13 @@ suite('poison#inject', function () {
   })
 
   test('merge headers', function (done) {
-    var opts = { headers: { server: 'toxy' } }
-    var expected = {
+    const opts = { headers: { server: 'toxy' } }
+    const expected = {
       code: 500,
       headers: { server: 'toxy', foo: 'bar' }
     }
 
-    var res = {}
+    const res = {}
     res.headers = { server: 'nginx', foo: 'bar' }
     res.writeHead = writeHead
     res.end = end

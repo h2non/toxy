@@ -3,8 +3,8 @@ const contentType = require('../..').rules.contentType
 
 suite('rules#contentType', function () {
   test('string', function (done) {
-    var type = 'application/json'
-    var req = { headers: { 'content-type': 'application/json' } }
+    const type = 'application/json'
+    const req = { headers: { 'content-type': 'application/json' } }
 
     contentType(type)(req, null, next)
 
@@ -16,8 +16,8 @@ suite('rules#contentType', function () {
   })
 
   test('partial string', function (done) {
-    var type = 'json'
-    var req = { headers: { 'content-type': 'application/json' } }
+    const type = 'json'
+    const req = { headers: { 'content-type': 'application/json' } }
 
     contentType(type)(req, null, next)
 
@@ -29,8 +29,8 @@ suite('rules#contentType', function () {
   })
 
   test('regexp', function (done) {
-    var type = /application\/json/i
-    var req = { headers: { 'content-type': 'application/json' } }
+    const type = /application\/json/i
+    const req = { headers: { 'content-type': 'application/json' } }
 
     contentType(type)(req, null, next)
 
@@ -42,8 +42,8 @@ suite('rules#contentType', function () {
   })
 
   test('cannot match', function (done) {
-    var type = /invalid/
-    var req = { headers: { 'content-type': 'application/json' } }
+    const type = /invalid/
+    const req = { headers: { 'content-type': 'application/json' } }
 
     contentType(type)(req, null, next)
 
@@ -55,8 +55,8 @@ suite('rules#contentType', function () {
   })
 
   test('missing header', function (done) {
-    var type = /invalid/
-    var req = { headers: {} }
+    const type = /invalid/
+    const req = { headers: {} }
 
     contentType(type)(req, null, next)
 

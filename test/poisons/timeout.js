@@ -4,10 +4,10 @@ const timeout = require('../..').poisons.timeout
 
 suite('poison#timeout', function () {
   test('limit', function (done) {
-    var delay = 1000
-    var spy = sinon.spy()
+    const delay = 1000
+    const spy = sinon.spy()
 
-    var res = {}
+    const res = {}
     res.setTimeout = spy
 
     timeout(delay)(null, res, next)

@@ -3,13 +3,13 @@ const Directive = require('../lib/directive')
 
 suite('directive', function () {
   test('single directive', function (done) {
-    var d = new Directive(done)
+    const d = new Directive(done)
     d.handler()()
   })
 
   test('rule', function (done) {
-    var d = new Directive(directive)
-    var req = {}
+    const d = new Directive(directive)
+    const req = {}
 
     d.rule(rule)
     d.handler()(req, null)
@@ -26,8 +26,8 @@ suite('directive', function () {
   })
 
   test('ignore rule', function (done) {
-    var d = new Directive(directive)
-    var req = {}
+    const d = new Directive(directive)
+    const req = {}
 
     d.rule(rule)
     d.handler()(req, null, done)
@@ -42,8 +42,8 @@ suite('directive', function () {
   })
 
   test('disable', function (done) {
-    var d = new Directive(directive)
-    var req = {}
+    const d = new Directive(directive)
+    const req = {}
 
     d.rule(rule)
     d.disable()
@@ -61,8 +61,8 @@ suite('directive', function () {
   })
 
   test('disable rule', function (done) {
-    var d = new Directive(directive)
-    var req = {}
+    const d = new Directive(directive)
+    const req = {}
 
     d.rule(rule)
     d.disableRule('rule')
