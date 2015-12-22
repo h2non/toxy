@@ -3,7 +3,7 @@ const abort = require('../..').poisons.abort
 
 suite('poison#abort', function () {
   test('default', function (done) {
-    var req = { destroy: destroy, socket: {} }
+    const req = { destroy: destroy, socket: {} }
 
     abort()(req, null)
 
@@ -14,8 +14,8 @@ suite('poison#abort', function () {
   })
 
   test('custom error', function (done) {
-    var req = { destroy: destroy, socket: {} }
-    var error = new Error('oops!')
+    const req = { destroy: destroy, socket: {} }
+    const error = new Error('oops!')
     abort({ error: error })(req, null)
 
     function destroy (err) {
@@ -26,7 +26,7 @@ suite('poison#abort', function () {
 
   test('next', function (done) {
     var continued = false
-    var req = { destroy: destroy, socket: {} }
+    const req = { destroy: destroy, socket: {} }
 
     abort({ next: true })(req, null, next)
 

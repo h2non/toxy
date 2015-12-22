@@ -5,12 +5,12 @@ const slowClose = require('../..').poisons.slowClose
 
 suite('poison#slowClose', function () {
   test('close', function (done) {
-    var delay = 50
-    var expected = { body: 'Hello', code: 200, headers: { server: 'rocky' } }
-    var spy = sinon.spy()
-    var init = Date.now()
+    const delay = 50
+    const expected = { body: 'Hello', code: 200, headers: { server: 'rocky' } }
+    const spy = sinon.spy()
+    const init = Date.now()
 
-    var res = clone.clonePrototype({})
+    const res = clone.clonePrototype({})
     Object.getPrototypeOf(res).writeHead = spy
     Object.getPrototypeOf(res).end = function (body) {
       spy(body)

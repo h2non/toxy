@@ -118,14 +118,14 @@ suite('http api', function () {
     test('setup', setup)
 
     test('all', function (done) {
-      var path = '/servers/bcc/poisons'
+      const path = '/servers/bcc/poisons'
       supertest(adminUrl)
         .get(path)
         .expect(200)
         .expect(function (res) {
           expect(res.body).to.have.length(2)
           res.body.forEach(function (directive) {
-            var name = directive.name + ':' + directive.phase
+            const name = directive.name + ':' + directive.phase
             assertPoison(directive, path + '/' + name)
           })
         })
@@ -133,7 +133,7 @@ suite('http api', function () {
     })
 
     test('delete by name', function (done) {
-      var path = '/servers/bcc/poisons/foo:incoming'
+      const path = '/servers/bcc/poisons/foo:incoming'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -141,7 +141,7 @@ suite('http api', function () {
     })
 
     test('create', function (done) {
-      var path = '/servers/bcc/poisons'
+      const path = '/servers/bcc/poisons'
       supertest(adminUrl)
         .post(path)
         .send({ name: 'latency', options: { jitter: 1000 } })
@@ -150,7 +150,7 @@ suite('http api', function () {
     })
 
     test('cannot create invalid poison', function (done) {
-      var path = '/servers/bcc/poisons'
+      const path = '/servers/bcc/poisons'
       supertest(adminUrl)
         .post(path)
         .send({ name: 'invalid' })
@@ -159,7 +159,7 @@ suite('http api', function () {
     })
 
     test('get by name', function (done) {
-      var path = '/servers/bcc/poisons/latency:incoming'
+      const path = '/servers/bcc/poisons/latency:incoming'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -170,7 +170,7 @@ suite('http api', function () {
     })
 
     test('create outgoing', function (done) {
-      var path = '/servers/bcc/poisons'
+      const path = '/servers/bcc/poisons'
       supertest(adminUrl)
         .post(path)
         .send({ name: 'bandwidth', phase: 'outgoing', options: { jitter: 1000 } })
@@ -179,7 +179,7 @@ suite('http api', function () {
     })
 
     test('get outgoing rule by name', function (done) {
-      var path = '/servers/bcc/poisons/bandwidth:outgoing'
+      const path = '/servers/bcc/poisons/bandwidth:outgoing'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -191,7 +191,7 @@ suite('http api', function () {
     })
 
     test('delete outgoing rule by name', function (done) {
-      var path = '/servers/bcc/poisons/bandwidth:outgoing'
+      const path = '/servers/bcc/poisons/bandwidth:outgoing'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -199,7 +199,7 @@ suite('http api', function () {
     })
 
     test('delete all', function (done) {
-      var path = '/servers/bcc/poisons'
+      const path = '/servers/bcc/poisons'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -213,7 +213,7 @@ suite('http api', function () {
     test('setup', setup)
 
     test('all', function (done) {
-      var path = '/servers/bcc/rules'
+      const path = '/servers/bcc/rules'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -225,7 +225,7 @@ suite('http api', function () {
     })
 
     test('delete by name', function (done) {
-      var path = '/servers/bcc/rules/foo'
+      const path = '/servers/bcc/rules/foo'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -233,7 +233,7 @@ suite('http api', function () {
     })
 
     test('create', function (done) {
-      var path = '/servers/bcc/rules'
+      const path = '/servers/bcc/rules'
       supertest(adminUrl)
         .post(path)
         .send({ name: 'method', options: 'GET' })
@@ -242,7 +242,7 @@ suite('http api', function () {
     })
 
     test('get by name', function (done) {
-      var path = '/servers/bcc/rules/method'
+      const path = '/servers/bcc/rules/method'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -328,7 +328,7 @@ suite('http api', function () {
     test('setup', setup)
 
     test('all', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons'
+      const path = '/servers/bcc/routes/32f/poisons'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -340,21 +340,21 @@ suite('http api', function () {
     })
 
     test('get by name', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo:incoming'
+      const path = '/servers/bcc/routes/32f/poisons/foo:incoming'
       supertest(adminUrl)
         .get(path)
         .expect(200)
         .expect(function (res) {
           assertPoison(res.body, path)
           expect(res.body.rules).to.have.length(1)
-          var nestedRule = res.body.rules.shift()
+          const nestedRule = res.body.rules.shift()
           assertDirective(nestedRule, path + '/rules/foo')
         })
         .end(done)
     })
 
     test('delete by name', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo'
+      const path = '/servers/bcc/routes/32f/poisons/foo'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -362,7 +362,7 @@ suite('http api', function () {
     })
 
     test('delete all', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons'
+      const path = '/servers/bcc/routes/32f/poisons'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -376,7 +376,7 @@ suite('http api', function () {
     test('setup', setup)
 
     test('get all', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo/rules'
+      const path = '/servers/bcc/routes/32f/poisons/foo/rules'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -388,7 +388,7 @@ suite('http api', function () {
     })
 
     test('get by name', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo/rules/foo'
+      const path = '/servers/bcc/routes/32f/poisons/foo/rules/foo'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -399,7 +399,7 @@ suite('http api', function () {
     })
 
     test('delete by name', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo/rules/foo'
+      const path = '/servers/bcc/routes/32f/poisons/foo/rules/foo'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -407,7 +407,7 @@ suite('http api', function () {
     })
 
     test('delete all', function (done) {
-      var path = '/servers/bcc/routes/32f/poisons/foo/rules'
+      const path = '/servers/bcc/routes/32f/poisons/foo/rules'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -421,20 +421,20 @@ suite('http api', function () {
     test('setup', setup)
 
     test('get all', function (done) {
-      var path = '/servers/bcc/routes/32f/rules'
+      const path = '/servers/bcc/routes/32f/rules'
       supertest(adminUrl)
         .get(path)
         .expect(200)
         .expect(function (res) {
           expect(res.body).to.have.length(1)
-          var rule = res.body[0]
+          const rule = res.body[0]
           assertDirective(rule, path + '/foo')
         })
         .end(done)
     })
 
     test('get by name', function (done) {
-      var path = '/servers/bcc/routes/32f/rules/foo'
+      const path = '/servers/bcc/routes/32f/rules/foo'
       supertest(adminUrl)
         .get(path)
         .expect(200)
@@ -445,7 +445,7 @@ suite('http api', function () {
     })
 
     test('delete by name', function (done) {
-      var path = '/servers/bcc/routes/32f/rules/foo'
+      const path = '/servers/bcc/routes/32f/rules/foo'
       supertest(adminUrl)
         .delete(path)
         .expect(204)
@@ -453,7 +453,7 @@ suite('http api', function () {
     })
 
     test('delete all', function (done) {
-      var path = '/servers/bcc/routes/32f/rules'
+      const path = '/servers/bcc/routes/32f/rules'
       supertest(adminUrl)
         .delete(path)
         .expect(204)

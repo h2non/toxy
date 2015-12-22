@@ -3,7 +3,7 @@ const body = require('../..').rules.responseBody
 
 suite('rules#responseBody', function () {
   test('match by string', function (done) {
-    var res = { body: 'John said hello world' }
+    const res = { body: 'John said hello world' }
 
     body({ match: 'hello world' })(null, res, next)
 
@@ -15,7 +15,7 @@ suite('rules#responseBody', function () {
   })
 
   test('match by regexp', function (done) {
-    var res = { body: 'salutation: hello world' }
+    const res = { body: 'salutation: hello world' }
 
     body({ match: /hello world$/i })(null, res, next)
 
@@ -27,7 +27,7 @@ suite('rules#responseBody', function () {
   })
 
   test('match by function', function (done) {
-    var res = { body: 'hey, hello world' }
+    const res = { body: 'hey, hello world' }
 
     function matcher (body) {
       return !!~body.indexOf('hello world')
@@ -43,7 +43,7 @@ suite('rules#responseBody', function () {
   })
 
   test('match buffer', function (done) {
-    var res = { body: new Buffer('hello world') }
+    const res = { body: new Buffer('hello world') }
 
     body({ match: 'hello' })(null, res, next)
 
@@ -55,7 +55,7 @@ suite('rules#responseBody', function () {
   })
 
   test('cannot match', function (done) {
-    var res = { body: 'foo bar' }
+    const res = { body: 'foo bar' }
 
     body({ match: 'hello' })(null, res, next)
 

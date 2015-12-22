@@ -3,9 +3,9 @@ const rateLimit = require('../..').poisons.rateLimit
 
 suite('poison#rateLimit', function () {
   test('limit', function (done) {
-    var opts = { limit: 2, threshold: 10 }
+    const opts = { limit: 2, threshold: 10 }
 
-    var res = {}
+    const res = {}
     res.setHeader = function (key, value) {
       expect(key).to.match(/RateLimit/i)
     }
@@ -13,7 +13,7 @@ suite('poison#rateLimit', function () {
       expect(data).to.be.undefined
     }
 
-    var invalidRes = {}
+    const invalidRes = {}
     invalidRes.setHeader = function (key, value) {
       if (key === 'X-RateLimit-Limit') {
         expect(value).to.be.equal(2)
@@ -29,7 +29,7 @@ suite('poison#rateLimit', function () {
       expect(body).to.match(/Too many requests/i)
     }
 
-    var limiter = rateLimit(opts)
+    const limiter = rateLimit(opts)
 
     limiter(null, res, next)
     limiter(null, res, next)

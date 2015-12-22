@@ -3,8 +3,8 @@ const method = require('../..').rules.method
 
 suite('rules#method', function () {
   test('match', function (done) {
-    var match = 'GET'
-    var req = { method: 'GET' }
+    const match = 'GET'
+    const req = { method: 'GET' }
 
     method(match)(req, null, next)
 
@@ -16,7 +16,7 @@ suite('rules#method', function () {
   })
 
   test('multiple methods', function (done) {
-    var req = { method: 'GET' }
+    const req = { method: 'GET' }
 
     method(['POST', 'GET'])(req, null, next)
 
@@ -28,8 +28,8 @@ suite('rules#method', function () {
   })
 
   test('cannot match', function (done) {
-    var match = 'POST'
-    var req = { method: 'GET' }
+    const match = 'POST'
+    const req = { method: 'GET' }
 
     method(match)(req, null, next)
 

@@ -3,14 +3,14 @@ const Poison = require('../lib/poison')
 
 suite('poison', function () {
   test('default', function (done) {
-    var p = new Poison(done)
+    const p = new Poison(done)
     expect(p.phase).to.be.equal('incoming')
     expect(p.isEnabled()).to.be.true
     p.handler()()
   })
 
   test('state', function (done) {
-    var p = new Poison(done)
+    const p = new Poison(done)
     expect(p.isEnabled()).to.be.true
     p.disable()
     expect(p.isEnabled()).to.be.false
@@ -19,8 +19,8 @@ suite('poison', function () {
   })
 
   test('nested rule', function (done) {
-    var p = new Poison(directive)
-    var req = {}
+    const p = new Poison(directive)
+    const req = {}
 
     p.rule(rule)
     p.handler()(req, null)

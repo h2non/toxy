@@ -3,8 +3,8 @@ const headers = require('../..').rules.headers
 
 suite('rules#headers', function () {
   test('header present', function (done) {
-    var matchHeaders = { 'content-type': true }
-    var req = { headers: { 'content-type': 'application/json' } }
+    const matchHeaders = { 'content-type': true }
+    const req = { headers: { 'content-type': 'application/json' } }
 
     headers(matchHeaders)(req, null, next)
 
@@ -16,8 +16,8 @@ suite('rules#headers', function () {
   })
 
   test('match by string', function (done) {
-    var matchHeaders = { 'content-type': 'application/json' }
-    var req = { headers: { 'content-type': 'application/json' } }
+    const matchHeaders = { 'content-type': 'application/json' }
+    const req = { headers: { 'content-type': 'application/json' } }
 
     headers(matchHeaders)(req, null, next)
 
@@ -29,8 +29,8 @@ suite('rules#headers', function () {
   })
 
   test('match by regexp', function (done) {
-    var matchHeaders = { 'content-type': /^application/i }
-    var req = { headers: { 'content-type': 'application/json' } }
+    const matchHeaders = { 'content-type': /^application/i }
+    const req = { headers: { 'content-type': 'application/json' } }
 
     headers(matchHeaders)(req, null, next)
 
@@ -42,8 +42,8 @@ suite('rules#headers', function () {
   })
 
   test('match by function', function (done) {
-    var matchHeaders = { 'content-type': match }
-    var req = { headers: { 'content-type': 'application/json' } }
+    const matchHeaders = { 'content-type': match }
+    const req = { headers: { 'content-type': 'application/json' } }
 
     function match (value, key) {
       return key === 'content-type' && value === 'application/json'
@@ -59,8 +59,8 @@ suite('rules#headers', function () {
   })
 
   test('multiple headers', function (done) {
-    var matchHeaders = { 'content-type': /^application/i, 'server': true }
-    var req = { headers: { 'content-type': 'application/json', 'server': 'rocky' } }
+    const matchHeaders = { 'content-type': /^application/i, 'server': true }
+    const req = { headers: { 'content-type': 'application/json', 'server': 'rocky' } }
 
     headers(matchHeaders)(req, null, next)
 
@@ -72,8 +72,8 @@ suite('rules#headers', function () {
   })
 
   test('not present', function (done) {
-    var matchHeaders = { 'content-type': false }
-    var req = { headers: {} }
+    const matchHeaders = { 'content-type': false }
+    const req = { headers: {} }
 
     headers(matchHeaders)(req, null, next)
 
@@ -85,8 +85,8 @@ suite('rules#headers', function () {
   })
 
   test('cannot match', function (done) {
-    var matchHeaders = { 'empty': true }
-    var req = { headers: {} }
+    const matchHeaders = { 'empty': true }
+    const req = { headers: {} }
 
     headers(matchHeaders)(req, null, next)
 

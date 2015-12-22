@@ -285,7 +285,7 @@ suite('toxy', function () {
 
     function assert (err) {
       expect(spy.calledOnce).to.be.true
-      var req = spy.args[0][0]
+      const req = spy.args[0][0]
       expect(req.url).to.be.equal('/foo')
       expect(req.method).to.be.equal('GET')
       done(err)
