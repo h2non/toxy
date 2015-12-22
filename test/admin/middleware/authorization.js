@@ -1,5 +1,4 @@
 const toxy = require('../../..')
-const expect = require('chai').expect
 const supertest = require('supertest')
 
 suite('admin#middleware#authorization', function () {

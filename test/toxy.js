@@ -17,8 +17,8 @@ suite('toxy', function () {
   })
 
   test('use poison', function (done) {
-    var proxy = toxy()
-    var spy = sinon.spy()
+    const proxy = toxy()
+    const spy = sinon.spy()
 
     proxy.poison(function delay (req, res, next) {
       spy(req, res)
@@ -38,9 +38,9 @@ suite('toxy', function () {
   })
 
   test('use poison phases', function (done) {
-    var proxy = toxy()
-    var spy = sinon.spy()
-    var reqStub = { socket: {}, once: function () {} }
+    const proxy = toxy()
+    const spy = sinon.spy()
+    const reqStub = { socket: {}, once: function () {} }
 
     proxy.poison(function delay (req, res, next) {
       spy(req, res)
@@ -83,7 +83,7 @@ suite('toxy', function () {
   })
 
   test('use rule', function (done) {
-    var proxy = toxy()
+    const proxy = toxy()
     var called = false
 
     proxy.rule(function delay (req, res, next) {
@@ -112,7 +112,6 @@ suite('toxy', function () {
     toxy.addRule(testRule)
     expect(toxy.rules.testRule).to.be.equal(testRule)
 
-    function testRule () {}
     toxy.addRule('nameRule', testRule)
     expect(toxy.rules.nameRule).to.be.equal(testRule)
 
@@ -124,8 +123,7 @@ suite('toxy', function () {
   })
 
   test('get directives', function () {
-    var proxy = toxy()
-    var called = false
+    const proxy = toxy()
 
     proxy.poison(function delay () {})
     proxy.rule(function match () {})
@@ -133,13 +131,13 @@ suite('toxy', function () {
     expect(proxy.isEnabled('delay')).to.be.true
     expect(proxy.isRuleEnabled('match')).to.be.true
 
-    var poison = proxy.getPoison('delay')
+    const poison = proxy.getPoison('delay')
     expect(poison).to.be.an('object')
     expect(poison.isEnabled()).to.be.true
     poison.disable()
     expect(poison.isEnabled()).to.be.false
 
-    var rule = proxy.getRule('match')
+    const rule = proxy.getRule('match')
     expect(rule).to.be.an('object')
     expect(rule.isEnabled()).to.be.true
     rule.disable()
@@ -147,8 +145,7 @@ suite('toxy', function () {
   })
 
   test('flush directives', function () {
-    var proxy = toxy()
-    var called = false
+    const proxy = toxy()
 
     proxy.poison(function delay () {})
     proxy.rule(function match () {})
@@ -168,10 +165,10 @@ suite('toxy', function () {
   })
 
   test('basic proxy with poisons', function (done) {
-    var proxy = toxy()
-    var spy = sinon.spy()
-    var server = createServer(9081, 200)
-    var timeout = 100
+    const proxy = toxy()
+    const spy = sinon.spy()
+    const server = createServer(9081, 200)
+    const timeout = 100
 
     proxy.poison(function delay (req, res, next) {
       spy(req, res)
@@ -187,7 +184,7 @@ suite('toxy', function () {
     proxy.get('/foo')
     proxy.listen(9080)
 
-    var init = Date.now()
+    const init = Date.now()
     supertest('http://localhost:9080')
       .get('/foo')
       .expect(200)
@@ -196,10 +193,11 @@ suite('toxy', function () {
       .end(assert)
 
     function assert (err) {
+      expect(err).to.be.null
       expect(Date.now() - init).to.be.at.least(timeout - 1)
       expect(spy.calledTwice).to.be.true
 
-      var req = spy.args[0][0]
+      const req = spy.args[0][0]
       expect(req.url).to.be.equal('/foo')
       expect(req.method).to.be.equal('GET')
 
@@ -209,10 +207,10 @@ suite('toxy', function () {
   })
 
   test('proxy with outgoing poisons', function (done) {
-    var proxy = toxy()
-    var spy = sinon.spy()
-    var server = createServer(9081, 200)
-    var timeout = 100
+    const proxy = toxy()
+    const spy = sinon.spy()
+    const server = createServer(9081, 200)
+    const timeout = 100
 
     proxy.outgoingPoison(function delay (req, res, next) {
       spy(req, res)
@@ -233,7 +231,7 @@ suite('toxy', function () {
     proxy.get('/foo')
     proxy.listen(9080)
 
-    var init = Date.now()
+    const init = Date.now()
     supertest('http://localhost:9080')
       .get('/foo')
       .expect(200)
@@ -242,14 +240,15 @@ suite('toxy', function () {
       .end(assert)
 
     function assert (err) {
+      expect(err).to.be.null
       expect(Date.now() - init).to.be.at.least(timeout - 1)
       expect(spy.calledThrice).to.be.true
 
-      var req = spy.args[0][0]
+      const req = spy.args[0][0]
       expect(req.url).to.be.equal('/foo')
       expect(req.method).to.be.equal('GET')
 
-      var res = spy.args[0][1]
+      const res = spy.args[0][1]
       expect(res.getHeader('server')).to.be.deep.equal('rocky')
       expect(res._originalBody.toString()).to.be.deep.equal('{"hello":"world"}')
       expect(res.body.toString()).to.be.deep.equal('{"hello":"world"}')
@@ -260,13 +259,12 @@ suite('toxy', function () {
   })
 
   test('final route handler when no matches', function (done) {
-    var proxy = toxy()
-    var spy = sinon.spy()
-    var server = createServer(9081, 200)
-    var timeout = 100
+    const proxy = toxy()
+    const spy = sinon.spy()
+    createServer(9081, 200)
 
     proxy.poison(function delay (req, res, next) {
-      throw 'Should not be called'
+      throw new Error('Should not be called')
     })
 
     proxy.rule(function method (req, res, next) {
@@ -278,7 +276,6 @@ suite('toxy', function () {
     proxy.get('/foo')
     proxy.listen(9080)
 
-    var init = Date.now()
     supertest('http://localhost:9080')
       .get('/foo')
       .expect(200)
@@ -297,7 +294,7 @@ suite('toxy', function () {
 })
 
 function createServer (port, code, assert) {
-  var server = http.createServer(function (req, res) {
+  const server = http.createServer(function (req, res) {
     res.writeHead(code, { 'Content-Type': 'application/json' })
     res.write(JSON.stringify({ 'hello': 'world' }))
 
