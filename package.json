@@ -42,7 +42,7 @@
     "midware": "^0.1.3",
     "object-assign": "^3.0.0",
     "raw-body": "^2.1.2",
-    "rocky": "^0.4.0",
+    "rocky": "^0.4.10",
     "router": "^1.1.3"
   },
   "devDependencies": {
