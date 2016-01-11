@@ -379,7 +379,7 @@ toxy.poison(toxy.poisons.rateLimit({ limit: 5, threshold: 10 * 1000 }))
 
 <table>
 <tr>
-<td><b>Name</b></td><td>rateLimit</td>
+<td><b>Name</b></td><td>slowRead</td>
 </tr>
 <tr>
 <td><b>Poisoning Phase</b></td><td>incoming</td>
