@@ -92,9 +92,9 @@ test() {
 #
 # Run suites
 #
-#test "forward" "forward" get_benchmark
+test "forward" "forward" get_benchmark
 test "forward+payload" "forward-with-payload" post_payload_benchmark
-#test "forward+payload+bandwidth" "forward-with-payload-bandwidth" post_payload_benchmark
-#test "forward+payload+slow-read" "forward-with-payload-slowread" post_payload_benchmark
+test "forward+payload+bandwidth" "forward-with-payload-bandwidth" post_payload_benchmark
+test "forward+payload+slow-read" "forward-with-payload-slowread" post_payload_benchmark
 
 exit $?
