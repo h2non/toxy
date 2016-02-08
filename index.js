@@ -1,68 +1,120 @@
 const Toxy = require('./lib/toxy')
-const rules = require('./lib/rules')
-const poisons = require('./lib/poisons')
 
 /**
- * API factory
+ * Expose `Toxy` API factory
+ *
+ * @exports {Function}
  */
 
 module.exports = Toxy
 
 /**
- * Expose internal modules as static members
+ * Exposes admin HTTP server constructor.
+ *
+ * @property {Function} admin
+ * @static
  */
 
 Toxy.admin = require('./lib/admin')
+
+/**
+ * Exposes Rule constructor.
+ *
+ * @property {Rule} Rule
+ * @static
+ */
+
 Toxy.Rule = require('./lib/rule')
+
+/**
+ * Exposes Base object.
+ *
+ * @property {Object} Base
+ * @static
+ */
+
 Toxy.Base = require('./lib/base')
+
+/**
+ * Exposes Poison constructor.
+ *
+ * @property {Poison} Poison
+ * @static
+ */
+
 Toxy.Poison = require('./lib/poison')
+
+/**
+ * Exposes Directive constructor.
+ *
+ * @property {Directive} Directive
+ * @static
+ */
+
 Toxy.Directive = require('./lib/directive')
+
+/**
+ * Exposes Rocky proxy constructor.
+ *
+ * @property {Rocky} Rocky
+ * @static
+ */
+
 Toxy.Rocky = require('rocky').Rocky
 
 /**
- * Expose current version
+ * Expose current version.
+ *
+ * @property {String} VERSION
+ * @static
  */
 
 Toxy.VERSION = require('./package.json').version
 
 /**
- * Expose built-in poisons
+ * Expose built-in poisons.
+ *
+ * @property {Object} rules
+ * @static
  */
 
-Toxy.poisons = Toxy.prototype.poisons = Object.create(null)
-
-poisons.forEach(function (poison) {
-  Toxy.poisons[poison.name] = function () {
-    return poison.apply(null, arguments)
-  }
-})
+Toxy.poisons = Toxy.prototype.poisons
 
 /**
- * Expose built-in rules
+ * Expose built-in rules.
+ *
+ * @property {Object} rules
+ * @static
  */
 
-Toxy.rules = Toxy.prototype.rules = Object.create(null)
-
-rules.forEach(function (rule) {
-  Toxy.rules[rule.name] = function () {
-    return rule.apply(null, arguments)
-  }
-})
+Toxy.rules = Toxy.prototype.rules
 
 /**
- * Extend built-in rules
+ * Attaches a new rule.
+ *
+ * @param {Function} poison
+ * @method addPoison
+ * @static
  */
 
 Toxy.addRule = addDirective('rules')
 
 /**
- * Extend built-in poisons
+ * Attaches a new poison.
+ *
+ * @param {Function} poison
+ * @method addPoison
+ * @static
  */
 
 Toxy.addPoison = addDirective('poisons')
 
 /**
- * Add directive helper
+ * Add directive helper.
+ *
+ * @param {String}
+ * @function addDirective
+ * @private
  */
 
 function addDirective (type) {
