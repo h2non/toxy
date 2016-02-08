@@ -1053,7 +1053,7 @@ Alias: `useRule`
 Register a new rule.
 
 #### toxy#withRule(rule)
-Aliases: `poisonRule`, `poisonFilter`
+Aliases: `ifRule`, `whenRule`, `poisonRule`, `poisonFilter`
 
 Apply a new rule for the latest registered poison.
 
