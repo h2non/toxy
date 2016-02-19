@@ -41,6 +41,7 @@ suite('toxy', function () {
     const proxy = toxy()
     const spy = sinon.spy()
     const reqStub = { socket: {}, once: function () {} }
+    const resStub = { connection: { cork: function () {} } }
 
     proxy.poison(function delay (req, res, next) {
       spy(req, res)
@@ -63,11 +64,11 @@ suite('toxy', function () {
     expect(proxy.isEnabledOutgoing('delay')).to.be.false
     proxy.enableOutgoing('delay')
 
-    proxy._inPoisons.run(reqStub, {}, function () {
+    proxy._inPoisons.run(reqStub, resStub, function () {
       expect(spy.calledOnce).to.be.true
     })
 
-    proxy._outPoisons.run(reqStub, {}, function () {
+    proxy._outPoisons.run(reqStub, resStub, function () {
       expect(spy.calledTwice).to.be.true
 
       proxy.remove('delay')
@@ -216,7 +217,6 @@ suite('toxy', function () {
       spy(req, res)
       setTimeout(next, timeout)
     })
-
     proxy.outgoingPoison(function capture (req, res, next) {
       spy(req, res)
       next()
@@ -295,8 +295,12 @@ suite('toxy', function () {
 
 function createServer (port, code, assert) {
   const server = http.createServer(function (req, res) {
-    res.writeHead(code, { 'Content-Type': 'application/json' })
-    res.write(JSON.stringify({ 'hello': 'world' }))
+    const data = JSON.stringify({ 'hello': 'world' })
+    res.writeHead(code, {
+      'Content-Length': Buffer.byteLength(data),
+      'Content-Type': 'application/json'
+    })
+    res.write(data)
 
     var body = ''
     req.on('data', function (data) {

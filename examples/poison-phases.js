@@ -25,10 +25,12 @@ proxy
   .outgoingPoison(poisons.bandwidth({ bytes: 1024 }))
   .withRule(rules.method('GET'))
 
+  // Randomly reply with an error
   .outgoingPoison(function (req, res) {
     res.writeHead(400, { 'Content-Length': 5 })
     res.end('Error')
   })
+  .withRule(rules.method('POST'))
   .withRule(rules.probability(75))
   .withRule(rules.responseHeaders({ 'Content-Type': /json/i }))
   .withRule(function (req, res, next) {
