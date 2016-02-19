@@ -52,7 +52,7 @@
     "mocha": "^2.2.5",
     "sinon": "^1.15.3",
     "standard": "^5.4.1",
-    "supertest": "^1.0.1"
+    "supertest": "^1.2.0"
   },
   "standard": {
     "globals": [
