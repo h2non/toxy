@@ -40,8 +40,9 @@ suite('toxy', function () {
   test('use poison phases', function (done) {
     const proxy = toxy()
     const spy = sinon.spy()
-    const reqStub = { socket: {}, once: function () {} }
-    const resStub = { connection: { cork: function () {} } }
+    const noop = function () {}
+    const reqStub = { socket: { once: noop, uncork: noop }, once: noop }
+    const resStub = { connection: { cork: noop } }
 
     proxy.poison(function delay (req, res, next) {
       spy(req, res)
