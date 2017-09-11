@@ -570,7 +570,7 @@ var proxy = toxy()
 // Register and enable the poison
 proxy
   .get('/foo')
-  .poison(customLatency(2000))
+  .poison(customLatencyPoison(2000))
 ```
 
 You can optionally extend the build-in poisons with your own poisons:
