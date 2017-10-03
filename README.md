@@ -1070,7 +1070,12 @@ Disable a poison by name identifier
 #### toxy#remove(poison)
 Return: `boolean`
 
-Remove poison by name identifier.
+Remove an incoming traffic poison by name identifier or object reference.
+
+#### toxy#removeOutgoing(poison)
+Return: `boolean`
+
+Remove an outgoing traffic poison by name identifier or object reference.
 
 #### toxy#isEnabled(poison)
 Return: `boolean`
@@ -1115,7 +1120,7 @@ Return an array of registered `outgoing` poisons.
 #### toxy#flush()
 Alias: `flushPoisons`
 
-Remove all the registered poisons.
+Remove all the registered poisons for both incoming and outgoing traffic flows.
 
 #### toxy#enableRule(rule)
 
