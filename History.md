@@ -1,4 +1,15 @@
 
+v0.3.14 / 2017-10-03
+====================
+
+  * refactor(toxy): use default generic proxy options that forward origin header
+  * Merge branch 'master' of https://github.com/h2non/toxy
+  * refactor(poisons): ensure clean event listeners and use once event subscription
+  * refactor(docs): update required node version
+  * feat(package): bump rocky version to latest
+  * fix(docs): move project image
+  * feat(docs): add sponsor ad
+
 v0.3.13 / 2017-09-11
 ====================
 
