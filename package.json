@@ -1,6 +1,6 @@
 {
   "name": "toxy",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Hackable HTTP proxy to simulate server failure scenarios and network conditions",
   "repository": "h2non/toxy",
   "author": "Tomas Aparicio",
@@ -32,7 +32,7 @@
     "soa"
   ],
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 4"
   },
   "scripts": {
     "test": "standard index.js 'lib/**/*.js' 'test/**/*.js' && mocha --timeout 5000 --bail --reporter spec --ui tdd 'test/**/*.js'"
