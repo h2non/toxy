@@ -1,10 +1,10 @@
 # toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
-**Hackable HTTP proxy** to **simulate** server **failure scenarios** and **unexpected network conditions**, built for [node.js](http://nodejs.org).
+**Hackable HTTP proxy** to **simulate** server **failure scenarios**, **resiliency** and **unexpected network conditions**, built for [node.js](http://nodejs.org).
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
 
-It was mainly designed for fuzzing/evil testing purposes, when toxy becomes particularly useful to cover fault tolerance and resiliency capabilities of a system, especially in [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as MitM proxy among services.
+It was mainly designed for failure resistance testing, when toxy becomes particularly useful in order to cover fault tolerance and resiliency capabilities of a system, especially in [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as MitM proxy among services in order to inject failure.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying network packets, injecting network jitter latency or replying with a custom error or status code.
 It operates only at L7 (application level).
