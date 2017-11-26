@@ -14,8 +14,6 @@ It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured 
 
 Requires node.js +4.
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/1MpD3pzt63uUeG43NP4tDHPY/h2non/toxy'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/1MpD3pzt63uUeG43NP4tDHPY/h2non/toxy.svg' /></a>
-
 ## Contents
 
 - [Features](#features)
