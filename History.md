@@ -1,4 +1,14 @@
 
+v0.3.15 / 2017-11-30
+====================
+
+  * feat(version): bump
+  * fix(#54): register cors middleware first
+  * refactor(docs): remove codesponsor
+  * refactor(docs): update description
+  * refactor(docs): minor introduction changes
+  * feat(examples): add dynamic poison registering example
+
 v0.3.14 / 2017-10-03
 ====================
 
