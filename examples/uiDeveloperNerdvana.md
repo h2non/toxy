@@ -22,14 +22,15 @@ Nerdvana also implements some poisons for toxy that can be controlled from the c
 
 ## Ok, so how do I get started?
 
-1. Copy this file to your UI project.
-2. Add toxy to your package.json
-3. Change `defaultBackend` in the code to match the API host name you want to use.
+1. Copy this file to your UI project as `nerdvana.js`.
+2. Add toxy to your package.json in devDependencies, and `npm install` or `yarn`.
+3. Change `defaultBackend` in the code to match the backend host name you want to use.
 4. Change `apiRoots` if you're using something other than `/api` or `/login` as your
 API route in the backend.
 5. If serving your front end content from something other than the current directory, or
-`./build` or `./dist`, modify staticDirs.
+`./build` or `./dist`, modify `staticDirs`.
 6. Setup `watch` in your build system.
+11. Launch the proxy with `node nerdvana.js`
 7. Load your UI by going to the opening page.
 8. Make a change and save it.
 9. Refresh your browser.
@@ -38,7 +39,8 @@ API route in the backend.
 
 ### Advanced Features & Options
 
-Rather than parse a command line, nerdvana will read certain values from the command line.
+Rather than parse a command line, nerdvana will read certain values from the environment
+variables, which can be also set from the command line.
 
 #### Repoint the proxy
 
