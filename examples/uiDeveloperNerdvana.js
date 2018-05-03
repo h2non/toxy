@@ -1,4 +1,7 @@
-var toxy = require('toxy');
+var toxy = require('..');  /** we have to use this line when running in toxy/examples.
+use this elsewhere
+# var toxy = require('toxy');
+**/
 var express = require('express');
 var poisons = toxy.poisons;
 var rules = toxy.rules;
