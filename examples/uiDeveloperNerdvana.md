@@ -55,4 +55,4 @@ a special build of the backend.
 your UI will work when people's network connection is unreliable.
 
 `MAXLATENCY=5000` will cause each API call to take 2.5 to 5 seconds to complete, so you can
-debug race conditions, and also see what its like when your your's network connection is slow.
+debug race conditions, and also see what its like when your user's network connection is slow.
