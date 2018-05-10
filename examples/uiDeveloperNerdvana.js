@@ -16,7 +16,7 @@ var proxy = toxy();
 
 *************/
 
-let rootPath = __dirname; // start with local directory
+var rootPath = __dirname; // start with local directory
 
 var defaultBackend = 'yourbackendhost.com';
 var apiRoots = ['/api','/login']; // URLs beginning with this are intercepted and routed to your backend.
