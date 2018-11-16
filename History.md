@@ -1,4 +1,10 @@
 
+v0.3.16 / 2018-11-16
+====================
+
+  * Merge pull request #63 from juhovuori/master
+  * Don't depend on global state
+
 v0.3.15 / 2017-11-30
 ====================
 
