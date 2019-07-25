@@ -7,7 +7,7 @@
 It was mainly designed for failure resistance testing, when toxy becomes particularly useful in order to cover fault tolerance and resiliency capabilities of a system, especially in [disruption-tolerant networks](https://en.wikipedia.org/wiki/Delay-tolerant_networking) and [service-oriented](http://microservices.io/patterns/index.html) architectures, where toxy may act as MitM proxy among services in order to inject failure.
 
 toxy allows you to plug in [poisons](#poisons), optionally filtered by [rules](#rules), which essentially can intercept and alter the HTTP flow as you need, performing multiple evil actions in the middle of that process, such as limiting the bandwidth, delaying network packets, injecting network jitter latency or replying with a custom error or status code.
-It operates only at L7 (application level).
+It primarily operates at L7, although it can simulate L3 network conditions.
 
 toxy can be fluently used [programmatically](#programmatic-api) or via [HTTP API](#http-api).
 It was built on top of [rocky](https://github.com/h2non/rocky), a full-featured middleware-oriented HTTP proxy, and it's also [pluggable](https://github.com/h2non/toxy/blob/master/examples/express.js) in [connect](https://github.com/senchalabs/connect)/[express](http://expressjs.com) as standard middleware.
