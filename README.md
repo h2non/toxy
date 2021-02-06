@@ -530,7 +530,7 @@ Defines a response timeout. Useful when forward to potentially slow servers.
 
 **Arguments**:
 
-- **miliseconds** `number` - Timeout limit in milliseconds
+- **milliseconds** `number` - Timeout limit in milliseconds
 
 ```js
 toxy.poison(toxy.poisons.timeout(5000))
@@ -636,7 +636,7 @@ For instance, you can enable a certain poisons during a specific amount of time 
 **Arguments**:
 
 - **options** `object`
-  - **duration** `number` - Enable time inverval in milliseconds. Default to `1000`
+  - **duration** `number` - Enable time interval in milliseconds. Default to `1000`
   - **threshold** `number` - Time threshold in milliseconds to wait before re-enable the poisoning. Default to `10000`
 
 ```js
@@ -1088,17 +1088,17 @@ Disable all the registered poisons.
 #### toxy#getPoison(name)
 Return: `Directive|null`
 
-Searchs and retrieves a registered poison in the stack by name identifier.
+Searches and retrieves a registered poison in the stack by name identifier.
 
 #### toxy#getIncomingPoison(name)
 Return: `Directive|null`
 
-Searchs and retrieves a registered `incoming` poison in the stack by name identifier.
+Searches and retrieves a registered `incoming` poison in the stack by name identifier.
 
 #### toxy#getOutgoingPoison(name)
 Return: `Directive|null`
 
-Searchs and retrieves a registered `outgoing` poison in the stack by name identifier.
+Searches and retrieves a registered `outgoing` poison in the stack by name identifier.
 
 #### toxy#getPoisons()
 Return: `array<Directive>`
@@ -1145,7 +1145,7 @@ Checks if the given rule is enabled by name identifier.
 #### toxy#getRule(rule)
 Return: `Directive|null`
 
-Searchs and retrieves a registered rule in the stack by name identifier.
+Searches and retrieves a registered rule in the stack by name identifier.
 
 #### toxy#getRules()
 Return: `array<Directive>`
