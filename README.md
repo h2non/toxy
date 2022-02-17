@@ -1,5 +1,7 @@
 # toxy [![Build Status](https://api.travis-ci.org/h2non/toxy.svg?branch=master&style=flat)](https://travis-ci.org/h2non/toxy) [![Code Climate](https://codeclimate.com/github/h2non/toxy/badges/gpa.svg)](https://codeclimate.com/github/h2non/toxy) [![NPM](https://img.shields.io/npm/v/toxy.svg)](https://www.npmjs.org/package/toxy) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
+> **Not actively maintained, may not work with latest node.js runtimes**. If you are interested in maintaining toxy, please open an issue.
+
 **Hackable HTTP proxy** to **simulate** server **failure scenarios**, **systems resiliency testing** and **unexpected network conditions**, built for [node.js](http://nodejs.org).
 
 <img align="right" height="180" src="http://s8.postimg.org/ikc9jxllh/toxic.jpg" />
